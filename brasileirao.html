@@ -18,7 +18,7 @@
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4">Carregando dados...</td></tr>
+            <tr><td colspan="4">Carregando...</td></tr>
         </tbody>
     </table>
 
@@ -33,29 +33,29 @@
 
                 const json = await response.json();
                 
-                // IMPORTANTE: Olhe no console (F12) o que vai aparecer aqui!
-                console.log("Estrutura dos dados recebidos:", json);
+                // Inspeção dos dados
+                console.log("Objeto recebido:", json);
+                
+                // Aqui está o segredo: procuramos o array dentro de json.response
+                // Se o console mostrou 'response', provavelmente ele é um objeto que contém a lista
+                const dados = json.response.standings || json.response.table || json.response;
 
                 corpo.innerHTML = "";
                 
-                // Verificamos onde a lista de times está (pode estar em 'response', 'data', etc)
-                const listaTimes = json.response || json.data || json; 
-
-                if (Array.isArray(listaTimes)) {
-                    listaTimes.forEach(t => {
+                if (Array.isArray(dados)) {
+                    dados.forEach(t => {
                         corpo.innerHTML += `<tr>
                             <td>${t.rank || '-'}</td>
-                            <td>${t.team?.name || t.name || 'Time'}</td>
+                            <td>${t.team?.name || 'Time'}</td>
                             <td>${t.points || '0'}</td>
                             <td>${t.all?.win || '0'}</td>
                         </tr>`;
                     });
                 } else {
-                    corpo.innerHTML = "<tr><td colspan='4'>Erro: Formato de dados desconhecido.</td></tr>";
+                    corpo.innerHTML = "<tr><td colspan='4'>Erro: Estrutura dos dados não encontrada.</td></tr>";
                 }
             } catch (e) {
-                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão. Verifique o console.</td></tr>";
-                console.error(e);
+                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão.</td></tr>";
             }
         }
         window.onload = carregar;
