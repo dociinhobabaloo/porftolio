@@ -50,17 +50,17 @@
                 <a href="guia.html" class="btn-projeto">Ver Projeto</a>
             </div>
 
-           <!-- Projeto 2: Brasileirão -->
-<div class="projetos-card">
-    <img src="img/brasileiro-jogadores.jpg" alt="Capa Brasileirão" class="projetos-imagem">
-    <h3 class="info-projetos">Brasileirão 2026</h3>
-    <p class="paragrafo-projetos">Painel informativo sobre o Campeonato Brasileiro.</p>
-    <a href="brasileirao.html" class="btn-projeto">Ver Projeto</a>
-</div>
+            <!-- Projeto 2: Brasileirão -->
+            <div class="projetos-card">
+                <img src="img/banner-brasileirao.jpg" alt="Capa Brasileirão" class="projetos-imagem">
+                <h3 class="info-projetos">Brasileirão 2026</h3>
+                <p class="paragrafo-projetos">Painel informativo sobre o Campeonato Brasileiro.</p>
+                <a href="brasileirao.html" class="btn-projeto">Ver Projeto</a>
+            </div>
 
             <!-- Projeto 3 -->
             <div class="projetos-card">
-                <img src="banner-brasileirao.jpg" alt="Capa Brasileirão" class="projetos-imagem">
+                <img src="img/foto-pet.jpg" alt="Capa Localiza Pet" class="projetos-imagem">
                 <h3 class="info-projetos">Localiza Pet</h3>
                 <p class="paragrafo-projetos">Uma plataforma de utilidade pública para ajudar no reencontro de animais perdidos.</p>
                 <a href="pet.html" class="btn-projeto">Ver Projeto</a>
@@ -80,37 +80,5 @@
             <button type="submit" class="btn-enviar">Enviar Mensagem</button>
         </form>
     </section>
-
-    <script>
-        const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=47';
-        const options = {
-            method: 'GET',
-            headers: {
-                'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
-                'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
-            }
-        };
-
-        async function carregarDados() {
-            const corpo = document.getElementById('tabela-corpo');
-            try {
-                const response = await fetch(url, options);
-                const result = await response.json();
-                corpo.innerHTML = "";
-                result.response.forEach(t => {
-                    corpo.innerHTML += `
-                        <tr style="border-bottom: 1px solid #444;">
-                            <td>${t.rank}</td>
-                            <td>${t.team.name}</td>
-                            <td>${t.points}</td>
-                            <td>${t.all.win}</td>
-                        </tr>`;
-                });
-            } catch (error) {
-                corpo.innerHTML = "<tr><td colspan='4'>Erro na API.</td></tr>";
-            }
-        }
-        carregarDados();
-    </script>
 </body>
 </html>
