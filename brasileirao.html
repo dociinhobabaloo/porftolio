@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Live</title>
+    <title>Brasileirão 2026</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
         table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
@@ -11,50 +11,33 @@
     </style>
 </head>
 <body>
-
     <h2>Classificação Brasileirão 2026</h2>
-    <table id="tabela">
+    <table>
         <thead>
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4" id="status">Carregando dados da liga...</td></tr>
+            <tr><td colspan="4">Carregando...</td></tr>
         </tbody>
     </table>
 
     <script>
-        async function carregar() {
+        async function carregarDados() {
             const corpo = document.getElementById('tabela-corpo');
-            const status = document.getElementById('status');
-            
-            // Usando a API de forma direta e simplificada
-            const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
-            
             try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
-                        'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
-                    }
-                });
-
-                if (!response.ok) throw new Error("Erro na resposta da API");
+                // Busca os dados do seu próprio arquivo JSON
+                const response = await fetch('dados.json');
+                const times = await response.json();
                 
-                const json = await response.json();
-                corpo.innerHTML = ""; 
-                
-                // Preenchendo a tabela
-                json.response.forEach(t => {
+                corpo.innerHTML = "";
+                times.forEach(t => {
                     corpo.innerHTML += `<tr><td>${t.rank}</td><td>${t.team.name}</td><td>${t.points}</td><td>${t.all.win}</td></tr>`;
                 });
-            } catch (e) {
-                // Se falhar aqui, o problema é o bloqueio do site (CORS)
-                console.error(e);
-                status.innerText = "Erro de conexão (CORS). Tente usar uma extensão de 'Allow CORS' no navegador para testar.";
+            } catch (error) {
+                corpo.innerHTML = "<tr><td colspan='4'>Erro ao carregar dados locais.</td></tr>";
             }
         }
-        window.onload = carregar;
+        window.onload = carregarDados;
     </script>
 </body>
 </html>
