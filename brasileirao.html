@@ -19,17 +19,20 @@
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4">Conectando ao servidor...</td></tr>
+            <!-- O script vai preencher isso abaixo -->
         </tbody>
     </table>
 
     <script>
-        // Usando um proxy (allorigins.win) para evitar o bloqueio do navegador
-        const apiUrl = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
-        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(apiUrl);
-
         async function carregarDados() {
             const corpo = document.getElementById('tabela-corpo');
+            if (!corpo) return; // Segurança caso o elemento não exista
+
+            corpo.innerHTML = "<tr><td colspan='4'>Conectando ao servidor...</td></tr>";
+
+            const apiUrl = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
+            const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(apiUrl);
+
             try {
                 const response = await fetch(proxyUrl);
                 const data = await response.json();
@@ -37,7 +40,6 @@
 
                 corpo.innerHTML = "";
                 
-                // Extraindo a lista de times
                 const times = result.response;
 
                 times.forEach(t => {
@@ -50,12 +52,12 @@
                         </tr>`;
                 });
             } catch (error) {
-                console.error("Erro na API:", error);
-                corpo.innerHTML = "<tr><td colspan='4'>Erro ao carregar dados.</td></tr>";
+                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão. Verifique a API.</td></tr>";
             }
         }
         
-        carregarDados();
+        // Garante que o script rode após o carregamento total
+        window.onload = carregarDados;
     </script>
 </body>
 </html>
