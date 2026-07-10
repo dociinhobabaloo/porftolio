@@ -2,20 +2,22 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Live</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasileirão 2026 | Stats Automáticas</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2 style="text-align: center; color: white;">Tabela do Brasileirão 2026</h2>
+
+    <h2 style="text-align: center; color: white; margin-top: 20px;">Classificação 2026 (Live)</h2>
     
-    <table style="width: 80%; margin: 0 auto; color: white; border-collapse: collapse;">
+    <table style="width: 90%; margin: 20px auto; color: white; border-collapse: collapse; background: #1a1a1a;">
         <thead>
-            <tr style="background: #e11d48;">
-                <th>#</th><th>Clube</th><th>Pts</th><th>V</th>
+            <tr style="background: #e11d48; height: 40px;">
+                <th>#</th><th>Clube</th><th>Pts</th><th>V</th><th>E</th>
             </tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4" style="text-align: center;">Carregando dados...</td></tr>
+            <tr><td colspan="5" style="text-align: center; padding: 20px;">Carregando dados...</td></tr>
         </tbody>
     </table>
 
@@ -34,23 +36,35 @@
             try {
                 const response = await fetch(url, options);
                 const result = await response.json();
+                
+                // Isso vai aparecer no seu F12 -> Console
+                console.log("Dados recebidos da API:", result);
+                
                 corpo.innerHTML = "";
-                // Verifica se há dados
-                if (result.response) {
-                    result.response.forEach(t => {
+                
+                // Tenta encontrar a lista de times de formas diferentes
+                const listaTimes = result.response || result.data || result; 
+                
+                if (listaTimes && listaTimes.length > 0) {
+                    listaTimes.forEach(t => {
                         corpo.innerHTML += `
-                            <tr style="border-bottom: 1px solid #444; text-align: center;">
-                                <td>${t.rank}</td>
-                                <td>${t.team.name}</td>
-                                <td>${t.points}</td>
-                                <td>${t.all.win}</td>
+                            <tr style="border-bottom: 1px solid #444; text-align: center; height: 35px;">
+                                <td>${t.rank || '-'}</td>
+                                <td>${t.team?.name || t.name || 'Time'}</td>
+                                <td>${t.points || '0'}</td>
+                                <td>${t.all?.win || '0'}</td>
+                                <td>${t.all?.draw || '0'}</td>
                             </tr>`;
                     });
+                } else {
+                    corpo.innerHTML = "<tr><td colspan='5'>Nenhum dado encontrado.</td></tr>";
                 }
             } catch (error) {
-                corpo.innerHTML = "<tr><td colspan='4'>Erro ao carregar dados. Tente novamente mais tarde.</td></tr>";
+                console.error("Erro na requisição:", error);
+                corpo.innerHTML = "<tr><td colspan='5'>Erro ao conectar na API. Verifique o console (F12).</td></tr>";
             }
         }
+        
         carregarDados();
     </script>
 </body>
