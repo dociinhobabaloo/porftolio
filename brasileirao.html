@@ -1,71 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brasileirão 2026 | Stats Automáticas</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-    <h2 style="text-align: center; color: white; margin-top: 20px;">Classificação 2026 (Live)</h2>
-    
-    <table style="width: 90%; margin: 20px auto; color: white; border-collapse: collapse; background: #1a1a1a;">
-        <thead>
-            <tr style="background: #e11d48; height: 40px;">
-                <th>#</th><th>Clube</th><th>Pts</th><th>V</th><th>E</th>
-            </tr>
-        </thead>
-        <tbody id="tabela-corpo">
-            <tr><td colspan="5" style="text-align: center; padding: 20px;">Carregando dados...</td></tr>
-        </tbody>
-    </table>
-
-    <script>
-        const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=47';
-        const options = {
-            method: 'GET',
-            headers: {
-                'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
-                'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
-            }
-        };
-
-        async function carregarDados() {
-            const corpo = document.getElementById('tabela-corpo');
-            try {
-                const response = await fetch(url, options);
-                const result = await response.json();
-                
-                // Isso vai aparecer no seu F12 -> Console
-                console.log("Dados recebidos da API:", result);
-                
-                corpo.innerHTML = "";
-                
-                // Tenta encontrar a lista de times de formas diferentes
-                const listaTimes = result.response || result.data || result; 
-                
-                if (listaTimes && listaTimes.length > 0) {
-                    listaTimes.forEach(t => {
-                        corpo.innerHTML += `
-                            <tr style="border-bottom: 1px solid #444; text-align: center; height: 35px;">
-                                <td>${t.rank || '-'}</td>
-                                <td>${t.team?.name || t.name || 'Time'}</td>
-                                <td>${t.points || '0'}</td>
-                                <td>${t.all?.win || '0'}</td>
-                                <td>${t.all?.draw || '0'}</td>
-                            </tr>`;
-                    });
-                } else {
-                    corpo.innerHTML = "<tr><td colspan='5'>Nenhum dado encontrado.</td></tr>";
-                }
-            } catch (error) {
-                console.error("Erro na requisição:", error);
-                corpo.innerHTML = "<tr><td colspan='5'>Erro ao conectar na API. Verifique o console (F12).</td></tr>";
-            }
+<script>
+    // URL para Classificação da Liga 47 (Brasileirão)
+    const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=47';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
+            'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
         }
-        
-        carregarDados();
-    </script>
-</body>
-</html>
+    };
+
+    async function carregarDados() {
+        const corpo = document.getElementById('tabela-corpo');
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) throw new Error('Erro na rede');
+            const result = await response.json();
+            
+            corpo.innerHTML = ""; // Limpa o "Carregando..."
+            
+            // A maioria das APIs retorna a lista dentro de 'response'
+            const times = result.response; 
+            
+            times.forEach(t => {
+                corpo.innerHTML += `
+                    <tr style="border-bottom: 1px solid #444;">
+                        <td>${t.rank}</td>
+                        <td>${t.team.name}</td>
+                        <td>${t.points}</td>
+                        <td>${t.all.win}</td>
+                    </tr>`;
+            });
+        } catch (error) {
+            corpo.innerHTML = "<tr><td colspan='4'>Erro: Verifique a API no RapidAPI.</td></tr>";
+        }
+    }
+    carregarDados();
+</script>
