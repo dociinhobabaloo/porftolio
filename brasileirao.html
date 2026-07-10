@@ -2,47 +2,67 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Tabela Brasileirão 2026</title>
+    <title>Brasileirão 2026 - Séries A e B</title>
     <style>
-        body { font-family: sans-serif; background-color: #f8f9fa; color: #333; padding: 20px; }
-        table { width: 100%; max-width: 900px; margin: 20px auto; border-collapse: collapse; background: white; }
-        th { background-color: #007bff; color: white; padding: 10px; }
-        td { padding: 10px; border-bottom: 1px solid #ddd; text-align: center; }
-        details { cursor: pointer; text-align: left; }
+        body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
+        .botoes { margin-bottom: 20px; }
+        button { padding: 10px 20px; cursor: pointer; background: #e11d48; color: white; border: none; border-radius: 5px; font-weight: bold; margin: 0 5px; }
+        table { width: 95%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
+        th { background-color: #e11d48; padding: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #334155; text-align: left; }
+        summary { cursor: pointer; color: #fb7185; }
     </style>
 </head>
 <body>
 
-    <h2>Classificação Brasileirão Série A</h2>
+    <h2>Classificação Brasileirão 2026</h2>
+    <div class="botoes">
+        <button onclick="renderizar('A')">Série A</button>
+        <button onclick="renderizar('B')">Série B</button>
+    </div>
+
     <table>
-        <thead>
-            <tr><th>#</th><th>Clube</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>%</th></tr>
-        </thead>
+        <thead><tr><th>#</th><th>Clube</th><th>Pts</th></tr></thead>
         <tbody id="tabela-corpo"></tbody>
     </table>
 
     <script>
-        const serieA = [
-            { pos: 1, name: "Palmeiras", p: 41, j: 18, v: 12, e: 5, d: 1, gp: 30, gc: 13, sg: 17, pct: 75, jogos: ["V 2x0", "V 1x0", "E 1x1"] },
-            { pos: 2, name: "Flamengo", p: 34, j: 17, v: 10, e: 4, d: 3, gp: 31, gc: 16, sg: 15, pct: 66, jogos: ["D 0x1", "V 3x1", "V 2x0"] },
-            { pos: 3, name: "Fluminense", p: 31, j: 18, v: 9, e: 4, d: 5, gp: 28, gc: 23, sg: 5, pct: 57, jogos: ["E 2x2", "V 1x0", "D 0x1"] },
-            { pos: 4, name: "Athletico-PR", p: 30, j: 18, v: 9, e: 3, d: 6, gp: 24, gc: 18, sg: 6, pct: 55, jogos: ["V 2x1", "D 1x2", "V 1x0"] }
-        ];
-
-        const corpo = document.getElementById('tabela-corpo');
-        serieA.forEach(t => {
-            corpo.innerHTML += `<tr>
-                <td>${t.pos}</td>
-                <td>
-                    <details>
-                        <summary>${t.name}</summary>
-                        <p>Últimos jogos: ${t.jogos.join(', ')}</p>
-                    </details>
-                </td>
-                <td>${t.p}</td><td>${t.j}</td><td>${t.v}</td><td>${t.e}</td><td>${t.d}</td>
-                <td>${t.gp}</td><td>${t.gc}</td><td>${t.sg}</td><td>${t.pct}</td>
-            </tr>`;
-        });
-    </script>
-</body>
-</html>
+        const dados = {
+            'A': [
+                { rank: 1, name: "Palmeiras", pts: 41, jogos: ["V 2x0", "V 1x0", "E 1x1"] },
+                { rank: 2, name: "Flamengo", pts: 34, jogos: ["D 0x1", "V 3x1", "V 2x0"] },
+                { rank: 3, name: "Fluminense", pts: 31, jogos: ["E 2x2", "V 1x0", "D 0x1"] },
+                { rank: 4, name: "Athletico-PR", pts: 30, jogos: ["V 2x1", "D 1x2", "V 1x0"] },
+                { rank: 5, name: "Bragantino", pts: 29, jogos: ["V 1x0", "E 0x0", "V 2x0"] },
+                { rank: 6, name: "Bahia", pts: 26, jogos: ["D 0x2", "V 1x0", "E 1x1"] },
+                { rank: 7, name: "Coritiba", pts: 26, jogos: ["E 1x1", "D 0x2", "V 2x1"] },
+                { rank: 8, name: "São Paulo", pts: 25, jogos: ["D 1x2", "E 0x0", "D 0x1"] },
+                { rank: 9, name: "Corinthians", pts: 24, jogos: ["V 1x0", "E 1x1", "V 3x0"] },
+                { rank: 10, name: "Atlético-MG", pts: 23, jogos: ["E 0x0", "D 1x2", "V 1x0"] },
+                { rank: 11, name: "Internacional", pts: 22, jogos: ["V 2x1", "D 0x1", "E 0x0"] },
+                { rank: 12, name: "Botafogo", pts: 21, jogos: ["D 0x1", "V 3x1", "D 1x2"] },
+                { rank: 13, name: "Cruzeiro", pts: 20, jogos: ["E 0x0", "V 1x0", "D 0x2"] },
+                { rank: 14, name: "Fortaleza", pts: 19, jogos: ["V 2x0", "D 0x1", "E 1x1"] },
+                { rank: 15, name: "Grêmio", pts: 18, jogos: ["D 1x2", "V 2x0", "D 0x1"] },
+                { rank: 16, name: "Vasco", pts: 17, jogos: ["D 0x2", "E 1x1", "V 1x0"] },
+                { rank: 17, name: "Cuiabá", pts: 15, jogos: ["D 0x1", "E 0x0", "D 1x2"] },
+                { rank: 18, name: "Juventude", pts: 14, jogos: ["E 1x1", "D 0x2", "V 2x1"] },
+                { rank: 19, name: "Vitória", pts: 12, jogos: ["D 0x3", "E 0x0", "D 1x2"] },
+                { rank: 20, name: "Atlético-GO", pts: 10, jogos: ["D 0x1", "D 0x2", "D 1x3"] }
+            ],
+            'B': [
+                { rank: 1, name: "Sport", pts: 30, jogos: ["V 1x0", "E 0x0", "V 2x1"] },
+                { rank: 2, name: "Ceará", pts: 28, jogos: ["V 2x1", "E 0x0", "V 1x0"] },
+                { rank: 3, name: "Santos", pts: 27, jogos: ["V 2x0", "V 1x0", "E 1x1"] },
+                { rank: 4, name: "Goiás", pts: 26, jogos: ["D 1x2", "V 2x1", "V 3x0"] },
+                { rank: 5, name: "América-MG", pts: 25, jogos: ["E 0x0", "V 1x0", "D 0x1"] },
+                { rank: 6, name: "Mirassol", pts: 24, jogos: ["V 2x1", "E 1x1", "V 1x0"] },
+                { rank: 7, name: "Vila Nova", pts: 23, jogos: ["D 0x1", "V 2x0", "E 0x0"] },
+                { rank: 8, name: "Avaí", pts: 22, jogos: ["V 1x0", "D 0x2", "V 2x1"] },
+                { rank: 9, name: "CRB", pts: 21, jogos: ["E 1x1", "V 1x0", "D 0x2"] },
+                { rank: 10, name: "Operário", pts: 20, jogos: ["D 0x1", "E 0x0", "V 1x0"] },
+                { rank: 11, name: "Coritiba", pts: 19, jogos: ["V 2x1", "D 1x2", "E 0x0"] },
+                { rank: 12, name: "Chapecoense", pts: 18, jogos: ["E 0x0", "D 0x1", "V 2x1"] },
+                { rank: 13, name: "Amazonas", pts: 17, jogos: ["D 0x2", "V 1x0", "E 1x1"] },
+                { rank: 14, name: "Paysandu", pts: 16, jogos: ["E 1x1", "D 0x1", "V 2x0"] },
+                { rank: 15, name: "Botafogo-SP", pts:
