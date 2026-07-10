@@ -1,44 +1,67 @@
-<script>
-    async function carregarDados() {
-        const corpo = document.getElementById('tabela-corpo');
-        if (!corpo) return;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Brasileirão 2026 - Tabela</title>
+    <style>
+        body { font-family: sans-serif; background-color: #0f172a; color: white; padding: 20px; }
+        table { width: 100%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
+        th { background-color: #e11d48; padding: 15px; }
+        td { padding: 12px; text-align: center; border-bottom: 1px solid #334155; }
+        h2 { text-align: center; }
+    </style>
+</head>
+<body>
 
-        corpo.innerHTML = "<tr><td colspan='4'>Buscando dados...</td></tr>";
+    <h2>Classificação Brasileirão 2026</h2>
+    <table>
+        <thead>
+            <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
+        </thead>
+        <tbody id="tabela-corpo">
+            <tr><td colspan="4">Carregando dados via Proxy...</td></tr>
+        </tbody>
+    </table>
 
-        const apiUrl = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
-        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(apiUrl);
+    <script>
+        // Esta é a URL original da API
+        const targetUrl = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
+        
+        // Usamos um Proxy para contornar o bloqueio de segurança
+        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
 
-        try {
-            const response = await fetch(proxyUrl);
-            const data = await response.json();
-            const result = JSON.parse(data.contents);
+        async function carregarDados() {
+            const corpo = document.getElementById('tabela-corpo');
+            try {
+                const response = await fetch(proxyUrl, {
+                    headers: {
+                        'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
+                        'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
+                    }
+                });
+                
+                const data = await response.json();
+                const result = JSON.parse(data.contents);
 
-            // ADICIONEI ESTE LOG PARA VOCÊ VER NO CONSOLE O QUE A API ENVIA
-            console.log("Resposta completa da API:", result);
-
-            corpo.innerHTML = "";
-            
-            // Tenta encontrar a lista de times em diferentes níveis do JSON
-            const listaTimes = result.response || result.data || result;
-
-            if (listaTimes && Array.isArray(listaTimes)) {
-                listaTimes.forEach(t => {
+                corpo.innerHTML = "";
+                
+                // O loop abaixo lê os dados retornados
+                result.response.forEach(t => {
                     corpo.innerHTML += `
                         <tr>
-                            <td>${t.rank || '-'}</td>
-                            <td>${t.team?.name || t.name || 'Time'}</td>
-                            <td>${t.points || '0'}</td>
-                            <td>${t.all?.win || '0'}</td>
+                            <td>${t.rank}</td>
+                            <td>${t.team.name}</td>
+                            <td>${t.points}</td>
+                            <td>${t.all.win}</td>
                         </tr>`;
                 });
-            } else {
-                corpo.innerHTML = "<tr><td colspan='4'>Formato de dados inesperado. Verifique o console.</td></tr>";
+            } catch (error) {
+                console.error("Erro final:", error);
+                corpo.innerHTML = "<tr><td colspan='4'>Erro: A API não respondeu.</td></tr>";
             }
-        } catch (error) {
-            console.error("Erro detalhado:", error);
-            corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão.</td></tr>";
         }
-    }
-    
-    window.onload = carregarDados;
-</script>
+        
+        window.onload = carregarDados;
+    </script>
+</body>
+</html>
