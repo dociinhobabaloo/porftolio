@@ -2,49 +2,63 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela Interativa</title>
+    <title>Brasileirão 2026</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
+        .botoes { margin-bottom: 20px; }
+        button { padding: 10px 20px; cursor: pointer; background: #e11d48; color: white; border: none; border-radius: 5px; font-weight: bold; }
         table { width: 95%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
         th { background-color: #e11d48; padding: 12px; }
         td { padding: 10px; border-bottom: 1px solid #334155; text-align: left; }
-        summary { cursor: pointer; color: #fb7185; font-weight: bold; }
-        details { margin: 5px 0; }
+        details { cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <h2>Classificação Brasileirão 2026</h2>
+    <h2>Brasileirão 2026</h2>
+    <div class="botoes">
+        <button onclick="renderizar('A')">Série A</button>
+        <button onclick="renderizar('B')">Série B</button>
+    </div>
+
     <table>
-        <thead>
-            <tr><th>#</th><th>Clube (Clique para ver jogos)</th><th>Pts</th></tr>
-        </thead>
+        <thead><tr><th>#</th><th>Clube</th><th>Pts</th></tr></thead>
         <tbody id="tabela-corpo"></tbody>
     </table>
 
     <script>
-        const times = [
-            { rank: 1, name: "Flamengo", pts: 45, jogos: ["V 2x0 vs Vasco", "E 1x1 vs Palmeiras"] },
-            { rank: 2, name: "Palmeiras", pts: 42, jogos: ["V 1x0 vs Botafogo", "V 2x1 vs São Paulo"] },
-            { rank: 3, name: "Botafogo", pts: 40, jogos: ["D 0x1 vs Flamengo", "V 3x1 vs Cruzeiro"] },
-            { rank: 4, name: "São Paulo", pts: 38, jogos: ["V 2x0 vs Grêmio", "D 1x2 vs Internacional"] },
-            { rank: 5, name: "Cruzeiro", pts: 35, jogos: ["E 0x0 vs Bahia", "V 1x0 vs Fluminense"] }
-            // Adicione os outros 15 times aqui seguindo o mesmo modelo
-        ];
+        const dados = {
+            'A': [
+                { rank: 1, name: "Flamengo", pts: 45, jogos: ["V 2x0 vs Vasco", "E 1x1 vs Palmeiras"] },
+                { rank: 2, name: "Palmeiras", pts: 42, jogos: ["V 1x0 vs Botafogo", "V 2x1 vs São Paulo"] }
+                // Adicione os outros times da Série A aqui...
+            ],
+            'B': [
+                { rank: 1, name: "Sport", pts: 30, jogos: ["V 1x0 vs Coritiba", "E 0x0 vs Ceará"] },
+                { rank: 2, name: "Ceará", pts: 28, jogos: ["V 2x1 vs Goiás", "E 0x0 vs Sport"] }
+                // Adicione os outros times da Série B aqui...
+            ]
+        };
 
-        const corpo = document.getElementById('tabela-corpo');
-        times.forEach(t => {
-            corpo.innerHTML += `<tr>
-                <td>${t.rank}</td>
-                <td>
-                    <details>
-                        <summary>${t.name}</summary>
-                        <p>${t.jogos.join('<br>')}</p>
-                    </details>
-                </td>
-                <td>${t.pts}</td>
-            </tr>`;
-        });
+        function renderizar(serie) {
+            const corpo = document.getElementById('tabela-corpo');
+            corpo.innerHTML = "";
+            dados[serie].forEach(t => {
+                corpo.innerHTML += `<tr>
+                    <td>${t.rank}</td>
+                    <td>
+                        <details>
+                            <summary>${t.name}</summary>
+                            <p style="font-size: 0.8em; color: #cbd5e1;">${t.jogos.join('<br>')}</p>
+                        </details>
+                    </td>
+                    <td>${t.pts}</td>
+                </tr>`;
+            });
+        }
+        
+        // Carrega Série A ao iniciar
+        renderizar('A');
     </script>
 </body>
 </html>
