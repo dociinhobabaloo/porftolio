@@ -22,6 +22,7 @@
     </nav>
 
     <main id="inicio" class="cabecalho">
+        <!-- Caminho corrigido para a pasta img -->
         <img src="img/euu.jpg" alt="foto de Amanda Souza" class="foto-perfil">
         <h1>Amanda Souza</h1>
         <p class="cabecalho-sub-titulo">Desenvolvedora Front End</p>
@@ -33,9 +34,7 @@
             <p class="sobre-paragrafo">
                 Olá! Sou uma Desenvolvedora Front-End em início de carreira, apaixonada por tecnologia e desenvolvimento
                 web. Tenho conhecimentos em HTML, CSS e JavaScript, e estou constantemente aprendendo novas ferramentas
-                e boas práticas para criar interfaces modernas, responsivas e acessíveis. Busco oportunidades para
-                aplicar meus conhecimentos, adquirir experiência prática e evoluir profissionalmente, contribuindo com
-                dedicação, criatividade e vontade de aprender.
+                e boas práticas para criar interfaces modernas, responsivas e acessíveis.
             </p>
         </div>
     </section>
@@ -71,7 +70,7 @@
             <div class="projetos-card">
                 <img src="img/foto-pet.jpg" alt="Capa Localiza Pet" class="projetos-imagem">
                 <h3 class="info-projetos">Localiza Pet</h3>
-                <p class="paragrafo-projetos">Uma plataforma de utilidade pública para ajudar no reencontro de animais perdidos em Vila Velha.</p>
+                <p class="paragrafo-projetos">Uma plataforma de utilidade pública para ajudar no reencontro de animais perdidos.</p>
                 <a href="pet.html" class="btn-projeto">Ver Projeto</a>
             </div>
         </div>
@@ -106,7 +105,6 @@
                 const response = await fetch(url, options);
                 const result = await response.json();
                 corpo.innerHTML = "";
-                // O .response é o caminho padrão dessa API
                 result.response.forEach(t => {
                     corpo.innerHTML += `
                         <tr style="border-bottom: 1px solid #444;">
