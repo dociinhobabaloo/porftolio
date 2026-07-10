@@ -2,42 +2,45 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026</title>
+    <title>Brasileirão 2026 - Tabela Completa</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
-        table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
-        th { background-color: #e11d48; padding: 15px; }
-        td { padding: 12px; border-bottom: 1px solid #334155; }
+        table { width: 95%; max-width: 800px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
+        th { background-color: #e11d48; padding: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #334155; font-size: 0.9em; }
     </style>
 </head>
 <body>
     <h2>Classificação Brasileirão 2026</h2>
     <table>
         <thead>
-            <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
+            <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th><th>Último Jogo</th></tr>
         </thead>
-        <tbody id="tabela-corpo">
-        </tbody>
+        <tbody id="tabela-corpo"></tbody>
     </table>
 
     <script>
-        // Os dados estão aqui dentro, não tem como dar erro de "não encontrado"
         const dados = [
-            { "rank": 1, "team": "Flamengo", "points": 45, "wins": 14 },
-            { "rank": 2, "team": "Palmeiras", "points": 42, "wins": 13 },
-            { "rank": 3, "team": "Botafogo", "points": 40, "wins": 12 },
-            { "rank": 4, "team": "São Paulo", "points": 38, "wins": 11 },
-            { "rank": 5, "team": "Cruzeiro", "points": 35, "wins": 10 }
+            { rank: 1, team: "Flamengo", points: 45, wins: 14, last: "08/07 - V 2x0" },
+            { rank: 2, team: "Palmeiras", points: 42, wins: 13, last: "09/07 - E 1x1" },
+            { rank: 3, team: "Botafogo", points: 40, wins: 12, last: "08/07 - V 3x1" },
+            { rank: 4, team: "São Paulo", points: 38, wins: 11, last: "07/07 - D 0x1" },
+            { rank: 5, team: "Cruzeiro", points: 35, wins: 10, last: "09/07 - V 1x0" },
+            { rank: 6, team: "Fluminense", points: 33, wins: 9, last: "08/07 - E 2x2" },
+            { rank: 7, team: "Internacional", points: 30, wins: 8, last: "07/07 - V 2x1" },
+            { rank: 8, team: "Bahia", points: 28, wins: 7, last: "06/07 - D 1x2" },
+            { rank: 9, team: "Grêmio", points: 27, wins: 7, last: "09/07 - V 2x0" },
+            { rank: 10, team: "Atlético-MG", points: 25, wins: 6, last: "08/07 - E 0x0" }
         ];
 
         const corpo = document.getElementById('tabela-corpo');
-        
         dados.forEach(t => {
             corpo.innerHTML += `<tr>
                 <td>${t.rank}</td>
                 <td>${t.team}</td>
                 <td>${t.points}</td>
                 <td>${t.wins}</td>
+                <td>${t.last}</td>
             </tr>`;
         });
     </script>
