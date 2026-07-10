@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026</title>
+    <title>Brasileirão 2026 - Live</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
         table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
@@ -12,13 +12,13 @@
 </head>
 <body>
 
-    <h2>Tabela Brasileirão 2026</h2>
+    <h2>Classificação Brasileirão 2026</h2>
     <table id="tabela">
         <thead>
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4" id="status">Carregando...</td></tr>
+            <tr><td colspan="4" id="status">Carregando dados da liga...</td></tr>
         </tbody>
     </table>
 
@@ -27,22 +27,31 @@
             const corpo = document.getElementById('tabela-corpo');
             const status = document.getElementById('status');
             
+            // Usando a API de forma direta e simplificada
+            const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
+            
             try {
-                const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
                 const response = await fetch(url, {
-                    headers: { 'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0' }
+                    method: 'GET',
+                    headers: {
+                        'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
+                        'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
+                    }
                 });
 
-                if (!response.ok) throw new Error("Erro na API");
+                if (!response.ok) throw new Error("Erro na resposta da API");
                 
                 const json = await response.json();
-                corpo.innerHTML = ""; // Limpa o "Carregando..."
+                corpo.innerHTML = ""; 
                 
+                // Preenchendo a tabela
                 json.response.forEach(t => {
                     corpo.innerHTML += `<tr><td>${t.rank}</td><td>${t.team.name}</td><td>${t.points}</td><td>${t.all.win}</td></tr>`;
                 });
             } catch (e) {
-                status.innerText = "API indisponível no momento. Tente novamente mais tarde.";
+                // Se falhar aqui, o problema é o bloqueio do site (CORS)
+                console.error(e);
+                status.innerText = "Erro de conexão (CORS). Tente usar uma extensão de 'Allow CORS' no navegador para testar.";
             }
         }
         window.onload = carregar;
