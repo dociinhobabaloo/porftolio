@@ -11,52 +11,38 @@
     </style>
 </head>
 <body>
-
     <h2>Classificação Brasileirão 2026</h2>
     <table>
         <thead>
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4">Carregando...</td></tr>
+            <tr><td colspan="4">Carregando dados...</td></tr>
         </tbody>
     </table>
 
     <script>
-        async function carregar() {
+        async function carregarDadosLocais() {
             const corpo = document.getElementById('tabela-corpo');
             try {
-                const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
-                const response = await fetch(url, {
-                    headers: { 'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0' }
-                });
-
-                const json = await response.json();
+                // Busca os dados diretamente do arquivo JSON no seu repositório
+                const response = await fetch('dados.json');
+                const times = await response.json();
                 
-              
-                console.log("Objeto recebido:", json);
-                
-              
-const dados = json.response.league?.standings || json.response.standings || json.response.table || json.response;
                 corpo.innerHTML = "";
-                
-                if (Array.isArray(dados)) {
-                    dados.forEach(t => {
-                        corpo.innerHTML += `<tr>
-                            <td>${t.rank || '-'}</td>
-                            <td>${t.team?.name || 'Time'}</td>
-                            <td>${t.points || '0'}</td>
-                            <td>${t.all?.win || '0'}</td>
-                        </tr>`;
-                    });
-                } else {
-                    corpo.innerHTML = "<tr><td colspan='4'>Erro: Estrutura dos dados não encontrada.</td></tr>";
-                }
-            } catch (e) {
-                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão.</td></tr>";
+                times.forEach(t => {
+                    corpo.innerHTML += `<tr>
+                        <td>${t.rank}</td>
+                        <td>${t.team.name}</td>
+                        <td>${t.points}</td>
+                        <td>${t.all.win}</td>
+                    </tr>`;
+                });
+            } catch (error) {
+                corpo.innerHTML = "<tr><td colspan='4'>Erro ao carregar dados.</td></tr>";
             }
         }
-        window.onload = carregar;
+        window.onload = carregarDadosLocais;
     </script>
 </body>
 </html>
