@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026</title>
+    <title>Brasileirão 2026 - Tabela</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
         table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
@@ -11,7 +11,8 @@
     </style>
 </head>
 <body>
-    <h2>Classificação Brasileirão 2026</h2>
+
+    <h2>Tabela Brasileirão 2026</h2>
     <table>
         <thead>
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
@@ -22,22 +23,37 @@
     </table>
 
     <script>
-        async function carregarDados() {
+        async function carregar() {
             const corpo = document.getElementById('tabela-corpo');
             try {
-                // Busca os dados do seu próprio arquivo JSON
-                const response = await fetch('dados.json');
-                const times = await response.json();
-                
-                corpo.innerHTML = "";
-                times.forEach(t => {
-                    corpo.innerHTML += `<tr><td>${t.rank}</td><td>${t.team.name}</td><td>${t.points}</td><td>${t.all.win}</td></tr>`;
+                const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
+                const response = await fetch(url, {
+                    headers: { 'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0' }
                 });
-            } catch (error) {
-                corpo.innerHTML = "<tr><td colspan='4'>Erro ao carregar dados locais.</td></tr>";
+
+                const json = await response.json();
+                
+                // MUDANÇA AQUI: Vamos ver no console exatamente como os dados chegam
+                console.log("Dados recebidos:", json);
+
+                corpo.innerHTML = "";
+                
+                // Acessa os dados corretamente. Se json.response não for array, 
+                // tentamos verificar se existe outra propriedade com os dados.
+                const dados = json.response || json.data || json; 
+
+                if (Array.isArray(dados)) {
+                    dados.forEach(t => {
+                        corpo.innerHTML += `<tr><td>${t.rank || '-'}</td><td>${t.team?.name || 'Time'}</td><td>${t.points || 0}</td><td>${t.all?.win || 0}</td></tr>`;
+                    });
+                } else {
+                    corpo.innerHTML = "<tr><td colspan='4'>Dados em formato inesperado. Verifique o console.</td></tr>";
+                }
+            } catch (e) {
+                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão.</td></tr>";
             }
         }
-        window.onload = carregarDados;
+        window.onload = carregar;
     </script>
 </body>
 </html>
