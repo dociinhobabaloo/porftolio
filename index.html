@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevStar | Portfólio</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navegacao">
+        <ul class="menu">
+            <li><a href="#inicio" class="menu-link">Início</a></li>
+            <li><a href="#sobre" class="menu-link">Sobre</a></li>
+            <li><a href="#projetos" class="menu-link">Projetos</a></li>
+            <li><a href="#contatos" class="menu-link">Contatos</a></li>
+        </ul>
+    </nav>
+
+    <main id="inicio" class="cabecalho">
+        <img src="img/euu.jpg" alt="foto de Amanda Souza" class="foto-perfil">
+        <h1>Amanda Souza</h1>
+        <p class="cabecalho-sub-titulo">Desenvolvedora Front End</p>
+    </main>
+
+    <section id="sobre" class="sobre">
+        <h2 class="sobre-titulo">Sobre Mim</h2>
+        <div class="sobre-caixa">
+            <p class="sobre-paragrafo">
+                Olá! Sou uma Desenvolvedora Front-End em início de carreira, apaixonada por tecnologia e desenvolvimento
+                web. Tenho conhecimentos em HTML, CSS e JavaScript, e estou constantemente aprendendo novas ferramentas
+                e boas práticas para criar interfaces modernas, responsivas e acessíveis. Busco oportunidades para
+                aplicar meus conhecimentos, adquirir experiência prática e evoluir profissionalmente, contribuindo com
+                dedicação, criatividade e vontade de aprender.
+            </p>
+        </div>
+    </section>
+
+    <section id="projetos" class="projetos">
+        <h2 class="projetos-titulo">Meus Projetos</h2>
+        
+        <div class="projetos-caixa">
+            <!-- Projeto 1 -->
+            <div class="projetos-card">
+                <img src="img/morro-do-moreno.jpg" alt="Capa Guia Cultural" class="projetos-imagem">
+                <h3 class="info-projetos">Guia Cultural Vila Velha</h3>
+                <p class="paragrafo-projetos">Um mapa cultural interativo explorando as belezas e história da cidade.</p>
+                <a href="guia.html" class="btn-projeto">Ver Projeto</a>
+            </div>
+
+            <!-- Projeto 2 -->
+            <div class="projetos-card">
+                <img src="img/brasileirao-jogadores.jpg" alt="Capa Brasileirão" class="projetos-imagem">
+                <h3 class="info-projetos">Brasileirão em Foco</h3>
+                <p class="paragrafo-projetos">Um painel esportivo completo para acompanhar o Campeonato Brasileiro de um jeito visual.</p>
+                <a href="brasileirao.html" class="btn-projeto">Ver Projeto</a>
+            </div>
+
+            <!-- Projeto 3 -->
+            <div class="projetos-card">
+                <img src="img/foto-pet.jpg" alt="Capa Localiza Pet" class="projetos-imagem">
+                <h3 class="info-projetos">Localiza Pet</h3>
+                <p class="paragrafo-projetos">Uma plataforma de utilidade pública para ajudar no reencontro de animais perdidos em Vila Velha.</p>
+                <a href="pet.html" class="btn-projeto">Ver Projeto</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contatos" class="contatos">
+        <h2 class="contatos-titulo">Contatos</h2>
+        <form class="formulario-contato" id="formulario">
+            <div class="grupo-form">
+                <input type="text" placeholder="Nome" class="campo-form">
+            </div>
+            <div class="grupo-form">
+                <textarea class="text-form" placeholder="Digite sua Mensagem"></textarea>
+            </div>
+            <button type="submit" class="btn-enviar">Enviar Mensagem</button>
+        </form>
+    </section>
+</body>
+</html>

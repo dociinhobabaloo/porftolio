@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Brasileirão 2026 | Stats Automático</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --cor-accent: #e11d48; }
+        body { font-family: 'Quicksand', sans-serif; background: #1a1a1a; color: white; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 25px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        th { background: var(--cor-accent); padding: 15px; border-radius: 10px; }
+        td { padding: 15px; text-align: center; background: rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Classificação 2026 (Live)</h2>
+        <table>
+            <thead>
+                <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th><th>E</th><th>D</th></tr>
+            </thead>
+            <tbody id="tabela-corpo">
+                <tr><td colspan="6">Carregando dados...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=47';
+       const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0', // Adicionada vírgula abaixo
+                'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
+            }
+        };
+
+        async function carregarDados() {
+            const corpo = document.getElementById('tabela-corpo');
+            try {
+                const response = await fetch(url, options);
+                const result = await response.json();
+                
+                // MANTENHA ISSO PARA DEBUGAR:
+                console.log("Dados recebidos da API:", result); 
+                
+                corpo.innerHTML = "";
+
+                // SE O ERRO PERSISTIR: Olhe no console o que apareceu após "Dados recebidos..."
+                // Se o caminho não for 'result.response', troque pelo que aparecer no console.
+                const listaTimes = result.response; 
+
+                listaTimes.forEach(t => {
+                    corpo.innerHTML += `
+                        <tr>
+                            <td>${t.rank}</td>
+                            <td>${t.team.name}</td>
+                            <td>${t.points}</td>
+                            <td>${t.all.win}</td>
+                            <td>${t.all.draw}</td>
+                            <td>${t.all.lose}</td>
+                        </tr>`;
+                });
+            } catch (error) {
+                corpo.innerHTML = "<tr><td colspan='6'>Erro no console. Verifique a estrutura do JSON.</td></tr>";
+                console.error("Erro detalhado:", error);
+            }
+        }

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Guia Cultural - Vila Velha</title>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .botao-voltar {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            padding: 12px 25px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+
+        .botao-voltar:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .audio-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 10px 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+        
+        .meu-player {
+            height: 30px;
+            filter: invert(1) hue-rotate(180deg) brightness(1.5);
+        }
+
+        main { padding: 80px 20px; max-width: 1000px; margin: 0 auto; }
+        
+        h1 { 
+            text-align: center; 
+            font-weight: 600;
+            margin-bottom: 3rem; 
+            font-size: 2.8rem;
+            color: #38bdf8;
+            transition: all 0.3s ease;
+        }
+        
+        h1:hover { text-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+
+        section { 
+            margin-bottom: 4rem; 
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 { 
+            color: #38bdf8; 
+            margin-bottom: 1.5rem; 
+            transition: all 0.3s ease;
+        }
+
+        h2:hover { text-shadow: 0 0 15px rgba(56, 189, 248, 0.6); }
+
+        .galeria {
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 25px;
+        }
+
+        .foto-guia {
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .foto-guia:hover {
+            transform: scale(1.05);
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="audio-container">
+        <audio controls autoplay loop class="meu-player">
+            <source src="musica.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <a href="index.html" class="botao-voltar">← Voltar</a>
+
+    <main>
+        <h1>Guia Cultural de Vila Velha</h1>
+
+        <section>
+            <h2>📍 Conjunto Histórico</h2>
+            <div class="galeria">
+                <img src="img/Parque_da_Prainha_Vila_Velha_ES.JPG" class="foto-guia">
+                <img src="img/pesca-da-prainha.jpg" class="foto-guia">
+                <img src="img/Igreja_de_Nossa_Senhora_do_Rosário_2025.jpg" class="foto-guia">
+                <img src="img/casa-da-memoria.jpg" class="foto-guia">
+                <img src="img/bondinho-casa-da-memoria.jpg" class="foto-guia">
+            </div>
+            <p style="margin-top: 1.5rem; line-height: 1.7;">O berço da colonização do Espírito Santo, reunindo a Igreja do Rosário, a Casa da Memória e o Parque da Prainha.</p>
+            <p style="color: #94a3b8; font-size: 0.95rem;"><strong>Funcionamento:</strong> Parque da Prainha (Livre 24h) | Casa da Memória (Terça a Domingo, 09h às 17h).</p>
+        </section>
+
+        <section>
+            <h2>📍 Complexo Marinha e Batalhão</h2>
+            <div class="galeria">
+                <img src="img/marinha.jpg" class="foto-guia">
+                <img src="img/restaurante.jpg" class="foto-guia">
+                <img src="img/batalhão1.jpg" class="foto-guia">
+                <img src="img/batalhao.jpg" class="foto-guia">
+            </div>
+            <p style="margin-top: 1.5rem; line-height: 1.7;">Área militar e opções de lazer com vista para a baía.</p>
+            <p style="color: #94a3b8; font-size: 0.95rem;"><strong>Funcionamento:</strong> Área externa e restaurante (Diariamente, das 10h às 22h).</p>
+        </section>
+
+        <section>
+            <h2>📍 Morro do Moreno</h2>
+            <div class="galeria">
+                <img src="./img/morro-do-moreno.jpg" class="foto-guia">
+                <img src="./img/morro-do-moreno2.jpg" class="foto-guia">
+                
+            </div>
+            <p style="margin-top: 1.5rem; line-height: 1.7;">Um dos pontos mais icônicos de Vila Velha, oferecendo uma vista panorâmica incrível da Terceira Ponte, do Convento da Penha e de toda a orla.</p>
+            <p style="color: #94a3b8; font-size: 0.95rem;"><strong>Horário de visita:</strong> Aberto 24h (Recomendado subir durante o dia ou para o nascer/pôr do sol).</p>
+            <p style="color: #94a3b8; font-size: 0.95rem;"><strong>Dica:</strong> Pode ser acessado a pé pela trilha principal ou de carro.</p>
+        </section>
+    </main>
+</body>
+</html>
