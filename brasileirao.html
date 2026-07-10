@@ -33,13 +33,11 @@
 
                 const json = await response.json();
                 
-                // Inspeção dos dados
+              
                 console.log("Objeto recebido:", json);
                 
-                // Aqui está o segredo: procuramos o array dentro de json.response
-                // Se o console mostrou 'response', provavelmente ele é um objeto que contém a lista
-                const dados = json.response.standings || json.response.table || json.response;
-
+              
+const dados = json.response.league?.standings || json.response.standings || json.response.table || json.response;
                 corpo.innerHTML = "";
                 
                 if (Array.isArray(dados)) {
