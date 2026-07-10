@@ -5,20 +5,20 @@
     <title>Brasileirão 2026 - Tabela</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
-        table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
+        table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; overflow: hidden; }
         th { background-color: #e11d48; padding: 15px; }
         td { padding: 12px; border-bottom: 1px solid #334155; }
     </style>
 </head>
 <body>
 
-    <h2>Tabela Brasileirão 2026</h2>
+    <h2>Classificação Brasileirão 2026</h2>
     <table>
         <thead>
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4">Carregando...</td></tr>
+            <tr><td colspan="4">Carregando dados...</td></tr>
         </tbody>
     </table>
 
@@ -33,24 +33,29 @@
 
                 const json = await response.json();
                 
-                // MUDANÇA AQUI: Vamos ver no console exatamente como os dados chegam
-                console.log("Dados recebidos:", json);
+                // IMPORTANTE: Olhe no console (F12) o que vai aparecer aqui!
+                console.log("Estrutura dos dados recebidos:", json);
 
                 corpo.innerHTML = "";
                 
-                // Acessa os dados corretamente. Se json.response não for array, 
-                // tentamos verificar se existe outra propriedade com os dados.
-                const dados = json.response || json.data || json; 
+                // Verificamos onde a lista de times está (pode estar em 'response', 'data', etc)
+                const listaTimes = json.response || json.data || json; 
 
-                if (Array.isArray(dados)) {
-                    dados.forEach(t => {
-                        corpo.innerHTML += `<tr><td>${t.rank || '-'}</td><td>${t.team?.name || 'Time'}</td><td>${t.points || 0}</td><td>${t.all?.win || 0}</td></tr>`;
+                if (Array.isArray(listaTimes)) {
+                    listaTimes.forEach(t => {
+                        corpo.innerHTML += `<tr>
+                            <td>${t.rank || '-'}</td>
+                            <td>${t.team?.name || t.name || 'Time'}</td>
+                            <td>${t.points || '0'}</td>
+                            <td>${t.all?.win || '0'}</td>
+                        </tr>`;
                     });
                 } else {
-                    corpo.innerHTML = "<tr><td colspan='4'>Dados em formato inesperado. Verifique o console.</td></tr>";
+                    corpo.innerHTML = "<tr><td colspan='4'>Erro: Formato de dados desconhecido.</td></tr>";
                 }
             } catch (e) {
-                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão.</td></tr>";
+                corpo.innerHTML = "<tr><td colspan='4'>Erro na conexão. Verifique o console.</td></tr>";
+                console.error(e);
             }
         }
         window.onload = carregar;
