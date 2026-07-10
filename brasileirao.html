@@ -2,66 +2,50 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela</title>
+    <title>Brasileirão 2026</title>
     <style>
-        body { font-family: sans-serif; background-color: #0f172a; color: white; padding: 20px; }
-        table { width: 100%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
+        body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
+        table { width: 90%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
         th { background-color: #e11d48; padding: 15px; }
-        td { padding: 12px; text-align: center; border-bottom: 1px solid #334155; }
-        h2 { text-align: center; }
+        td { padding: 12px; border-bottom: 1px solid #334155; }
     </style>
 </head>
 <body>
 
-    <h2>Classificação Brasileirão 2026</h2>
-    <table>
+    <h2>Tabela Brasileirão 2026</h2>
+    <table id="tabela">
         <thead>
             <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th></tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="4">Carregando dados via Proxy...</td></tr>
+            <tr><td colspan="4" id="status">Carregando...</td></tr>
         </tbody>
     </table>
 
     <script>
-        // Esta é a URL original da API
-        const targetUrl = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
-        
-        // Usamos um Proxy para contornar o bloqueio de segurança
-        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetUrl);
-
-        async function carregarDados() {
+        async function carregar() {
             const corpo = document.getElementById('tabela-corpo');
+            const status = document.getElementById('status');
+            
             try {
-                const response = await fetch(proxyUrl, {
-                    headers: {
-                        'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0',
-                        'x-rapidapi-host': 'free-api-live-football-data.p.rapidapi.com'
-                    }
+                const url = 'https://free-api-live-football-data.p.rapidapi.com/football-get-standing-all?leagueid=71';
+                const response = await fetch(url, {
+                    headers: { 'x-rapidapi-key': 'fdc642a3cdmsh0941d5a585fdf92p1a9a4ajsncb3490f0d0f0' }
                 });
-                
-                const data = await response.json();
-                const result = JSON.parse(data.contents);
 
-                corpo.innerHTML = "";
+                if (!response.ok) throw new Error("Erro na API");
                 
-                // O loop abaixo lê os dados retornados
-                result.response.forEach(t => {
-                    corpo.innerHTML += `
-                        <tr>
-                            <td>${t.rank}</td>
-                            <td>${t.team.name}</td>
-                            <td>${t.points}</td>
-                            <td>${t.all.win}</td>
-                        </tr>`;
+                const json = await response.json();
+                corpo.innerHTML = ""; // Limpa o "Carregando..."
+                
+                json.response.forEach(t => {
+                    corpo.innerHTML += `<tr><td>${t.rank}</td><td>${t.team.name}</td><td>${t.points}</td><td>${t.all.win}</td></tr>`;
                 });
-            } catch (error) {
-                console.error("Erro final:", error);
-                corpo.innerHTML = "<tr><td colspan='4'>Erro: A API não respondeu.</td></tr>";
+            } catch (e) {
+                status.innerText = "API indisponível no momento. Tente novamente mais tarde.";
             }
         }
-        
-        window.onload = carregarDados;
+        window.onload = carregar;
     </script>
 </body>
 </html>
