@@ -2,45 +2,47 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela Completa</title>
+    <title>Brasileirão 2026 - Tabela Interativa</title>
     <style>
         body { font-family: sans-serif; background-color: #0f172a; color: white; text-align: center; padding: 20px; }
-        table { width: 95%; max-width: 800px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
+        table { width: 95%; max-width: 600px; margin: 20px auto; border-collapse: collapse; background: #1e293b; border-radius: 10px; }
         th { background-color: #e11d48; padding: 12px; }
-        td { padding: 10px; border-bottom: 1px solid #334155; font-size: 0.9em; }
+        td { padding: 10px; border-bottom: 1px solid #334155; text-align: left; }
+        summary { cursor: pointer; color: #fb7185; font-weight: bold; }
+        details { margin: 5px 0; }
     </style>
 </head>
 <body>
+
     <h2>Classificação Brasileirão 2026</h2>
     <table>
         <thead>
-            <tr><th>#</th><th>Clube</th><th>Pts</th><th>V</th><th>Último Jogo</th></tr>
+            <tr><th>#</th><th>Clube (Clique para ver jogos)</th><th>Pts</th></tr>
         </thead>
         <tbody id="tabela-corpo"></tbody>
     </table>
 
     <script>
-        const dados = [
-            { rank: 1, team: "Flamengo", points: 45, wins: 14, last: "08/07 - V 2x0" },
-            { rank: 2, team: "Palmeiras", points: 42, wins: 13, last: "09/07 - E 1x1" },
-            { rank: 3, team: "Botafogo", points: 40, wins: 12, last: "08/07 - V 3x1" },
-            { rank: 4, team: "São Paulo", points: 38, wins: 11, last: "07/07 - D 0x1" },
-            { rank: 5, team: "Cruzeiro", points: 35, wins: 10, last: "09/07 - V 1x0" },
-            { rank: 6, team: "Fluminense", points: 33, wins: 9, last: "08/07 - E 2x2" },
-            { rank: 7, team: "Internacional", points: 30, wins: 8, last: "07/07 - V 2x1" },
-            { rank: 8, team: "Bahia", points: 28, wins: 7, last: "06/07 - D 1x2" },
-            { rank: 9, team: "Grêmio", points: 27, wins: 7, last: "09/07 - V 2x0" },
-            { rank: 10, team: "Atlético-MG", points: 25, wins: 6, last: "08/07 - E 0x0" }
+        const times = [
+            { rank: 1, name: "Flamengo", pts: 45, jogos: ["V 2x0 vs Vasco", "E 1x1 vs Palmeiras"] },
+            { rank: 2, name: "Palmeiras", pts: 42, jogos: ["V 1x0 vs Botafogo", "V 2x1 vs São Paulo"] },
+            { rank: 3, name: "Botafogo", pts: 40, jogos: ["D 0x1 vs Flamengo", "V 3x1 vs Cruzeiro"] },
+            { rank: 4, name: "São Paulo", pts: 38, jogos: ["V 2x0 vs Grêmio", "D 1x2 vs Internacional"] },
+            { rank: 5, name: "Cruzeiro", pts: 35, jogos: ["E 0x0 vs Bahia", "V 1x0 vs Fluminense"] }
+            // Adicione os outros 15 times aqui seguindo o mesmo modelo
         ];
 
         const corpo = document.getElementById('tabela-corpo');
-        dados.forEach(t => {
+        times.forEach(t => {
             corpo.innerHTML += `<tr>
                 <td>${t.rank}</td>
-                <td>${t.team}</td>
-                <td>${t.points}</td>
-                <td>${t.wins}</td>
-                <td>${t.last}</td>
+                <td>
+                    <details>
+                        <summary>${t.name}</summary>
+                        <p>${t.jogos.join('<br>')}</p>
+                    </details>
+                </td>
+                <td>${t.pts}</td>
             </tr>`;
         });
     </script>
