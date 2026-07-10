@@ -1,1 +1,7 @@
-
+[
+  {"rank": 1, "team": {"name": "Flamengo"}, "points": 45, "all": {"win": 14}},
+  {"rank": 2, "team": {"name": "Palmeiras"}, "points": 42, "all": {"win": 13}},
+  {"rank": 3, "team": {"name": "Botafogo"}, "points": 40, "all": {"win": 12}},
+  {"rank": 4, "team": {"name": "São Paulo"}, "points": 38, "all": {"win": 11}},
+  {"rank": 5, "team": {"name": "Cruzeiro"}, "points": 35, "all": {"win": 10}}
+]
