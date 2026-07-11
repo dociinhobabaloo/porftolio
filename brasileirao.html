@@ -8,7 +8,7 @@
         
         body { 
             font-family: 'Outfit', sans-serif; 
-            background-image: url('fundo.jpg'); /* COLOQUE O NOME DO SEU ARQUIVO AQUI */
+            background-image: url('brasileirao-jogadores.jpg'); 
             background-size: cover; 
             background-attachment: fixed; 
             background-position: center; 
@@ -48,39 +48,12 @@
     </table>
 
     <script>
-        // Dados fixos para garantir que o site funcione sempre
         const dados = {
             'A': [
-                { pos: 1, name: "Flamengo", p: 45, j: 20, v: 14, e: 3, d: 3, gp: 35, gc: 15, sg: 20, pct: 75, jogos: ["Vitória 2x0 Palmeiras", "Vitória 3x1 Fluminense", "Vitória 2x0 Bahia"] },
-                { pos: 2, name: "Palmeiras", p: 42, j: 20, v: 13, e: 3, d: 4, gp: 32, gc: 14, sg: 18, pct: 70, jogos: ["Vitória 1x0 Botafogo", "Vitória 2x1 São Paulo", "Empate 1x1 Cruzeiro"] }
-                // Adicione os outros times seguindo este padrão...
+                { pos: 1, name: "Flamengo", p: 45, j: 20, v: 14, e: 3, d: 3, gp: 35, gc: 15, sg: 20, pct: 75, jogos: ["Vitória 2x0 sobre Palmeiras", "Vitória 3x1 sobre Fluminense", "Vitória 2x0 sobre Bahia"] },
+                { pos: 2, name: "Palmeiras", p: 42, j: 20, v: 13, e: 3, d: 4, gp: 32, gc: 14, sg: 18, pct: 70, jogos: ["Vitória 1x0 sobre Botafogo", "Vitória 2x1 sobre São Paulo", "Empate 1x1 com Cruzeiro"] },
+                { pos: 3, name: "Botafogo", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 30, gc: 12, sg: 18, pct: 66, jogos: ["Vitória 2x0 sobre Atlético-MG", "Empate 0x0 com Grêmio", "Vitória 1x0 sobre Fortaleza"] },
+                { pos: 4, name: "São Paulo", p: 38, j: 20, v: 11, e: 5, d: 4, gp: 28, gc: 15, sg: 13, pct: 63, jogos: ["Vitória 2x1 sobre Cuiabá", "Derrota 1x2 para Palmeiras", "Vitória 3x0 sobre Juventude"] },
+                { pos: 5, name: "Cruzeiro", p: 35, j: 20, v: 10, e: 5, d: 5, gp: 25, gc: 18, sg: 7, pct: 58, jogos: ["Empate 1x1 com Palmeiras", "Vitória 1x0 sobre Vasco", "Vitória 2x1 sobre Athletico-PR"] }
             ],
-            'B': [
-                { pos: 1, name: "Santos", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 28, gc: 12, sg: 16, pct: 66, jogos: ["Vitória 2x0 CRB", "Vitória 1x0 Operário", "Empate 1x1 Chapecoense"] }
-                // Adicione os outros times seguindo este padrão...
-            ]
-        };
-
-        function renderizar(serie) {
-            const corpo = document.getElementById('tabela-corpo');
-            corpo.innerHTML = "";
-            dados[serie].forEach(t => {
-                corpo.innerHTML += `<tr>
-                    <td>${t.pos}</td>
-                    <td>
-                        <details>
-                            <summary>${t.name}</summary>
-                            <p style="font-size: 0.8em; margin-top: 10px; color: #ddd;">
-                                <strong>Últimos jogos:</strong><br>${t.jogos.join(' | ')}
-                            </p>
-                        </details>
-                    </td>
-                    <td>${t.p}</td><td>${t.j}</td><td>${t.v}</td><td>${t.e}</td><td>${t.d}</td>
-                    <td>${t.gp}</td><td>${t.gc}</td><td>${t.sg}</td><td>${t.pct}%</td>
-                </tr>`;
-            });
-        }
-        renderizar('A');
-    </script>
-</body>
-</html>
+            'B':
