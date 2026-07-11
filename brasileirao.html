@@ -2,39 +2,42 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela Oficial</title>
+    <title>Brasileirão 2026 - Tabela Completa</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
         
         body { 
             font-family: 'Outfit', sans-serif; 
-            background-image: url('fundo.jpg'); /* AJUSTE O NOME DO SEU ARQUIVO AQUI */
+            /* SUBSTITUA 'fundo.jpg' PELO NOME DA SUA IMAGEM */
+            background-image: url('brasileirao-jogadores-.jpg'); 
             background-size: cover; 
             background-attachment: fixed; 
             background-position: center; 
-            margin: 0; padding: 40px; text-align: center; color: #fff;
+            margin: 0; padding: 30px; text-align: center; color: #fff;
         }
-        .botoes { margin-bottom: 30px; }
+        .botoes { margin-bottom: 25px; }
         button { 
-            padding: 12px 30px; cursor: pointer; background: rgba(225, 29, 72, 0.9); 
-            color: white; border: none; border-radius: 50px; font-weight: 700; 
+            padding: 10px 25px; cursor: pointer; background: rgba(225, 29, 72, 0.9); 
+            color: white; border: none; border-radius: 30px; font-weight: 700; 
             margin: 0 10px; transition: 0.3s;
         }
-        button:hover { background: #e11d48; transform: scale(1.05); }
+        button:hover { background: #e11d48; transform: translateY(-2px); }
         table { 
             width: 100%; max-width: 1000px; margin: 0 auto; border-collapse: collapse; 
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
-            border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px);
+            border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
-        th { background-color: rgba(225, 29, 72, 0.8); padding: 15px; text-transform: uppercase; letter-spacing: 1px; }
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        details { cursor: pointer; text-align: left; }
-        summary { font-weight: 700; list-style: none; }
+        th { background-color: rgba(225, 29, 72, 0.7); padding: 12px; font-size: 0.9em; }
+        td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9em; }
+        details { cursor: pointer; }
+        summary { font-weight: 700; list-style: none; text-align: left; padding-left: 10px;}
+        summary::marker { content: '▶ '; color: #e11d48; }
+        details[open] > summary::marker { content: '▼ '; }
     </style>
 </head>
 <body>
 
-    <h1 style="text-shadow: 2px 2px 10px #000;">Classificação Brasileirão 2026</h1>
+    <h1 style="text-shadow: 2px 2px 8px #000; font-size: 2.5em;">Classificação Brasileirão 2026</h1>
     <div class="botoes">
         <button onclick="renderizar('A')">Série A</button>
         <button onclick="renderizar('B')">Série B</button>
@@ -50,35 +53,46 @@
     <script>
         const dados = {
             'A': [
-                { pos: 1, name: "Flamengo", p: 45, j: 20, v: 14, e: 3, d: 3, gp: 35, gc: 15, sg: 20, pct: 75, jogos: ["Vitória 2x0 sobre Palmeiras", "Vitória 3x1 sobre Fluminense", "Vitória 2x0 sobre Bahia"] },
-                // Adicione os outros 19 times da Série A aqui seguindo o modelo acima
+                { pos: 1, name: "Flamengo", p: 45, j: 20, v: 14, e: 3, d: 3, gp: 35, gc: 15, sg: 20, pct: 75, jogos: ["Vitória 2x0 Palmeiras", "Vitória 3x1 Fluminense", "Vitória 2x0 Bahia"] },
+                { pos: 2, name: "Palmeiras", p: 42, j: 20, v: 13, e: 3, d: 4, gp: 32, gc: 14, sg: 18, pct: 70, jogos: ["Vitória 1x0 Botafogo", "Vitória 2x1 São Paulo", "Empate 1x1 Cruzeiro"] },
+                { pos: 3, name: "Botafogo", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 30, gc: 12, sg: 18, pct: 66, jogos: ["Vitória 2x0 Atlético-MG", "Empate 0x0 Grêmio", "Vitória 1x0 Fortaleza"] },
+                // COPIE A LINHA ABAIXO E EDITE PARA ADICIONAR OS OUTROS 17 TIMES
+                // { pos: X, name: "Nome", p: 0, j: 20, v: 0, e: 0, d: 0, gp: 0, gc: 0, sg: 0, pct: 0, jogos: ["...","...","..."] },
+                { pos: 4, name: "Fluminense", p: 35, j: 20, v: 10, e: 5, d: 5, gp: 28, gc: 18, sg: 10, pct: 58, jogos: ["...", "..."] },
+                { pos: 5, name: "São Paulo", p: 34, j: 20, v: 10, e: 4, d: 6, gp: 25, gc: 17, sg: 8, pct: 56, jogos: ["...", "..."] },
+                { pos: 6, name: "Internacional", p: 33, j: 20, v: 9, e: 6, d: 5, gp: 27, gc: 20, sg: 7, pct: 55, jogos: ["...", "..."] },
+                { pos: 7, name: "Grêmio", p: 31, j: 20, v: 8, e: 7, d: 5, gp: 24, gc: 19, sg: 5, pct: 51, jogos: ["...", "..."] },
+                { pos: 8, name: "Atlético-MG", p: 30, j: 20, v: 8, e: 6, d: 6, gp: 26, gc: 22, sg: 4, pct: 50, jogos: ["...", "..."] },
+                { pos: 9, name: "Bahia", p: 29, j: 20, v: 8, e: 5, d: 7, gp: 22, gc: 21, sg: 1, pct: 48, jogos: ["...", "..."] },
+                { pos: 10, name: "Cruzeiro", p: 28, j: 20, v: 7, e: 7, d: 6, gp: 20, gc: 19, sg: 1, pct: 46, jogos: ["...", "..."] },
+                { pos: 11, name: "Fortaleza", p: 27, j: 20, v: 7, e: 6, d: 7, gp: 21, gc: 20, sg: 1, pct: 45, jogos: ["...", "..."] },
+                { pos: 12, name: "Bragantino", p: 26, j: 20, v: 6, e: 8, d: 6, gp: 19, gc: 20, sg: -1, pct: 43, jogos: ["...", "..."] },
+                { pos: 13, name: "Vasco", p: 25, j: 20, v: 6, e: 7, d: 7, gp: 18, gc: 21, sg: -3, pct: 41, jogos: ["...", "..."] },
+                { pos: 14, name: "Athletico-PR", p: 24, j: 20, v: 6, e: 6, d: 8, gp: 17, gc: 23, sg: -6, pct: 40, jogos: ["...", "..."] },
+                { pos: 15, name: "Cuiabá", p: 23, j: 20, v: 5, e: 8, d: 7, gp: 16, gc: 22, sg: -6, pct: 38, jogos: ["...", "..."] },
+                { pos: 16, name: "Coritiba", p: 22, j: 20, v: 5, e: 7, d: 8, gp: 15, gc: 24, sg: -9, pct: 36, jogos: ["...", "..."] },
+                { pos: 17, name: "Vitória", p: 21, j: 20, v: 5, e: 6, d: 9, gp: 14, gc: 25, sg: -11, pct: 35, jogos: ["...", "..."] },
+                { pos: 18, name: "Atlético-GO", p: 18, j: 20, v: 4, e: 6, d: 10, gp: 13, gc: 26, sg: -13, pct: 30, jogos: ["...", "..."] },
+                { pos: 19, name: "Juventude", p: 17, j: 20, v: 4, e: 5, d: 11, gp: 12, gc: 28, sg: -16, pct: 28, jogos: ["...", "..."] },
+                { pos: 20, name: "Criciúma", p: 15, j: 20, v: 3, e: 6, d: 11, gp: 11, gc: 30, sg: -19, pct: 25, jogos: ["...", "..."] }
             ],
             'B': [
-                { pos: 1, name: "Santos", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 28, gc: 12, sg: 16, pct: 66, jogos: ["Vitória 2x0 sobre CRB", "Vitória 1x0 sobre Operário", "Empate 1x1 com Chapecoense"] },
-                // Adicione os outros 19 times da Série B aqui seguindo o modelo acima
-            ]
-        };
-
-        function renderizar(serie) {
-            const corpo = document.getElementById('tabela-corpo');
-            corpo.innerHTML = "";
-            dados[serie].forEach(t => {
-                corpo.innerHTML += `<tr>
-                    <td>${t.pos}</td>
-                    <td>
-                        <details>
-                            <summary>▶ ${t.name}</summary>
-                            <p style="font-size: 0.8em; margin-top: 5px; color: #ccc;">
-                                <strong>Últimos jogos:</strong><br>${t.jogos.join('<br>')}
-                            </p>
-                        </details>
-                    </td>
-                    <td>${t.p}</td><td>${t.j}</td><td>${t.v}</td><td>${t.e}</td><td>${t.d}</td>
-                    <td>${t.gp}</td><td>${t.gc}</td><td>${t.sg}</td><td>${t.pct}%</td>
-                </tr>`;
-            });
-        }
-        renderizar('A');
-    </script>
-</body>
-</html>
+                { pos: 1, name: "Santos", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 28, gc: 12, sg: 16, pct: 66, jogos: ["Vitória 2x0 CRB", "Vitória 1x0 Operário", "Empate 1x1 Chapecoense"] },
+                { pos: 2, name: "Sport", p: 38, j: 20, v: 11, e: 5, d: 4, gp: 25, gc: 10, sg: 15, pct: 63, jogos: ["Vitória 1x0 Coritiba", "Empate 0x0 Ceará", "Vitória 2x1 Goiás"] },
+                { pos: 3, name: "Ceará", p: 36, j: 20, v: 10, e: 6, d: 4, gp: 22, gc: 11, sg: 11, pct: 60, jogos: ["Vitória 2x1 Vila Nova", "Empate 0x0 Sport", "Vitória 1x0 Avaí"] },
+                // COPIE A LINHA ABAIXO E EDITE PARA ADICIONAR OS OUTROS 17 TIMES
+                // { pos: X, name: "Nome", p: 0, j: 20, v: 0, e: 0, d: 0, gp: 0, gc: 0, sg: 0, pct: 0, jogos: ["...","...","..."] },
+                { pos: 4, name: "Goiás", p: 35, j: 20, v: 10, e: 5, d: 5, gp: 20, gc: 12, sg: 8, pct: 58, jogos: ["...", "..."] },
+                { pos: 5, name: "América-MG", p: 34, j: 20, v: 10, e: 4, d: 6, gp: 19, gc: 13, sg: 6, pct: 56, jogos: ["...", "..."] },
+                { pos: 6, name: "Coritiba", p: 33, j: 20, v: 9, e: 6, d: 5, gp: 21, gc: 14, sg: 7, pct: 55, jogos: ["...", "..."] },
+                { pos: 7, name: "Vila Nova", p: 31, j: 20, v: 8, e: 7, d: 5, gp: 18, gc: 15, sg: 3, pct: 51, jogos: ["...", "..."] },
+                { pos: 8, name: "Mirassol", p: 30, j: 20, v: 8, e: 6, d: 6, gp: 24, gc: 19, sg: 5, pct: 50, jogos: ["...", "..."] },
+                { pos: 9, name: "Avaí", p: 29, j: 20, v: 8, e: 5, d: 7, gp: 22, gc: 21, sg: 1, pct: 48, jogos: ["...", "..."] },
+                { pos: 10, name: "CRB", p: 28, j: 20, v: 7, e: 7, d: 6, gp: 20, gc: 19, sg: 1, pct: 46, jogos: ["...", "..."] },
+                { pos: 11, name: "Operário", p: 27, j: 20, v: 7, e: 6, d: 7, gp: 21, gc: 20, sg: 1, pct: 45, jogos: ["...", "..."] },
+                { pos: 12, name: "Chapecoense", p: 26, j: 20, v: 6, e: 8, d: 6, gp: 19, gc: 20, sg: -1, pct: 43, jogos: ["...", "..."] },
+                { pos: 13, name: "Amazonas", p: 25, j: 20, v: 6, e: 7, d: 7, gp: 18, gc: 21, sg: -3, pct: 41, jogos: ["...", "..."] },
+                { pos: 14, name: "Paysandu", p: 24, j: 20, v: 6, e: 6, d: 8, gp: 17, gc: 23, sg: -6, pct: 40, jogos: ["...", "..."] },
+                { pos: 15, name: "Botafogo-SP", p: 23, j: 20, v: 5, e: 8, d: 7, gp: 16, gc: 22, sg: -6, pct: 38, jogos: ["...", "..."] },
+                { pos: 16, name: "Guarani", p: 22, j: 20, v: 5, e: 7, d: 8, gp: 15, gc: 24, sg: -9, pct: 36, jogos: ["...", "..."] },
+                { pos: 17, name: "Ponte Preta", p:
