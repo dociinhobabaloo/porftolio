@@ -32,12 +32,18 @@
     <script>
         const dados = {
             'A': [
-                { pos: 1, name: "Palmeiras", p: 41, j: 18, v: 12, e: 5, d: 1, gp: 30, gc: 13, sg: 17, pct: 75, jogos: ["Vitória 2x0 sobre Flamengo", "Vitória 1x0 sobre Botafogo", "Empate 1x1 com São Paulo"] },
-                { pos: 2, name: "Flamengo", p: 34, j: 17, v: 10, e: 4, d: 3, gp: 31, gc: 16, sg: 15, pct: 66, jogos: ["Derrota 0x1 para Palmeiras", "Vitória 3x1 sobre Fluminense", "Vitória 2x0 sobre Bahia"] },
-                { pos: 3, name: "Fluminense", p: 31, j: 18, v: 9, e: 4, d: 5, gp: 28, gc: 23, sg: 5, pct: 57, jogos: ["Empate 2x2 com Grêmio", "Vitória 1x0 sobre Vasco", "Derrota 0x1 para Bragantino"] },
-                { pos: 4, name: "Athletico-PR", p: 30, j: 18, v: 9, e: 3, d: 6, gp: 24, gc: 18, sg: 6, pct: 55, jogos: ["Vitória 2x1 sobre Cruzeiro", "Derrota 1x2 para Fortaleza", "Vitória 1x0 sobre Cuiabá"] },
-                { pos: 5, name: "Bragantino", p: 29, j: 18, v: 9, e: 2, d: 7, gp: 25, gc: 19, sg: 6, pct: 53, jogos: ["Vitória 1x0 sobre Juventude", "Empate 0x0 com Vitória", "Vitória 2x0 sobre Atlético-GO"] },
-                { pos: 6, name: "Bahia", p: 26, j: 17, v: 7, e: 5, d: 5, gp: 25, gc: 23, sg: 2, pct: 50, jogos: ["Derrota 0x2 para Internacional", "Vitória 1x0 sobre Grêmio", "Empate 1x1 com Vasco"] },
-                { pos: 7, name: "Coritiba", p: 26, j: 18, v: 7, e: 5, d: 6, gp: 24, gc: 24, sg: 0, pct: 48, jogos: ["Empate 1x1 com Cuiabá", "Derrota 0x2 para Juventude", "Vitória 2x1 sobre Vitória"] },
-                { pos: 8, name: "São Paulo", p: 25, j: 18, v: 7, e: 4, d: 7, gp: 23, gc: 20, sg: 3, pct: 46, jogos: ["Derrota 1x2 para Atlético-GO", "Empate 0x0 com Flamengo", "Derrota 0x1 para Palmeiras"] },
-                { pos: 9, name: "Corinthians", p: 24, j: 18, v: 6, e: 6, d: 6, gp: 22, gc: 21, sg: 1, pct: 44, jogos: ["Vit
+                { pos: 1, name: "Palmeiras", p: 41, j: 18, v: 12, e: 5, d: 1, gp: 30, gc: 13, sg: 17, pct: 75, jogos: ["Vitória de 2x0 sobre Flamengo", "Vitória de 1x0 sobre Botafogo", "Empate de 1x1 com São Paulo"] },
+                { pos: 2, name: "Flamengo", p: 34, j: 17, v: 10, e: 4, d: 3, gp: 31, gc: 16, sg: 15, pct: 66, jogos: ["Derrota de 0x1 para Palmeiras", "Vitória de 3x1 sobre Fluminense", "Vitória de 2x0 sobre Bahia"] },
+                { pos: 3, name: "Fluminense", p: 31, j: 18, v: 9, e: 4, d: 5, gp: 28, gc: 23, sg: 5, pct: 57, jogos: ["Empate de 2x2 com Grêmio", "Vitória de 1x0 sobre Vasco", "Derrota de 0x1 para Bragantino"] },
+                { pos: 4, name: "Athletico-PR", p: 30, j: 18, v: 9, e: 3, d: 6, gp: 24, gc: 18, sg: 6, pct: 55, jogos: ["Vitória de 2x1 sobre Cruzeiro", "Derrota de 1x2 para Fortaleza", "Vitória de 1x0 sobre Cuiabá"] },
+                { pos: 5, name: "Bragantino", p: 29, j: 18, v: 9, e: 2, d: 7, gp: 25, gc: 19, sg: 6, pct: 53, jogos: ["Vitória de 1x0 sobre Juventude", "Empate de 0x0 com Vitória", "Vitória de 2x0 sobre Atlético-GO"] },
+                { pos: 6, name: "Bahia", p: 26, j: 17, v: 7, e: 5, d: 5, gp: 25, gc: 23, sg: 2, pct: 50, jogos: ["Derrota de 0x2 para Internacional", "Vitória de 1x0 sobre Grêmio", "Empate de 1x1 com Vasco"] },
+                { pos: 7, name: "Coritiba", p: 26, j: 18, v: 7, e: 5, d: 6, gp: 24, gc: 24, sg: 0, pct: 48, jogos: ["Empate de 1x1 com Cuiabá", "Derrota de 0x2 para Juventude", "Vitória de 2x1 sobre Vitória"] },
+                { pos: 8, name: "São Paulo", p: 25, j: 18, v: 7, e: 4, d: 7, gp: 23, gc: 20, sg: 3, pct: 46, jogos: ["Derrota de 1x2 para Atlético-GO", "Empate de 0x0 com Flamengo", "Derrota de 0x1 para Palmeiras"] },
+                { pos: 9, name: "Corinthians", p: 24, j: 18, v: 6, e: 6, d: 6, gp: 22, gc: 21, sg: 1, pct: 44, jogos: ["Vitória de 1x0 sobre Cruzeiro", "Empate de 1x1 com Fortaleza", "Vitória de 3x0 sobre Grêmio"] },
+                { pos: 10, name: "Atlético-MG", p: 23, j: 17, v: 6, e: 5, d: 6, gp: 21, gc: 20, sg: 1, pct: 45, jogos: ["Empate de 0x0 com Botafogo", "Derrota de 1x2 para Fluminense", "Vitória de 1x0 sobre Cuiabá"] },
+                { pos: 11, name: "Internacional", p: 22, j: 18, v: 5, e: 7, d: 6, gp: 20, gc: 21, sg: -1, pct: 40, jogos: ["Vitória de 2x1 sobre Vasco", "Derrota de 0x1 para Juventude", "Empate de 0x0 com Vitória"] },
+                { pos: 12, name: "Botafogo", p: 21, j: 17, v: 5, e: 6, d: 6, gp: 19, gc: 20, sg: -1, pct: 41, jogos: ["Derrota de 0x1 para Atlético-GO", "Vitória de 3x1 sobre Fortaleza", "Derrota de 1x2 para Grêmio"] },
+                { pos: 13, name: "Cruzeiro", p: 20, j: 18, v: 5, e: 5, d: 8, gp: 18, gc: 22, sg: -4, pct: 37, jogos: ["Empate de 0x0 com Vasco", "Vitória de 1x0 sobre Cuiabá", "Derrota de 0x2 para Juventude"] },
+                { pos: 14, name: "Fortaleza", p: 19, j: 18, v: 4, e: 7, d: 7, gp: 17, gc: 22, sg: -5, pct: 35, jogos: ["Vitória de 2x0 sobre Vitória", "Derrota de 0x1 para Atlético-GO", "Empate de 1x1 com Grêmio"] },
+                { pos: 15, name: "Grêmio", p: 18, j:
