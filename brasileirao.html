@@ -5,76 +5,47 @@
     <title>Brasileirão 2026 - Tabela Oficial</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
-        
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            background-image: url('brasileirao-jogadores.jpg'); 
-            background-size: cover; 
-            background-attachment: fixed; 
-            background-position: center; 
-            margin: 0; padding: 30px; text-align: center; color: #fff;
-        }
-        .botoes { margin-bottom: 25px; }
-        button { 
-            padding: 10px 25px; cursor: pointer; background: rgba(225, 29, 72, 0.9); 
-            color: white; border: none; border-radius: 30px; font-weight: 700; 
-            margin: 0 10px; transition: 0.3s;
-        }
-        button:hover { background: #e11d48; transform: translateY(-2px); }
-        table { 
-            width: 100%; max-width: 1000px; margin: 0 auto; border-collapse: collapse; 
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
-            border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-        }
-        th { background-color: rgba(225, 29, 72, 0.8); padding: 15px; text-transform: uppercase; font-size: 0.85em; }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        details { cursor: pointer; text-align: left; }
-        summary { font-weight: 700; list-style: none; padding-left: 10px; }
-        summary::marker { content: '▶ '; color: #e11d48; }
-        details[open] > summary::marker { content: '▼ '; }
+        body { font-family: 'Outfit', sans-serif; background-image: url('brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
+        table { width: 100%; max-width: 900px; margin: 20px auto; border-collapse: collapse; background: rgba(0,0,0,0.7); border-radius: 15px; overflow: hidden; }
+        th, td { padding: 12px; border-bottom: 1px solid #444; }
+        th { background: #e11d48; }
     </style>
 </head>
 <body>
-
-    <h1 style="text-shadow: 2px 2px 10px #000;">Classificação Brasileirão 2026</h1>
-    <div class="botoes">
-        <button onclick="renderizar('A')">Série A</button>
-        <button onclick="renderizar('B')">Série B</button>
-    </div>
-
+    <h1>Brasileirão 2026</h1>
     <table>
-        <thead>
-            <tr><th>#</th><th>Clube</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>%</th></tr>
-        </thead>
-        <tbody id="tabela-corpo"></tbody>
+        <thead><tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr></thead>
+        <tbody id="corpo-tabela"></tbody>
     </table>
 
     <script>
-        const dados = {
-            'A': [
-                { pos: 1, name: "Flamengo", p: 45, j: 20, v: 14, e: 3, d: 3, gp: 35, gc: 15, sg: 20, pct: 75, jogos: ["Vitória 2x0 sobre Palmeiras", "Vitória 3x1 sobre Fluminense", "Vitória 2x0 sobre Bahia"] },
-                { pos: 2, name: "Palmeiras", p: 42, j: 20, v: 13, e: 3, d: 4, gp: 32, gc: 14, sg: 18, pct: 70, jogos: ["Vitória 1x0 sobre Botafogo", "Vitória 2x1 sobre São Paulo", "Empate 1x1 com Cruzeiro"] },
-                { pos: 3, name: "Botafogo", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 30, gc: 12, sg: 18, pct: 66, jogos: ["Vitória 2x0 sobre Atlético-MG", "Empate 0x0 com Grêmio", "Vitória 1x0 sobre Fortaleza"] },
-                { pos: 4, name: "Fluminense", p: 35, j: 20, v: 10, e: 5, d: 5, gp: 28, gc: 18, sg: 10, pct: 58, jogos: ["Derrota 1x3 para Flamengo", "Vitória 2x1 sobre Cuiabá", "Empate 1x1 com Juventude"] },
-                { pos: 5, name: "São Paulo", p: 34, j: 20, v: 10, e: 4, d: 6, gp: 25, gc: 17, sg: 8, pct: 56, jogos: ["Vitória 3x0 sobre Juventude", "Derrota 1x2 para Palmeiras", "Vitória 2x1 sobre Vitória"] },
-                { pos: 6, name: "Internacional", p: 33, j: 20, v: 9, e: 6, d: 5, gp: 27, gc: 20, sg: 7, pct: 55, jogos: ["Vitória 1x0 sobre Grêmio", "Empate 0x0 com Atlético-MG", "Vitória 2x1 sobre Fortaleza"] },
-                { pos: 7, name: "Grêmio", p: 31, j: 20, v: 8, e: 7, d: 5, gp: 24, gc: 19, sg: 5, pct: 51, jogos: ["Derrota 0x1 para Internacional", "Empate 0x0 com Botafogo", "Vitória 2x0 sobre Vasco"] },
-                { pos: 8, name: "Atlético-MG", p: 30, j: 20, v: 8, e: 6, d: 6, gp: 26, gc: 22, sg: 4, pct: 50, jogos: ["Derrota 0x2 para Botafogo", "Empate 0x0 com Internacional", "Vitória 1x0 sobre Bragantino"] },
-                { pos: 9, name: "Bahia", p: 29, j: 20, v: 8, e: 5, d: 7, gp: 22, gc: 21, sg: 1, pct: 48, jogos: ["Derrota 0x2 para Flamengo", "Vitória 2x1 sobre Coritiba", "Empate 1x1 com Athletico-PR"] },
-                { pos: 10, name: "Cruzeiro", p: 28, j: 20, v: 7, e: 7, d: 6, gp: 20, gc: 19, sg: 1, pct: 46, jogos: ["Empate 1x1 com Palmeiras", "Vitória 2x0 sobre Criciúma", "Derrota 1x2 para Vasco"] },
-                { pos: 11, name: "Fortaleza", p: 27, j: 20, v: 7, e: 6, d: 7, gp: 21, gc: 20, sg: 1, pct: 45, jogos: ["Derrota 0x1 para Botafogo", "Vitória 2x0 sobre Atlético-GO", "Derrota 1x2 para Internacional"] },
-                { pos: 12, name: "Bragantino", p: 26, j: 20, v: 6, e: 8, d: 6, gp: 19, gc: 20, sg: -1, pct: 43, jogos: ["Derrota 0x1 para Atlético-MG", "Empate 1x1 com Athletico-PR", "Vitória 1x0 sobre Coritiba"] },
-                { pos: 13, name: "Vasco", p: 25, j: 20, v: 6, e: 7, d: 7, gp: 18, gc: 21, sg: -3, pct: 41, jogos: ["Vitória 2x1 sobre Cruzeiro", "Derrota 0x2 para Grêmio", "Empate 1x1 com Juventude"] },
-                { pos: 14, name: "Athletico-PR", p: 24, j: 20, v: 6, e: 6, d: 8, gp: 17, gc: 23, sg: -6, pct: 40, jogos: ["Empate 1x1 com Bragantino", "Derrota 1x2 para Cruzeiro", "Empate 1x1 com Bahia"] },
-                { pos: 15, name: "Cuiabá", p: 23, j: 20, v: 5, e: 8, d: 7, gp: 16, gc: 22, sg: -6, pct: 38, jogos: ["Derrota 1x2 para Fluminense", "Empate 1x1 com Vitória", "Vitória 1x0 sobre Atlético-GO"] },
-                { pos: 16, name: "Coritiba", p: 22, j: 20, v: 5, e: 7, d: 8, gp: 15, gc: 24, sg: -9, pct: 36, jogos: ["Derrota 1x2 para Bahia", "Derrota 0x1 para Bragantino", "Vitória 2x0 sobre Criciúma"] },
-                { pos: 17, name: "Vitória", p: 21, j: 20, v: 5, e: 6, d: 9, gp: 14, gc: 25, sg: -11, pct: 35, jogos: ["Derrota 1x2 para São Paulo", "Empate 1x1 com Cuiabá", "Vitória 2x1 sobre Atlético-GO"] },
-                { pos: 18, name: "Atlético-GO", p: 18, j: 20, v: 4, e: 6, d: 10, gp: 13, gc: 26, sg: -13, pct: 30, jogos: ["Derrota 0x2 para Fortaleza", "Derrota 1x2 para Vitória", "Derrota 0x1 para Cuiabá"] },
-                { pos: 19, name: "Juventude", p: 17, j: 20, v: 4, e: 5, d: 11, gp: 12, gc: 28, sg: -16, pct: 28, jogos: ["Derrota 0x3 para São Paulo", "Empate 1x1 com Vasco", "Empate 1x1 com Fluminense"] },
-                { pos: 20, name: "Criciúma", p: 15, j: 20, v: 3, e: 6, d: 11, gp: 11, gc: 30, sg: -19, pct: 25, jogos: ["Derrota 0x2 para Cruzeiro", "Derrota 0x2 para Coritiba", "Empate 0x0 com Atlético-MG"] }
-            ],
-            'B': [
-                { pos: 1, name: "Santos", p: 40, j: 20, v: 12, e: 4, d: 4, gp: 28, gc: 12, sg: 16, pct: 66, jogos: ["Vitória 2x0 sobre CRB", "Vitória 1x0 sobre Operário", "Empate 1x1 com Chapecoense"] },
-                { pos: 2, name: "Sport", p: 38, j: 20, v: 11, e: 5, d: 4, gp: 25, gc: 10, sg: 15, pct: 63, jogos: ["Vitória 1x0 sobre Coritiba", "Empate 0x0 com Ceará", "Vitória 2x1 sobre Goiás"] },
-                { pos: 3, name: "Ceará", p: 36, j: 20, v: 10, e: 6, d: 4, gp: 22, gc: 11, sg: 11, pct: 60, jogos: ["Vitória 2x1 sobre Vila Nova", "Empate 0x0 com Sport", "Vitória 1x0 sobre Avaí"] },
-                { pos: 4, name: "Goiás", p: 35, j: 20, v: 10, e: 5, d: 5, gp: 20, gc: 12, sg:
+        const times = [
+            { pos: 1, nome: "Flamengo", pts: 45, j: 20, v: 14 },
+            { pos: 2, nome: "Palmeiras", pts: 42, j: 20, v: 13 },
+            { pos: 3, nome: "Botafogo", pts: 40, j: 20, v: 12 },
+            { pos: 4, nome: "Fluminense", pts: 38, j: 20, v: 11 },
+            { pos: 5, nome: "São Paulo", pts: 36, j: 20, v: 10 },
+            { pos: 6, nome: "Internacional", pts: 35, j: 20, v: 10 },
+            { pos: 7, nome: "Grêmio", pts: 34, j: 20, v: 9 },
+            { pos: 8, nome: "Atlético-MG", pts: 33, j: 20, v: 9 },
+            { pos: 9, nome: "Bahia", pts: 32, j: 20, v: 8 },
+            { pos: 10, nome: "Cruzeiro", pts: 30, j: 20, v: 8 },
+            { pos: 11, nome: "Fortaleza", pts: 29, j: 20, v: 7 },
+            { pos: 12, nome: "Bragantino", pts: 28, j: 20, v: 7 },
+            { pos: 13, nome: "Vasco", pts: 27, j: 20, v: 6 },
+            { pos: 14, nome: "Athletico-PR", pts: 26, j: 20, v: 6 },
+            { pos: 15, nome: "Cuiabá", pts: 25, j: 20, v: 5 },
+            { pos: 16, nome: "Coritiba", pts: 24, j: 20, v: 5 },
+            { pos: 17, nome: "Vitória", pts: 22, j: 20, v: 4 },
+            { pos: 18, nome: "Atlético-GO", pts: 20, j: 20, v: 4 },
+            { pos: 19, nome: "Juventude", pts: 18, j: 20, v: 3 },
+            { pos: 20, nome: "Criciúma", pts: 15, j: 20, v: 2 }
+        ];
+
+        const corpo = document.getElementById('corpo-tabela');
+        times.forEach(t => {
+            corpo.innerHTML += `<tr><td>${t.pos}</td><td>${t.nome}</td><td>${t.pts}</td><td>${t.j}</td><td>${t.v}</td></tr>`;
+        });
+    </script>
+</body>
+</html>
