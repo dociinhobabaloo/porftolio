@@ -8,10 +8,18 @@
         body { font-family: 'Outfit', sans-serif; background-image: url('img/brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
-        table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.9); border-radius: 15px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); }
+        
+        /* Container com barra de rolagem para caber os 20 times com perfeição */
+        .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
+        .tabela-container::-webkit-scrollbar { width: 8px; }
+        .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
+        .tabela-container::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 4px; }
+
+        table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.9); }
         th, td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 14px; }
-        th { background: #e11d48; color: #fff; font-weight: 700; text-transform: uppercase; }
+        th { background: #e11d48; color: #fff; font-weight: 700; text-transform: uppercase; position: sticky; top: 0; z-index: 1; }
         tr:hover { background: rgba(255, 255, 255, 0.05); }
+        
         .jogos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
         .card-jogo { background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 10px; border-left: 4px solid #e11d48; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.7); }
         .card-jogo small { color: #f43f5e; font-weight: bold; }
@@ -22,14 +30,16 @@
         <h1>Campeonato Brasileiro - Série A</h1>
         
         <h2>Classificação</h2>
-        <table>
-            <thead>
-                <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
-            </thead>
-            <tbody id="corpo-tabela">
-                <tr><td colspan="5">Carregando tabela...</td></tr>
-            </tbody>
-        </table>
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    <tr><td colspan="5">Carregando tabela...</td></tr>
+                </tbody>
+            </table>
+        </div>
 
         <h2>Últimos Jogos</h2>
         <div id="lista-jogos" class="jogos-container">
@@ -43,11 +53,9 @@
             const containerJogos = document.getElementById('lista-jogos');
 
             try {
-                // O fetch busca o seu arquivo dados.json que fica na mesma pasta
                 const resposta = await fetch('dados.json');
                 const dados = await resposta.json();
 
-                // Preenchendo a Tabela com os 20 times
                 corpoTabela.innerHTML = "";
                 dados.classificacao.forEach(t => {
                     corpoTabela.innerHTML += `
@@ -60,7 +68,6 @@
                         </tr>`;
                 });
 
-                // Preenchendo os Últimos Jogos
                 containerJogos.innerHTML = "";
                 dados.ultimosJogos.forEach(j => {
                     containerJogos.innerHTML += `
