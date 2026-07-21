@@ -1,7 +1,10 @@
-[
-  {"rank": 1, "team": {"name": "Flamengo"}, "points": 45, "all": {"win": 14}},
-  {"rank": 2, "team": {"name": "Palmeiras"}, "points": 42, "all": {"win": 13}},
-  {"rank": 3, "team": {"name": "Botafogo"}, "points": 40, "all": {"win": 12}},
-  {"rank": 4, "team": {"name": "São Paulo"}, "points": 38, "all": {"win": 11}},
-  {"rank": 5, "team": {"name": "Cruzeiro"}, "points": 35, "all": {"win": 10}}
-]
+{
+  "classificacao": [
+    { "posicao": 1, "time": "Flamengo", "pontos": 15, "jogos": 6, "vitorias": 5 },
+    { "posicao": 2, "time": "Palmeiras", "pontos": 13, "jogos": 6, "vitorias": 4 }
+  ],
+  "ultimosJogos": [
+    { "rodada": 6, "mandante": "Flamengo", "visitante": "Palmeiras", "placar": "2 x 1" }
+  ]
+}
+
