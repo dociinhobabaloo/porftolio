@@ -9,11 +9,6 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         
-        /* Oculta completamente o player de áudio */
-        #audio-fundo {
-            display: none;
-        }
-
         .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
         .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
@@ -33,7 +28,7 @@
     <div class="container">
         <h1>Campeonato Brasileiro - Série A</h1>
         
-        <!-- Audio invisível -->
+        <!-- Audio com ID para o script conseguir controlar -->
         <audio id="audio-fundo" src="musica-brasileirao.mp3" loop></audio>
         
         <h2>Classificação 2026 (Live)</h2>
@@ -55,7 +50,7 @@
     </div>
 
     <script>
-        // Toca a música automaticamente após o primeiro clique na tela
+        // Força a música a tocar assim que o usuário clicar em qualquer lugar da tela (exigência do navegador)
         document.addEventListener('click', function() {
             const audio = document.getElementById('audio-fundo');
             if (audio.paused) {
