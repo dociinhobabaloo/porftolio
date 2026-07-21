@@ -9,10 +9,8 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         
-        /* Estilo do player de música */
-        .audio-container { background: rgba(15, 23, 42, 0.9); padding: 12px 20px; border-radius: 12px; display: inline-block; margin-bottom: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.7); border-left: 4px solid #e11d48; }
-        .audio-container p { margin: 0 0 8px 0; font-size: 14px; color: #cbd5e1; font-weight: 500; text-align: left; }
-        audio { height: 35px; width: 260px; filter: invert(90%) hue-rotate(180deg); }
+        .btn-musica { background: rgba(225, 29, 72, 0.9); color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: background 0.3s; }
+        .btn-musica:hover { background: #be123c; }
 
         .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
@@ -30,17 +28,15 @@
     </style>
 </head>
 <body>
+    <!-- Apontando para o arquivo musica.mp3 que já está no seu repositório -->
+    <audio id="audio-fundo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="container">
         <h1>Campeonato Brasileiro - Série A</h1>
         
-        <!-- Player de Música -->
-        <div class="audio-container">
-            <p>🎵 Trilha sonora da rodada:</p>
-            <audio controls loop>
-                <source src="musica-brasileirao.mp3" type="audio/mpeg">
-                Seu navegador não suporta áudio.
-            </audio>
-        </div>
+        <button id="botao-som" class="btn-musica" onclick="toggleSom()">🎵 Ligar Som da Rodada</button>
         
         <h2>Classificação 2026 (Live)</h2>
         <div class="tabela-container">
@@ -118,6 +114,22 @@
                     </div>
                 `;
             });
+        }
+
+        function toggleSom() {
+            const audio = document.getElementById('audio-fundo');
+            const botao = document.getElementById('botao-som');
+            
+            if (audio.paused) {
+                audio.play().then(() => {
+                    botao.innerText = "🔇 Pausar Som";
+                }).catch(e => {
+                    console.log("Erro ao reproduzir:", e);
+                });
+            } else {
+                audio.pause();
+                botao.innerText = "🎵 Ligar Som da Rodada";
+            }
         }
 
         carregarTabela();
