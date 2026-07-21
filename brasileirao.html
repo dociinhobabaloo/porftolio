@@ -9,8 +9,8 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         table { width: 100%; border-collapse: collapse; background: rgba(15, 23, 42, 0.9); border-radius: 15px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); }
-        th, td { padding: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        th { background: #e11d48; color: #fff; font-weight: 700; text-transform: uppercase; font-size: 14px; }
+        th, td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 14px; }
+        th { background: #e11d48; color: #fff; font-weight: 700; text-transform: uppercase; }
         tr:hover { background: rgba(255, 255, 255, 0.05); }
         .jogos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
         .card-jogo { background: rgba(15, 23, 42, 0.9); padding: 15px; border-radius: 10px; border-left: 4px solid #e11d48; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.7); }
@@ -27,62 +27,57 @@
                 <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
             </thead>
             <tbody id="corpo-tabela">
-                <!-- Preenchido via JavaScript -->
+                <tr><td colspan="5">Carregando tabela...</td></tr>
             </tbody>
         </table>
 
         <h2>Últimos Jogos</h2>
         <div id="lista-jogos" class="jogos-container">
-            <!-- Preenchido via JavaScript -->
+            <p>Carregando jogos...</p>
         </div>
     </div>
 
     <script>
-        function carregarTabelaLocal() {
+        async function carregarDadosDoJson() {
             const corpoTabela = document.getElementById('corpo-tabela');
             const containerJogos = document.getElementById('lista-jogos');
 
-            const classificacao = [
-                { posicao: 1, time: "Flamengo", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 2, time: "Palmeiras", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 3, time: "São Paulo", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 4, time: "Atlético-MG", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 5, time: "Botafogo", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 6, time: "Fluminense", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 7, time: "Internacional", pontos: 0, jogos: 0, vitorias: 0 },
-                { posicao: 8, time: "Grêmio", pontos: 0, jogos: 0, vitorias: 0 }
-            ];
+            try {
+                // O fetch busca o seu arquivo dados.json que fica na mesma pasta
+                const resposta = await fetch('dados.json');
+                const dados = await resposta.json();
 
-            const ultimosJogos = [
-                { rodada: 1, mandante: "Flamengo", visitante: "São Paulo", placar: "- x -" },
-                { rodada: 1, mandante: "Palmeiras", visitante: "Botafogo", placar: "- x -" },
-                { rodada: 1, mandante: "Atlético-MG", visitante: "Fluminense", placar: "- x -" }
-            ];
+                // Preenchendo a Tabela com os 20 times
+                corpoTabela.innerHTML = "";
+                dados.classificacao.forEach(t => {
+                    corpoTabela.innerHTML += `
+                        <tr>
+                           <td>${t.posicao}</td>
+                           <td style="text-align: left; font-weight: 500;">${t.time}</td>
+                           <td>${t.pontos}</td>
+                           <td>${t.jogos}</td>
+                           <td>${t.vitorias}</td>
+                        </tr>`;
+                });
 
-            corpoTabela.innerHTML = "";
-            classificacao.forEach(t => {
-                corpoTabela.innerHTML += `
-                    <tr>
-                       <td>${t.posicao}</td>
-                       <td style="text-align: left; font-weight: 500;">${t.time}</td>
-                       <td>${t.pontos}</td>
-                       <td>${t.jogos}</td>
-                       <td>${t.vitorias}</td>
-                    </tr>`;
-            });
+                // Preenchendo os Últimos Jogos
+                containerJogos.innerHTML = "";
+                dados.ultimosJogos.forEach(j => {
+                    containerJogos.innerHTML += `
+                        <div class="card-jogo">
+                            <small>Rodada ${j.rodada}</small>
+                            <p><strong>${j.mandante}</strong> ${j.placar} <strong>${j.visitante}</strong></p>
+                        </div>
+                    `;
+                });
 
-            containerJogos.innerHTML = "";
-            ultimosJogos.forEach(j => {
-                containerJogos.innerHTML += `
-                    <div class="card-jogo">
-                        <small>Rodada ${j.rodada}</small>
-                        <p><strong>${j.mandante}</strong> ${j.placar} <strong>${j.visitante}</strong></p>
-                    </div>
-                `;
-            });
+            } catch (erro) {
+                console.error("Erro ao carregar o JSON:", erro);
+                corpoTabela.innerHTML = `<tr><td colspan="5">Erro ao carregar o arquivo dados.json</td></tr>`;
+            }
         }
 
-        carregarTabelaLocal();
+        carregarDadosDoJson();
     </script>
 </body>
 </html>
