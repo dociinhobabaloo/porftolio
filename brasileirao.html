@@ -6,50 +6,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
         body { font-family: 'Outfit', sans-serif; background-image: url('img/brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 900px; margin: 0 auto; position: relative; }
+        .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         
-        #audio-fundo { display: none; }
-
-        .btn-voltar {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            text-decoration: none;
-            padding: 9px 20px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-        }
-        .btn-voltar:hover {
-            background: #e11d48;
-            border-color: #e11d48;
-        }
-
-        #btn-som {
-            background: #e11d48;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: 30px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            margin-top: 50px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: background 0.3s;
-        }
-        #btn-som:hover { background: #be123c; }
-
         .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
         .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
@@ -67,11 +26,9 @@
 </head>
 <body>
     <div class="container">
-        <a href="index.html" class="btn-voltar">← Voltar</a>
-
         <h1>Campeonato Brasileiro - Série A</h1>
         
-        <button id="btn-som" onclick="tocarMusica()">🎵 Ativar Som / Entrar</button>
+        <!-- Audio com ID para o script conseguir controlar -->
         <audio id="audio-fundo" src="musica-brasileirao.mp3" loop></audio>
         
         <h2>Classificação 2026 (Live)</h2>
@@ -80,30 +37,26 @@
                 <thead>
                     <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
                 </thead>
-                <tbody id="corpo-tabela"></tbody>
+                <tbody id="corpo-tabela">
+                    <!-- Preenchido via script -->
+                </tbody>
             </table>
         </div>
 
         <h2>Últimos Jogos</h2>
-        <div id="lista-jogos" class="jogos-container"></div>
+        <div id="lista-jogos" class="jogos-container">
+            <!-- Preenchido via script -->
+        </div>
     </div>
 
     <script>
-        function tocarMusica() {
+        // Força a música a tocar assim que o usuário clicar em qualquer lugar da tela (exigência do navegador)
+        document.addEventListener('click', function() {
             const audio = document.getElementById('audio-fundo');
-            const botao = document.getElementById('btn-som');
-            
-            audio.load();
-            let playPromise = audio.play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    botao.style.display = 'none';
-                }).catch(error => {
-                    console.log("Aguardando nova interação.");
-                });
+            if (audio.paused) {
+                audio.play();
             }
-        }
+        }, { once: true });
 
         const dadosBrasileirao = {
             "classificacao": [
