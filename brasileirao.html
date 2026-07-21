@@ -9,6 +9,33 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
 
+        /* Estilo do Botão de Voltar */
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            float: left;
+        }
+        .btn-voltar:hover {
+            background: #e11d48;
+            border-color: #e11d48;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+        }
+
+        .limpar { clear: both; }
+
         .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
         .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
@@ -25,12 +52,16 @@
     </style>
 </head>
 <body>
-    <!-- Áudio invisível e configurado para tocar automaticamente em loop -->
+    <!-- Áudio invisível e automático -->
     <audio id="audio-fundo" autoplay loop style="display: none;">
         <source src="musica-brasileirao.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
+        <!-- Botão de Voltar para a página anterior ou index -->
+        <a href="index.html" class="btn-voltar">← Voltar</a>
+        <div class="limpar"></div>
+
         <h1>Campeonato Brasileiro - Série A</h1>
         
         <h2>Classificação 2026 (Live)</h2>
@@ -52,7 +83,6 @@
     </div>
 
     <script>
-        // Carregando os dados do arquivo dados.json
         fetch('dados.json')
             .then(response => response.json())
             .then(dadosBrasileirao => {
