@@ -36,14 +36,17 @@
 
     <script>
         const API_KEY = '51acf7de2cbb4e5e9af676a5090c7ad9'; 
+        // Usamos um proxy de CORS livre para permitir que o GitHub Pages acesse a API sem bloqueio
+        const PROXY_URL = 'https://corsproxy.io/?';
 
         async function carregarDadosBrasileirao() {
             const corpoTabela = document.getElementById('corpo-tabela');
             const containerJogos = document.getElementById('lista-jogos');
 
             try {
-                // Tabela da Série A (BSA)
-                const respostaTabela = await fetch('https://api.football-data.org/v4/competitions/BSA/standings', {
+                // Requisição da Tabela com Proxy
+                const urlTabela = PROXY_URL + encodeURIComponent('https://api.football-data.org/v4/competitions/BSA/standings');
+                const respostaTabela = await fetch(urlTabela, {
                     headers: { 'X-Auth-Token': API_KEY }
                 });
                 const dadosTabela = await respostaTabela.json();
@@ -61,8 +64,9 @@
                         </tr>`;
                 });
 
-                // Partidas Finalizadas da Série A
-                const respostaPartidas = await fetch('https://api.football-data.org/v4/competitions/BSA/matches?status=FINISHED', {
+                // Requisição das Partidas com Proxy
+                const urlPartidas = PROXY_URL + encodeURIComponent('https://api.football-data.org/v4/competitions/BSA/matches?status=FINISHED');
+                const respostaPartidas = await fetch(urlPartidas, {
                     headers: { 'X-Auth-Token': API_KEY }
                 });
                 const dadosPartidas = await respostaPartidas.json();
@@ -86,7 +90,7 @@
 
             } catch (erro) {
                 console.error("Erro ao buscar dados:", erro);
-                corpoTabela.innerHTML = `<tr><td colspan="5">Erro ao carregar dados da API.</td></tr>`;
+                corpoTabela.innerHTML = `<tr><td colspan="5">Erro ao carregar dados da API (CORS/Rede).</td></tr>`;
             }
         }
 
