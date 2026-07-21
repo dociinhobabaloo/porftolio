@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela e Jogos</title>
+    <title>Brasileirão 2026 - Série A</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
         body { font-family: 'Outfit', sans-serif; background-image: url('brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
@@ -35,7 +35,6 @@
     </div>
 
     <script>
-        // Sua chave oficial da API
         const API_KEY = '51acf7de2cbb4e5e9af676a5090c7ad9'; 
 
         async function carregarDadosBrasileirao() {
@@ -43,7 +42,7 @@
             const containerJogos = document.getElementById('lista-jogos');
 
             try {
-                // Requisição da Tabela da Série A (BSA)
+                // Tabela da Série A (BSA)
                 const respostaTabela = await fetch('https://api.football-data.org/v4/competitions/BSA/standings', {
                     headers: { 'X-Auth-Token': API_KEY }
                 });
@@ -62,7 +61,7 @@
                         </tr>`;
                 });
 
-                // Requisição das Partidas Finalizadas da Série A
+                // Partidas Finalizadas da Série A
                 const respostaPartidas = await fetch('https://api.football-data.org/v4/competitions/BSA/matches?status=FINISHED', {
                     headers: { 'X-Auth-Token': API_KEY }
                 });
