@@ -8,8 +8,8 @@
         body { font-family: 'Outfit', sans-serif; background-image: url('img/brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
-        
-        .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; margin-top: 20px; }
+
+        .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
         .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
         .tabela-container::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 4px; }
@@ -25,8 +25,8 @@
     </style>
 </head>
 <body>
-    <!-- Áudio invisível na página -->
-    <audio id="audio-fundo" loop style="display: none;">
+    <!-- Áudio invisível e configurado para tocar automaticamente em loop -->
+    <audio id="audio-fundo" autoplay loop style="display: none;">
         <source src="musica-brasileirao.mp3" type="audio/mpeg">
     </audio>
 
@@ -52,74 +52,37 @@
     </div>
 
     <script>
-        const dadosBrasileirao = {
-            "classificacao": [
-                { "posicao": 1, "time": "Palmeiras", "pontos": 41, "jogos": 18, "vitorias": 12 },
-                { "posicao": 2, "time": "Flamengo", "pontos": 34, "jogos": 17, "vitorias": 10 },
-                { "posicao": 3, "time": "Fluminense", "pontos": 32, "jogos": 19, "vitorias": 9 },
-                { "posicao": 4, "time": "Red Bull Bragantino", "pontos": 30, "jogos": 19, "vitorias": 9 },
-                { "posicao": 5, "time": "Athletico-PR", "pontos": 30, "jogos": 18, "vitorias": 9 },
-                { "posicao": 6, "time": "Bahia", "pontos": 29, "jogos": 18, "vitorias": 8 },
-                { "posicao": 7, "time": "Coritiba", "pontos": 26, "jogos": 18, "vitorias": 7 },
-                { "posicao": 8, "time": "São Paulo", "pontos": 25, "jogos": 18, "vitorias": 7 },
-                { "posicao": 9, "time": "Botafogo", "pontos": 25, "jogos": 18, "vitorias": 7 },
-                { "posicao": 10, "time": "Vitória", "pontos": 25, "jogos": 18, "vitorias": 7 },
-                { "posicao": 11, "time": "Atlético-MG", "pontos": 24, "jogos": 18, "vitorias": 7 },
-                { "posicao": 12, "time": "Corinthians", "pontos": 24, "jogos": 18, "vitorias": 6 },
-                { "posicao": 13, "time": "Cruzeiro", "pontos": 24, "jogos": 18, "vitorias": 6 },
-                { "posicao": 14, "time": "Internacional", "pontos": 21, "jogos": 18, "vitorias": 5 },
-                { "posicao": 15, "time": "Santos", "pontos": 21, "jogos": 19, "vitorias": 5 },
-                { "posicao": 16, "time": "Grêmio", "pontos": 21, "jogos": 19, "vitorias": 5 },
-                { "posicao": 17, "time": "Vasco da Gama", "pontos": 20, "jogos": 19, "vitorias": 5 },
-                { "posicao": 18, "time": "Mirassol", "pontos": 19, "jogos": 18, "vitorias": 5 },
-                { "posicao": 19, "time": "Remo", "pontos": 18, "jogos": 18, "vitorias": 4 },
-                { "posicao": 20, "time": "Chapecoense", "pontos": 9, "jogos": 18, "vitorias": 1 }
-            ],
-            "ultimosJogos": [
-                { "rodada": 19, "mandante": "Coritiba", "visitante": "Palmeiras", "placar": "22/07 - 19:30" },
-                { "rodada": 19, "mandante": "São Paulo", "visitante": "Athletico-PR", "placar": "22/07 - 21:30" },
-                { "rodada": 19, "mandante": "Internacional", "visitante": "Cruzeiro", "placar": "22/07 - 21:30" },
-                { "rodada": 19, "mandante": "Chapecoense", "visitante": "Flamengo", "placar": "22/07 - 21:30" }
-            ]
-        };
+        // Carregando os dados do arquivo dados.json
+        fetch('dados.json')
+            .then(response => response.json())
+            .then(dadosBrasileirao => {
+                const corpoTabela = document.getElementById('corpo-tabela');
+                const containerJogos = document.getElementById('lista-jogos');
 
-        function carregarTabela() {
-            const corpoTabela = document.getElementById('corpo-tabela');
-            const containerJogos = document.getElementById('lista-jogos');
+                corpoTabela.innerHTML = "";
+                dadosBrasileirao.classificacao.forEach(t => {
+                    corpoTabela.innerHTML += `
+                        <tr>
+                           <td>${t.posicao}</td>
+                           <td style="text-align: left; font-weight: 500;">${t.time}</td>
+                           <td>${t.pontos}</td>
+                           <td>${t.jogos}</td>
+                           <td>${t.vitorias}</td>
+                        </tr>`;
+                });
 
-            corpoTabela.innerHTML = "";
-            dadosBrasileirao.classificacao.forEach(t => {
-                corpoTabela.innerHTML += `
-                    <tr>
-                       <td>${t.posicao}</td>
-                       <td style="text-align: left; font-weight: 500;">${t.time}</td>
-                       <td>${t.pontos}</td>
-                       <td>${t.jogos}</td>
-                       <td>${t.vitorias}</td>
-                    </tr>`;
-            });
-
-            containerJogos.innerHTML = "";
-            dadosBrasileirao.ultimosJogos.forEach(j => {
-                containerJogos.innerHTML += `
-                    <div class="card-jogo">
-                        <small>Rodada ${j.rodada}</small>
-                        <p><strong>${j.mandante}</strong> x <strong>${j.visitante}</strong></p>
-                        <p style="margin: 5px 0 0 0; font-size: 13px; color: #cbd5e1;">${j.placar}</p>
-                    </div>
-                `;
-            });
-        }
-
-        carregarTabela();
-
-        // Toca a música automaticamente assim que o usuário clicar em qualquer lugar da página
-        document.addEventListener('click', function() {
-            const audio = document.getElementById('audio-fundo');
-            if (audio.paused) {
-                audio.play().catch(error => console.log("Erro ao reproduzir áudio:", error));
-            }
-        }, { once: true });
+                containerJogos.innerHTML = "";
+                dadosBrasileirao.ultimosJogos.forEach(j => {
+                    containerJogos.innerHTML += `
+                        <div class="card-jogo">
+                            <small>Rodada ${j.rodada}</small>
+                            <p><strong>${j.mandante}</strong> x <strong>${j.visitante}</strong></p>
+                            <p style="margin: 5px 0 0 0; font-size: 13px; color: #cbd5e1;">${j.placar}</p>
+                        </div>
+                    `;
+                });
+            })
+            .catch(error => console.error('Erro ao carregar o arquivo dados.json:', error));
     </script>
 </body>
 </html>
