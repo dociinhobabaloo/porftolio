@@ -2,50 +2,88 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela Oficial</title>
+    <title>Brasileirão 2026 - Tabela e Jogos</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
         body { font-family: 'Outfit', sans-serif; background-image: url('brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
-        table { width: 100%; max-width: 900px; margin: 20px auto; border-collapse: collapse; background: rgba(0,0,0,0.7); border-radius: 15px; overflow: hidden; }
+        .container { max-width: 900px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.7); border-radius: 15px; overflow: hidden; margin-bottom: 30px; }
         th, td { padding: 12px; border-bottom: 1px solid #444; }
         th { background: #e11d48; }
+        .jogos-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; }
+        .card-jogo { background: rgba(0,0,0,0.7); padding: 15px; border-radius: 10px; border-left: 4px solid #e11d48; }
     </style>
 </head>
 <body>
-    <h1>Brasileirão 2026</h1>
-    <table>
-        <thead><tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr></thead>
-        <tbody id="corpo-tabela"></tbody>
-    </table>
+    <div class="container">
+        <h1>Brasileirão 2026</h1>
+        
+        <h2>Classificação</h2>
+        <table>
+            <thead>
+                <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
+            </thead>
+            <tbody id="corpo-tabela">
+                <!-- Preenchido via JavaScript/API -->
+            </tbody>
+        </table>
+
+        <h2>Últimos Jogos / Rodadas Recentes</h2>
+        <div id="lista-jogos" class="jogos-container">
+            <!-- Os cards dos últimos jogos entram aqui automaticamente -->
+        </div>
+    </div>
 
     <script>
-        const times = [
-            { pos: 1, nome: "Flamengo", pts: 45, j: 20, v: 14 },
-            { pos: 2, nome: "Palmeiras", pts: 42, j: 20, v: 13 },
-            { pos: 3, nome: "Botafogo", pts: 40, j: 20, v: 12 },
-            { pos: 4, nome: "Fluminense", pts: 38, j: 20, v: 11 },
-            { pos: 5, nome: "São Paulo", pts: 36, j: 20, v: 10 },
-            { pos: 6, nome: "Internacional", pts: 35, j: 20, v: 10 },
-            { pos: 7, nome: "Grêmio", pts: 34, j: 20, v: 9 },
-            { pos: 8, nome: "Atlético-MG", pts: 33, j: 20, v: 9 },
-            { pos: 9, nome: "Bahia", pts: 32, j: 20, v: 8 },
-            { pos: 10, nome: "Cruzeiro", pts: 30, j: 20, v: 8 },
-            { pos: 11, nome: "Fortaleza", pts: 29, j: 20, v: 7 },
-            { pos: 12, nome: "Bragantino", pts: 28, j: 20, v: 7 },
-            { pos: 13, nome: "Vasco", pts: 27, j: 20, v: 6 },
-            { pos: 14, nome: "Athletico-PR", pts: 26, j: 20, v: 6 },
-            { pos: 15, nome: "Cuiabá", pts: 25, j: 20, v: 5 },
-            { pos: 16, nome: "Coritiba", pts: 24, j: 20, v: 5 },
-            { pos: 17, nome: "Vitória", pts: 22, j: 20, v: 4 },
-            { pos: 18, nome: "Atlético-GO", pts: 20, j: 20, v: 4 },
-            { pos: 19, nome: "Juventude", pts: 18, j: 20, v: 3 },
-            { pos: 20, nome: "Criciúma", pts: 15, j: 20, v: 2 }
-        ];
+        // Função exemplo para consumir uma API de Futebol ou atualizar os dados de forma dinâmica
+        async function carregarDadosBrasileirao() {
+            try {
+                // Aqui você colocará o endpoint da API escolhida (ex: Football-Data.org ou API-Football)
+                // Exemplo simulado de requisição fetch:
+                // const resposta = await fetch('SUA_URL_DA_API_AQUI', { headers: { 'X-Auth-Token': 'SUA_KEY' } });
+                // const dados = await resposta.json();
 
-        const corpo = document.getElementById('corpo-tabela');
-        times.forEach(t => {
-            corpo.innerHTML += `<tr><td>${t.pos}</td><td>${t.nome}</td><td>${t.pts}</td><td>${t.j}</td><td>${t.v}</td></tr>`;
-        });
+                // Mantendo sua base de dados estruturada para simular o retorno da API caso queira testar localmente:
+                const times = [
+                    { pos: 1, nome: "Flamengo", pts: 45, j: 20, v: 14 },
+                    { pos: 2, nome: "Palmeiras", pts: 42, j: 20, v: 13 },
+                    { pos: 3, nome: "Botafogo", pts: 40, j: 20, v: 12 },
+                    { pos: 4, nome: "Fluminense", pts: 38, j: 20, v: 11 },
+                    { pos: 5, nome: "São Paulo", pts: 36, j: 20, v: 10 }
+                ];
+
+                const ultimosJogos = [
+                    { rodada: "20ª Rodada", mandante: "Flamengo", placar: "2 x 1", visitante: "Palmeiras" },
+                    { rodada: "20ª Rodada", mandante: "Botafogo", placar: "1 x 1", visitante: "Fluminense" },
+                    { rodada: "19ª Rodada", mandante: "São Paulo", placar: "3 x 0", visitante: "Grêmio" }
+                ];
+
+                // Preenchendo a Tabela
+                const corpoTabela = document.getElementById('corpo-tabela');
+                corpoTabela.innerHTML = "";
+                times.forEach(t => {
+                    corpoTabela.innerHTML += `<tr><td>${t.pos}</td><td>${t.nome}</td><td>${t.pts}</td><td>${t.j}</td><td>${t.v}</td></tr>`;
+                });
+
+                // Preenchendo os Últimos Jogos
+                const containerJogos = document.getElementById('lista-jogos');
+                containerJogos.innerHTML = "";
+                ultimosJogos.forEach(j => {
+                    containerJogos.innerHTML += `
+                        <div class="card-jogo">
+                            <small>${j.rodada}</small>
+                            <p><strong>${j.mandante}</strong> ${j.placar} <strong>${j.visitante}</strong></p>
+                        </div>
+                    `;
+                });
+
+            } catch (erro) {
+                console.error("Erro ao carregar os dados da API:", erro);
+            }
+        }
+
+        // Executa a função assim que a página carregar
+        carregarDadosBrasileirao();
     </script>
 </body>
 </html>
