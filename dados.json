@@ -1,29 +1,30 @@
 {
   "classificacao": [
-    { "posicao": 1, "time": "Flamengo", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 2, "time": "Palmeiras", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 3, "time": "São Paulo", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 4, "time": "Atlético-MG", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 5, "time": "Botafogo", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 6, "time": "Fluminense", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 7, "time": "Internacional", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 8, "time": "Grêmio", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 9, "time": "Corinthians", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 10, "time": "Bahia", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 11, "time": "Cruzeiro", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 12, "time": "Vasco da Gama", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 13, "time": "Athletico-PR", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 14, "time": "Bragantino", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 15, "time": "Fortaleza", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 16, "time": "Cuiabá", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 17, "time": "Vitória", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 18, "time": "Juventude", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 19, "time": "Criciúma", "pontos": 0, "jogos": 0, "vitorias": 0 },
-    { "posicao": 20, "time": "Atlético-GO", "pontos": 0, "jogos": 0, "vitorias": 0 }
+    { "posicao": 1, "time": "Palmeiras", "pontos": 41, "jogos": 18, "vitorias": 12 },
+    { "posicao": 2, "time": "Flamengo", "pontos": 34, "jogos": 17, "vitorias": 10 },
+    { "posicao": 3, "time": "Fluminense", "pontos": 32, "jogos": 19, "vitorias": 9 },
+    { "posicao": 4, "time": "Red Bull Bragantino", "pontos": 30, "jogos": 19, "vitorias": 9 },
+    { "posicao": 5, "time": "Athletico-PR", "pontos": 30, "jogos": 18, "vitorias": 9 },
+    { "posicao": 6, "time": "Bahia", "pontos": 29, "jogos": 18, "vitorias": 8 },
+    { "posicao": 7, "time": "Coritiba", "pontos": 26, "jogos": 18, "vitorias": 7 },
+    { "posicao": 8, "time": "São Paulo", "pontos": 25, "jogos": 18, "vitorias": 7 },
+    { "posicao": 9, "time": "Botafogo", "pontos": 25, "jogos": 18, "vitorias": 7 },
+    { "posicao": 10, "time": "Vitória", "pontos": 25, "jogos": 18, "vitorias": 7 },
+    { "posicao": 11, "time": "Atlético-MG", "pontos": 24, "jogos": 18, "vitorias": 7 },
+    { "posicao": 12, "time": "Corinthians", "pontos": 24, "jogos": 18, "vitorias": 6 },
+    { "posicao": 13, "time": "Cruzeiro", "pontos": 24, "jogos": 18, "vitorias": 6 },
+    { "posicao": 14, "time": "Internacional", "pontos": 21, "jogos": 18, "vitorias": 5 },
+    { "posicao": 15, "time": "Santos", "pontos": 21, "jogos": 19, "vitorias": 5 },
+    { "posicao": 16, "time": "Grêmio", "pontos": 21, "jogos": 19, "vitorias": 5 },
+    { "posicao": 17, "time": "Vasco da Gama", "pontos": 20, "jogos": 19, "vitorias": 5 },
+    { "posicao": 18, "time": "Mirassol", "pontos": 19, "jogos": 18, "vitorias": 5 },
+    { "posicao": 19, "time": "Remo", "pontos": 18, "jogos": 18, "vitorias": 4 },
+    { "posicao": 20, "time": "Chapecoense", "pontos": 9, "jogos": 18, "vitorias": 1 }
   ],
   "ultimosJogos": [
-    { "rodada": 1, "mandante": "Flamengo", "visitante": "São Paulo", "placar": "- x -" },
-    { "rodada": 1, "mandante": "Palmeiras", "visitante": "Botafogo", "placar": "- x -" },
-    { "rodada": 1, "mandante": "Atlético-MG", "visitante": "Fluminense", "placar": "- x -" }
+    { "rodada": 19, "mandante": "Coritiba", "visitante": "Palmeiras", "placar": "- x -" },
+    { "rodada": 18, "mandante": "São Paulo", "visitante": "Athletico-PR", "placar": "- x -" },
+    { "rodada": 18, "mandante": "Internacional", "visitante": "Cruzeiro", "placar": "- x -" },
+    { "rodada": 18, "mandante": "Chapecoense", "visitante": "Flamengo", "placar": "- x -" }
   ]
 }
