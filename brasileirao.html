@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Brasileirão 2026 - Tabela e Jogos Automáticos</title>
+    <metaximo charset="UTF-8">
+    <title>Brasileirão Séries A e B - Tabela e Jogos</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
         body { font-family: 'Outfit', sans-serif; background-image: url('brasileirao-jogadores.jpg'); background-size: cover; background-attachment: fixed; color: #fff; margin: 0; padding: 20px; text-align: center; }
         .container { max-width: 900px; margin: 0 auto; }
+        .menu-campeonato { margin-bottom: 20px; }
+        .menu-campeonato button { background: #333; color: #fff; border: 2px solid #e11d48; padding: 10px 20px; margin: 0 5px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .menu-campeonato button.ativo, .menu-campeonato button:hover { background: #e11d48; }
         table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,0.7); border-radius: 15px; overflow: hidden; margin-bottom: 30px; }
         th, td { padding: 12px; border-bottom: 1px solid #444; text-align: center; }
         th { background: #e11d48; }
@@ -16,7 +19,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>Brasileirão 2026</h1>
+        <h1>Campeonato Brasileiro</h1>
+        
+        <!-- Seletor de Série -->
+        <div class="menu-campeonato">
+            <button id="btn-serie-a" class="ativo" onclick="mudarCampeonato('BSA')">Série A</button>
+            <button id="btn-serie-b" onclick="mudarCampeonato('BSB')">Série B</button>
+        </div>
         
         <h2>Classificação</h2>
         <table>
@@ -24,7 +33,7 @@
                 <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
             </thead>
             <tbody id="corpo-tabela">
-                <tr><td colspan="5">Carregando tabela da API...</td></tr>
+                <tr><td colspan="5">Carregando dados...</td></tr>
             </tbody>
         </table>
 
@@ -35,22 +44,25 @@
     </div>
 
     <script>
-        // Substitua 'SUA_API_KEY_AQUI' pela chave gratuita que você consegue ao criar uma conta em football-data.org
+        // Insira sua chave gratuita obtida em football-data.org
         const API_KEY = 'SUA_API_KEY_AQUI'; 
-        const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/'; // Se necessário para testes locais, ou use fetch direto se a API permitir
+        let competenciaAtual = 'BSA'; // Começa na Série A
 
-        async function buscarDadosFutebol() {
+        async function carregarDados(codigoCompeticao) {
+            const corpoTabela = document.getElementById('corpo-tabela');
+            const containerJogos = document.getElementById('lista-jogos');
+            
+            corpoTabela.innerHTML = `<tr><td colspan="5">Carregando tabela...</td></tr>`;
+            containerJogos.innerHTML = `<p>Carregando últimos jogos...</p>`;
+
             try {
-                // Exemplo de requisição para a tabela do Campeonato Brasileiro (Competição BSA)
-                const respostaTabela = await fetch('https://api.football-data.org/v4/competitions/BSA/standings', {
+                // Requisição da Tabela
+                const respostaTabela = await fetch(`https://api.football-data.org/v4/competitions/${codigoCompeticao}/standings`, {
                     headers: { 'X-Auth-Token': API_KEY }
                 });
                 const dadosTabela = await respostaTabela.json();
 
-                const corpoTabela = document.getElementById('corpo-tabela');
                 corpoTabela.innerHTML = "";
-                
-                // Pega a tabela de classificação da API e preenche
                 const classificacao = dadosTabela.standings[0].table;
                 classificacao.forEach(t => {
                     corpoTabela.innerHTML += `
@@ -63,17 +75,20 @@
                         </tr>`;
                 });
 
-                // Buscando as partidas recentes/últimos jogos
-                const respostaPartidas = await fetch('https://api.football-data.org/v4/competitions/BSA/matches?status=FINISHED', {
+                // Requisição das Partidas Finalizadas
+                const respostaPartidas = await fetch(`https://api.football-data.org/v4/competitions/${codigoCompeticao}/matches?status=FINISHED`, {
                     headers: { 'X-Auth-Token': API_KEY }
                 });
                 const dadosPartidas = await respostaPartidas.json();
 
-                const containerJogos = document.getElementById('lista-jogos');
                 containerJogos.innerHTML = "";
-                
-                // Pega os últimos 6 jogos finalizados da lista
                 const ultimos = dadosPartidas.matches.slice(-6).reverse();
+                
+                if(ultimos.length === 0) {
+                    containerJogos.innerHTML = `<p>Nenhum jogo recente encontrado.</p>`;
+                    return;
+                }
+
                 ultimos.forEach(j => {
                     containerJogos.innerHTML += `
                         <div class="card-jogo">
@@ -85,11 +100,27 @@
 
             } catch (erro) {
                 console.error("Erro ao buscar dados:", erro);
-                document.getElementById('corpo-tabela').innerHTML = `<tr><td colspan="5">Erro ao carregar dados da API. Verifique a chave.</td></tr>`;
+                corpoTabela.innerHTML = `<tr><td colspan="5">Erro ao carregar dados da API. Verifique sua chave.</td></tr>`;
             }
         }
 
-        buscarDadosFutebol();
+        function mudarCampeonato(codigo) {
+            competenciaAtual = codigo;
+            
+            // Alterna o estilo visual dos botões
+            if(codigo === 'BSA') {
+                document.getElementById('btn-serie-a').classList.add('ativo');
+                document.getElementById('btn-serie-b').classList.remove('ativo');
+            } else {
+                document.getElementById('btn-serie-b').classList.add('ativo');
+                document.getElementById('btn-serie-a').classList.remove('ativo');
+            }
+
+            carregarDados(competenciaAtual);
+        }
+
+        // Carrega a Série A por padrão ao abrir a página
+        carregarDados(competenciaAtual);
     </script>
 </body>
 </html>
