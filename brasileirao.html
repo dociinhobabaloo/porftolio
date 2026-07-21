@@ -25,81 +25,63 @@
                 <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
             </thead>
             <tbody id="corpo-tabela">
-                <tr><td colspan="5">Carregando tabela oficial...</td></tr>
+                <!-- Preenchido via JavaScript -->
             </tbody>
         </table>
 
         <h2>Últimos Jogos</h2>
         <div id="lista-jogos" class="jogos-container">
-            <p>Carregando últimos jogos...</p>
+            <!-- Preenchido via JavaScript -->
         </div>
     </div>
 
     <script>
-        async function carregarDadosBrasileirao() {
+        function carregarTabelaLocal() {
             const corpoTabela = document.getElementById('corpo-tabela');
             const containerJogos = document.getElementById('lista-jogos');
 
-            try {
-                const res = await fetch('https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4328&s=2026');
-                const textoResposta = await res.text();
-                
-                if (!textoResposta || textoResposta.startsWith('<')) {
-                    throw new Error("Resposta inválida da API");
-                }
+            // Dados estruturados localmente para garantir estabilidade total no GitHub Pages
+            const classificacao = [
+                { posicao: 1, time: "Flamengo", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 2, time: "Palmeiras", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 3, time: "São Paulo", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 4, time: "Atlético-MG", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 5, time: "Botafogo", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 6, time: "Fluminense", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 7, time: "Internacional", pontos: 0, jogos: 0, vitorias: 0 },
+                { posicao: 8, time: "Grêmio", pontos: 0, jogos: 0, vitorias: 0 }
+            ];
 
-                const dados = JSON.parse(textoResposta);
+            const ultimosJogos = [
+                { rodada: 1, mandante: "Flamengo", visitante: "São Paulo", placar: "- x -" },
+                { rodada: 1, mandante: "Palmeiras", visitante: "Botafogo", placar: "- x -" },
+                { rodada: 1, mandante: "Atlético-MG", visitante: "Fluminense", placar: "- x -" }
+            ];
 
-                corpoTabela.innerHTML = "";
-                if (dados.table && dados.table.length > 0) {
-                    dados.table.forEach(t => {
-                        corpoTabela.innerHTML += `
-                            <tr>
-                               <td>${t.intRank}</td>
-                               <td style="text-align: left;">${t.strTeam}</td>
-                               <td>${t.intPoints}</td>
-                               <td>${t.intPlayed}</td>
-                               <td>${t.intWin}</td>
-                            </tr>`;
-                    });
-                } else {
-                    corpoTabela.innerHTML = `<tr><td colspan="5">Tabela em atualização para a temporada 2026.</td></tr>`;
-                }
+            corpoTabela.innerHTML = "";
+            classificacao.forEach(t => {
+                corpoTabela.innerHTML += `
+                    <tr>
+                       <td>${t.posicao}</td>
+                       <td style="text-align: left;">${t.time}</td>
+                       <td>${t.pontos}</td>
+                       <td>${t.jogos}</td>
+                       <td>${t.vitorias}</td>
+                    </tr>`;
+            });
 
-                const resJogos = await fetch('https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=4328&r=1&s=2026');
-                const textoJogos = await resJogos.text();
-                
-                if (textoJogos && !textoJogos.startsWith('<')) {
-                    const dadosJogos = JSON.parse(textoJogos);
-                    containerJogos.innerHTML = "";
-                    if (dadosJogos.events && dadosJogos.events.length > 0) {
-                        dadosJogos.events.slice(-6).forEach(j => {
-                            containerJogos.innerHTML += `
-                                <div class="card-jogo">
-                                    <small>Rodada ${j.intRound}</small>
-                                    <p><strong>${j.strHomeTeam}</strong> vs <strong>${j.strAwayTeam}</strong></p>
-                                    <p>${j.dateEvent || 'Em breve'}</p>
-                                </div>
-                            `;
-                        });
-                        return;
-                    }
-                }
-                containerJogos.innerHTML = `<p>Calendário de jogos atualizado em breve.</p>`;
-
-            } catch (erro) {
-                console.error("Erro tratado:", erro);
-                // Fallback com dados visuais caso a API externe instabilidade
-                corpoTabela.innerHTML = `
-                    <tr><td>1</td><td style="text-align: left;">Flamengo</td><td>0</td><td>0</td><td>0</td></tr>
-                    <tr><td>2</td><td style="text-align: left;">Palmeiras</td><td>0</td><td>0</td><td>0</td></tr>
-                    <tr><td>3</td><td style="text-align: left;">São Paulo</td><td>0</td><td>0</td><td>0</td></tr>
+            containerJogos.innerHTML = "";
+            ultimosJogos.forEach(j => {
+                containerJogos.innerHTML += `
+                    <div class="card-jogo">
+                        <small>Rodada ${j.rodada}</small>
+                        <p><strong>${j.mandante}</strong> ${j.placar} <strong>${j.visitante}</strong></p>
+                    </div>
                 `;
-                containerJogos.innerHTML = `<div class="card-jogo"><small>Rodada 1</small><p><strong>Aguardando início oficial</strong></p></div>`;
-            }
+            });
         }
 
-        carregarDadosBrasileirao();
+        carregarTabelaLocal();
     </script>
 </body>
 </html>
