@@ -4,114 +4,59 @@
     <meta charset="UTF-8">
     <title>Localiza Pet - Vila Velha</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap');
-        
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            background: linear-gradient(135deg, #0f172a, #1e1b4b); 
-            background-attachment: fixed; 
-            color: #fff; 
+        body, html { 
             margin: 0; 
-            padding: 20px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container { 
-            max-width: 450px; 
+            padding: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            padding: 30px;
-            box-sizing: border-box;
-            text-align: center;
-            position: relative;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0f172a;
         }
 
-        /* Botão de Voltar */
+        /* Imagem ocupando 100% da tela */
+        .foto-fundo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Botão de Voltar discreto no canto */
         .btn-voltar {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.7);
             color: #fff;
             text-decoration: none;
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 9px 20px;
+            border-radius: 30px;
+            font-family: sans-serif;
             font-size: 13px;
             font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             transition: all 0.3s ease;
             position: absolute;
             top: 20px;
             left: 20px;
+            z-index: 10;
         }
         .btn-voltar:hover {
             background: #e11d48;
             border-color: #e11d48;
         }
-
-        .imagem-projeto {
-            width: 100%;
-            border-radius: 15px;
-            margin-top: 35px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-
-        h1 {
-            color: #38bdf8;
-            font-size: 26px;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        p {
-            color: #cbd5e1;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .btn-acao {
-            display: inline-block;
-            background: #38bdf8;
-            color: #0f172a;
-            text-decoration: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 15px;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .btn-acao:hover {
-            background: #0ea5e9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Botão para voltar à página anterior -->
-        <a href="index.html" class="btn-voltar">← Voltar</a>
+    <!-- Botão de Voltar -->
+    <a href="index.html" class="btn-voltar">← Voltar</a>
 
-      <a href="localizapet.html">Ver Projeto</a>
-
-        <h1>Localiza Pet</h1>
-        
-        <p>Uma plataforma de utilidade pública para ajudar no reencontro de animais perdidos em Vila Velha.</p>
-
-        <!-- Link para acessar o projeto -->
-        <a href="#" target="_blank" class="btn-acao">Ver Projeto</a>
-    </div>
+    <!-- Imagem apontando para .jpg -->
+    <img src="animais.jpg" alt="Localiza Pet" class="foto-fundo">
 
 </body>
 </html>
