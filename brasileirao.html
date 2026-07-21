@@ -34,25 +34,26 @@
             border-color: #e11d48;
         }
 
-        /* Aviso discreto para orientar o usuário */
+        /* Aviso visual garantido e destacado */
         #aviso-som {
             display: inline-block;
-            background: rgba(15, 23, 42, 0.85);
-            color: #cbd5e1;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 13px;
+            background: rgba(15, 23, 42, 0.95);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
             margin-bottom: 20px;
-            margin-top: 45px;
-            border: 1px solid rgba(225, 29, 72, 0.4);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            animation: pulse 2s infinite;
+            margin-top: 50px;
+            border: 2px solid #e11d48;
+            box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
+            animation: piscar 1.5s infinite;
         }
 
-        @keyframes pulse {
-            0% { border-color: rgba(225, 29, 72, 0.4); }
-            50% { border-color: rgba(225, 29, 72, 1); }
-            100% { border-color: rgba(225, 29, 72, 0.4); }
+        @keyframes piscar {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 4px 25px rgba(225, 29, 72, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); }
         }
 
         .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
@@ -76,8 +77,8 @@
 
         <h1>Campeonato Brasileiro - Série A</h1>
         
-        <!-- Aviso amigável que avisa e some sozinho -->
-        <div id="aviso-som">🎵 Clique em qualquer lugar para ativar a música</div>
+        <!-- Caixa de aviso visível no topo -->
+        <div id="aviso-som">🎵 Clique em qualquer lugar da tela para ativar o som</div>
 
         <audio id="audio-fundo" src="musica-brasileirao.mp3" loop></audio>
         
@@ -103,7 +104,7 @@
             if (audio.paused) {
                 audio.play();
                 if (aviso) {
-                    aviso.style.display = 'none'; // Some com o aviso assim que o som toca
+                    aviso.style.display = 'none'; // Some com o aviso na hora que a música toca
                 }
             }
         }, { once: true });
