@@ -9,6 +9,25 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         
+        #audio-fundo { display: none; }
+
+        #btn-som {
+            background: #e11d48;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: background 0.3s;
+        }
+        #btn-som:hover {
+            background: #be123c;
+        }
+
         .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
         .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
@@ -28,7 +47,7 @@
     <div class="container">
         <h1>Campeonato Brasileiro - Série A</h1>
         
-        <!-- Audio com ID para o script conseguir controlar -->
+        <button id="btn-som" onclick="tocarMusica()">🎵 Ativar Som / Entrar</button>
         <audio id="audio-fundo" src="musica-brasileirao.mp3" loop></audio>
         
         <h2>Classificação 2026 (Live)</h2>
@@ -50,13 +69,13 @@
     </div>
 
     <script>
-        // Força a música a tocar assim que o usuário clicar em qualquer lugar da tela (exigência do navegador)
-        document.addEventListener('click', function() {
+        function tocarMusica() {
             const audio = document.getElementById('audio-fundo');
-            if (audio.paused) {
-                audio.play();
-            }
-        }, { once: true });
+            const botao = document.getElementById('btn-som');
+            
+            audio.play();
+            botao.style.display = 'none';
+        }
 
         const dadosBrasileirao = {
             "classificacao": [
