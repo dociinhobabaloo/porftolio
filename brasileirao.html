@@ -9,10 +9,7 @@
         .container { max-width: 900px; margin: 0 auto; }
         h1, h2 { text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
         
-        .btn-musica { background: rgba(225, 29, 72, 0.9); color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: background 0.3s; }
-        .btn-musica:hover { background: #be123c; }
-
-        .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; }
+        .tabela-container { max-height: 400px; overflow-y: auto; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.7); margin-bottom: 30px; margin-top: 20px; }
         .tabela-container::-webkit-scrollbar { width: 8px; }
         .tabela-container::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.9); }
         .tabela-container::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 4px; }
@@ -28,15 +25,13 @@
     </style>
 </head>
 <body>
-    <!-- Apontando corretamente para o arquivo musica-brasileirao.mp3 -->
-    <audio id="audio-fundo" loop>
+    <!-- Áudio invisível na página -->
+    <audio id="audio-fundo" loop style="display: none;">
         <source src="musica-brasileirao.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
         <h1>Campeonato Brasileiro - Série A</h1>
-        
-        <button id="botao-som" class="btn-musica" onclick="toggleSom()">🎵 Ligar Som da Rodada</button>
         
         <h2>Classificação 2026 (Live)</h2>
         <div class="tabela-container">
@@ -116,23 +111,15 @@
             });
         }
 
-        function toggleSom() {
-            const audio = document.getElementById('audio-fundo');
-            const botao = document.getElementById('botao-som');
-            
-            if (audio.paused) {
-                audio.play().then(() => {
-                    botao.innerText = "🔇 Pausar Som";
-                }).catch(e => {
-                    console.log("Erro ao reproduzir:", e);
-                });
-            } else {
-                audio.pause();
-                botao.innerText = "🎵 Ligar Som da Rodada";
-            }
-        }
-
         carregarTabela();
+
+        // Toca a música automaticamente assim que o usuário clicar em qualquer lugar da página
+        document.addEventListener('click', function() {
+            const audio = document.getElementById('audio-fundo');
+            if (audio.paused) {
+                audio.play().catch(error => console.log("Erro ao reproduzir áudio:", error));
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
