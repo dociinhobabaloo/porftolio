@@ -3,170 +3,179 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brasileirão Série A - Dashboard & Simulador Interativo</title>
+  <title>Brasileirão Série A - Tabela & Simulador</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #090d16;
-      --card-bg: rgba(22, 27, 34, 0.9);
-      --card-border: rgba(255, 255, 255, 0.08);
+      --bg: #030712;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(51, 65, 85, 0.6);
       --accent: #10b981;
       --accent-hover: #059669;
-      --text-main: #f0f6fc;
-      --text-sub: #8b949e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
       --g4: #10b981;
       --g6: #06b6d4;
-      --z4: #f85149;
+      --z4: #f43f5e;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
     
     body {
-      background: var(--bg-dark);
-      background-image: radial-gradient(circle at top, rgba(16, 185, 129, 0.08), transparent 40%);
-      color: var(--text-main);
-      padding: 20px;
+      background-color: var(--bg);
+      background-image: radial-gradient(at 50% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+      color: var(--text);
+      padding: 16px;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Header e Player */
+    /* Header */
     header {
-      max-width: 1240px;
-      margin: 0 auto 24px auto;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto 20px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
-      background: var(--card-bg);
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
-      padding: 14px 20px;
+      padding: 12px 20px;
       border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-icon {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      border-radius: 10px;
+    .brand-logo {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #10b981, #14b8a6);
       display: flex; align-items: center; justify-content: center;
-      color: #000; font-weight: bold; font-size: 1.2rem;
+      color: #030712; font-weight: 800; font-size: 1.2rem;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
     }
 
-    .brand-title h1 { font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
-    .brand-title p { font-size: 0.75rem; color: var(--text-sub); }
+    .brand-info h1 { font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+    .badge { background: rgba(16, 185, 129, 0.1); color: var(--accent); border: 1px solid rgba(16, 185, 129, 0.2); font-size: 0.65rem; padding: 2px 8px; border-radius: 9999px; font-weight: 600; }
+    .brand-info p { font-size: 0.75rem; color: var(--text-muted); }
 
-    .audio-player {
+    .player-box {
       display: flex; align-items: center; gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--card-border);
+      background: #020617; border: 1px solid var(--card-border);
       padding: 6px 12px; border-radius: 12px;
     }
-    .audio-player span { font-size: 0.75rem; font-weight: 600; color: var(--accent); }
-    audio { height: 28px; width: 180px; }
+    .player-box span { font-size: 0.75rem; font-weight: 600; color: var(--accent); }
+    audio { height: 28px; width: 170px; }
 
-    /* Layout */
-    .container { display: grid; grid-template-columns: 1fr 360px; gap: 20px; max-width: 1240px; margin: 0 auto; }
-    @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+    /* Main Layout */
+    .layout {
+      max-width: 1280px; width: 100%; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 360px; gap: 20px; flex: 1;
+    }
+    @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
 
     .card {
       background: var(--card-bg);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      border-radius: 16px; padding: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.4);
+      display: flex; flex-direction: column;
     }
 
-    /* Filtro e Legenda */
-    .table-tools {
+    /* Top Tools */
+    .tools-bar {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+      gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
     }
-    .search-input {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--card-border);
-      color: #fff; padding: 8px 14px;
-      border-radius: 10px; font-size: 0.8rem; outline: none; width: 220px;
+    .search-box {
+      background: #020617; border: 1px solid var(--card-border);
+      color: #fff; padding: 8px 12px; border-radius: 10px;
+      font-size: 0.8rem; outline: none; width: 220px; transition: all 0.2s;
     }
-    .search-input:focus { border-color: var(--accent); }
+    .search-box:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
-    .legend { display: flex; gap: 12px; font-size: 0.75rem; color: var(--text-sub); font-weight: 600; }
+    .legend { display: flex; gap: 12px; font-size: 0.7rem; color: var(--text-muted); font-weight: 500; }
     .legend-item { display: flex; align-items: center; gap: 6px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* Tabela Estilizada */
-    .table-responsive { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    /* Table */
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
     th {
-      color: var(--text-sub); padding: 12px 8px; text-align: center;
+      color: var(--text-muted); padding: 10px 8px; text-align: center;
       border-bottom: 1px solid var(--card-border); font-size: 0.7rem;
-      font-weight: 700; text-transform: uppercase;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
     }
     th.left, td.left { text-align: left; }
-    td { padding: 12px 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); }
-    tr:hover { background: rgba(255,255,255,0.02); }
+    td { padding: 12px 8px; text-align: center; border-bottom: 1px solid rgba(51, 65, 85, 0.3); font-weight: 500; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
 
-    tr.g4 td:first-child { border-left: 4px solid var(--g4); }
-    tr.g6 td:first-child { border-left: 4px solid var(--g6); }
-    tr.z4 td:first-child { border-left: 4px solid var(--z4); }
+    tr.g4 td:first-child { border-left: 4px solid var(--g4); color: var(--g4); font-weight: 700; }
+    tr.g6 td:first-child { border-left: 4px solid var(--g6); color: var(--g6); font-weight: 700; }
+    tr.z4 td:first-child { border-left: 4px solid var(--z4); color: var(--z4); font-weight: 700; }
 
     .pts { font-weight: 800; color: var(--accent); background: rgba(16, 185, 129, 0.08); border-radius: 6px; }
 
-    /* Painel Lateral */
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .panel-header h2 { font-size: 0.9rem; font-weight: 800; }
-    
+    /* Sidebar */
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .panel-title h2 { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .panel-title p { font-size: 0.7rem; color: var(--text-muted); }
+
     .round-select {
-      background: #000; color: var(--accent);
-      border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 6px 10px;
-      font-size: 0.75rem; font-weight: bold; outline: none; cursor: pointer;
+      background: #020617; color: var(--accent);
+      border: 1px solid var(--card-border); border-radius: 8px;
+      padding: 6px 10px; font-size: 0.75rem; font-weight: 700; outline: none; cursor: pointer;
     }
 
-    .tabs { display: flex; gap: 6px; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 14px; }
+    .tabs { display: flex; gap: 4px; background: #020617; padding: 4px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 12px; }
     .tab-btn {
       flex: 1; padding: 8px; border: none; background: transparent;
-      color: var(--text-sub); font-weight: 700; cursor: pointer;
-      border-radius: 8px; font-size: 0.75rem; transition: 0.2s;
+      color: var(--text-muted); font-weight: 600; cursor: pointer;
+      border-radius: 6px; font-size: 0.75rem; transition: all 0.2s;
     }
-    .tab-btn.active { background: var(--card-bg); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .tab-btn.active { background: rgba(30, 41, 59, 0.8); color: #fff; shadow: 0 1px 3px rgba(0,0,0,0.3); }
 
-    /* Lista de Jogos */
-    .matches-list { display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px; }
-    .match-item { background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px 12px; }
-    .match-date { font-size: 0.68rem; color: var(--accent); text-align: center; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
-    .match-teams { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; font-weight: 700; }
-    .team-name { flex: 1; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    /* Matches */
+    .matches-list { display: flex; flex-direction: column; gap: 8px; max-height: 480px; overflow-y: auto; padding-right: 4px; }
+    .match-item { background: rgba(2, 6, 23, 0.6); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; }
+    .match-date { font-size: 0.65rem; color: var(--accent); text-align: center; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+    .match-body { display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; font-weight: 700; }
+    .team-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .score-inputs { display: flex; align-items: center; gap: 4px; }
     .score-inputs input {
-      width: 30px; height: 30px; background: #000;
+      width: 28px; height: 28px; background: #020617;
       border: 1px solid var(--card-border); border-radius: 6px;
-      color: var(--accent); text-align: center; font-weight: bold; font-size: 0.85rem; outline: none;
+      color: var(--accent); text-align: center; font-weight: 800; font-size: 0.8rem; outline: none;
     }
 
-    /* Botões */
-    .btn-group { display: flex; gap: 8px; margin-top: 14px; pt-3; border-top: 1px solid var(--card-border); }
-    .btn { flex: 1; padding: 10px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
-    .btn-confirm { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+    /* Actions */
+    .btn-group { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--card-border); }
+    .btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
+    .btn-confirm { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
     .btn-confirm:hover { background: var(--accent-hover); }
-    .btn-reset { background: rgba(255,255,255,0.05); color: var(--text-sub); border: 1px solid var(--card-border); }
+    .btn-reset { background: rgba(30, 41, 59, 0.8); color: var(--text-muted); border: 1px solid var(--card-border); }
     .btn-reset:hover { color: #fff; }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header com Player -->
   <header>
     <div class="brand">
-      <div class="brand-icon">⚽</div>
-      <div class="brand-title">
-        <h1>BRASILEIRÃO SÉRIE A</h1>
-        <p>Classificação Oficial, Agenda de Jogos & Simulador</p>
+      <div class="brand-logo">⚽</div>
+      <div class="brand-info">
+        <h1>BRASILEIRÃO <span class="badge">SÉRIE A</span></h1>
+        <p>Classificação Oficial, Agenda & Simulador</p>
       </div>
     </div>
 
-    <div class="audio-player">
+    <div class="player-box">
       <span>♫ Tema</span>
       <audio controls>
         <source src="musica-brasileiro.mp3" type="audio/mpeg">
@@ -174,20 +183,20 @@
     </div>
   </header>
 
-  <div class="container">
+  <div class="layout">
     
     <!-- Tabela Principal -->
     <div class="card">
-      <div class="table-tools">
-        <input type="text" id="search-input" class="search-input" onkeyup="filterTable()" placeholder="Buscar time por nome...">
+      <div class="tools-bar">
+        <input type="text" id="search-input" class="search-box" onkeyup="filterTable()" placeholder="Buscar time...">
         <div class="legend">
-          <div class="legend-item"><div class="dot" style="background: var(--g4)"></div> G4</div>
-          <div class="legend-item"><div class="dot" style="background: var(--g6)"></div> G6</div>
+          <div class="legend-item"><div class="dot" style="background: var(--g4)"></div> G4 Libertadores</div>
+          <div class="legend-item"><div class="dot" style="background: var(--g6)"></div> G6 Pré-Lib.</div>
           <div class="legend-item"><div class="dot" style="background: var(--z4)"></div> Z4</div>
         </div>
       </div>
 
-      <div class="table-responsive">
+      <div class="table-container">
         <table>
           <thead>
             <tr>
@@ -204,7 +213,7 @@
             </tr>
           </thead>
           <tbody id="table-body">
-            <!-- Dados via JS -->
+            <!-- Gerado por JS -->
           </tbody>
         </table>
       </div>
@@ -213,10 +222,13 @@
     <!-- Painel Lateral -->
     <div class="card">
       <div class="panel-header">
-        <h2 id="panel-title">Próximos Jogos</h2>
+        <div class="panel-title">
+          <h2 id="panel-title">Próximos Jogos</h2>
+          <p id="panel-subtitle">Agenda Oficial da Série A</p>
+        </div>
         <select id="round-select" class="round-select" onchange="renderMatches()">
-          <option value="29">Rodada 29 (Esta Semana)</option>
-          <option value="30">Rodada 30 (Próxima Semana)</option>
+          <option value="29">Rodada 29</option>
+          <option value="30">Rodada 30</option>
         </select>
       </div>
 
@@ -228,12 +240,12 @@
 
       <!-- Jogos -->
       <div id="matches-list" class="matches-list">
-        <!-- Jogos via JS -->
+        <!-- Gerado por JS -->
       </div>
 
       <!-- Botões do Simulador -->
       <div id="sim-actions" class="btn-group" style="display: none;">
-        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar Placares</button>
+        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar</button>
         <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
       </div>
     </div>
@@ -305,8 +317,8 @@
 
         tbody.innerHTML += `
           <tr class="${zoneClass}">
-            <td><b>${pos}</b></td>
-            <td class="left"><b>${t.name}</b></td>
+            <td>${pos}</td>
+            <td class="left">${t.name}</td>
             <td class="pts">${t.pts}</td>
             <td>${t.j}</td>
             <td>${t.v}</td>
@@ -325,7 +337,8 @@
       document.getElementById('tab-agenda').className = tab === 'agenda' ? 'tab-btn active' : 'tab-btn';
       document.getElementById('tab-sim').className = tab === 'simulador' ? 'tab-btn active' : 'tab-btn';
       document.getElementById('sim-actions').style.display = tab === 'simulador' ? 'flex' : 'none';
-      document.getElementById('panel-title').textContent = tab === 'agenda' ? 'Próximos Jogos' : 'Simulador de Placares';
+      document.getElementById('panel-title').textContent = tab === 'agenda' ? 'Próximos Jogos' : 'Simulador';
+      document.getElementById('panel-subtitle').textContent = tab === 'agenda' ? 'Agenda Oficial da Série A' : 'Preencha os placares abaixo';
       renderMatches();
     }
 
@@ -340,9 +353,9 @@
           container.innerHTML += `
             <div class="match-item">
               <div class="match-date">${g.date}</div>
-              <div class="match-teams">
+              <div class="match-body">
                 <span class="team-name" style="text-align: right;">${g.home}</span>
-                <span style="color: var(--text-sub); font-size: 0.7rem; padding: 0 8px;">VS</span>
+                <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 8px;">VS</span>
                 <span class="team-name" style="text-align: left;">${g.away}</span>
               </div>
             </div>`;
@@ -350,11 +363,11 @@
           container.innerHTML += `
             <div class="match-item">
               <div class="match-date">${g.date}</div>
-              <div class="match-teams">
+              <div class="match-body">
                 <span class="team-name" style="text-align: right;">${g.home}</span>
                 <div class="score-inputs">
                   <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
-                  <span style="color: var(--text-sub); font-size: 0.75rem;">x</span>
+                  <span style="color: var(--text-muted); font-size: 0.7rem;">x</span>
                   <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
                 </div>
                 <span class="team-name" style="text-align: left;">${g.away}</span>
