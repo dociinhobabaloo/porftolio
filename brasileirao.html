@@ -3,42 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brasileirão Série A - Tabela & Simulador</title>
+  <title>Brasileirão Série A - Tabela & Agenda Interativa</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --border: #334155;
-      --accent: #10b981;
-      --accent-hover: #059669;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --g4: #10b981;
-      --g6: #06b6d4;
-      --z4: #ef4444;
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --accent: #2ea043;
+      --text: #f0f6fc;
+      --text-sub: #8b949e;
+      --g4: #2ea043;
+      --g6: #388bfd;
+      --z4: #f85149;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     body { background: var(--bg); color: var(--text); padding: 20px; min-height: 100vh; }
-    
+
     header { text-align: center; margin-bottom: 24px; }
-    header h1 { font-size: 1.8rem; color: #fff; font-weight: 800; }
-    header p { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+    header h1 { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+    header p { color: var(--text-sub); font-size: 0.85rem; margin-top: 4px; }
 
-    .layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1200px; margin: 0 auto; }
-    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+    .container { display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1200px; margin: 0 auto; }
+    @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
 
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
 
-    .tabs { display: flex; gap: 8px; margin-bottom: 16px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
-    .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 6px; font-size: 0.8rem; transition: 0.2s; }
-    .tab-btn.active { background: var(--card-bg); color: #fff; }
-
-    .table-container { overflow-x: auto; }
+    /* Tabela */
+    .table-responsive { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th { color: var(--text-muted); padding: 10px 6px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.75rem; text-transform: uppercase; }
+    th { color: var(--text-sub); padding: 10px 8px; text-align: center; border-bottom: 2px solid var(--border); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
     th.left, td.left { text-align: left; }
-    td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    td { padding: 10px 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    tr:hover { background: rgba(255,255,255,0.03); }
 
     tr.g4 td:first-child { border-left: 3px solid var(--g4); }
     tr.g6 td:first-child { border-left: 3px solid var(--g6); }
@@ -46,35 +43,46 @@
 
     .pts { font-weight: 800; color: var(--accent); }
 
-    .match { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
-    .match-header { font-size: 0.75rem; color: var(--accent); text-align: center; margin-bottom: 6px; font-weight: 700; }
-    .match-body { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; gap: 6px; }
-    .team-name { flex: 1; font-weight: 600; font-size: 0.8rem; }
-    .team-name.home { text-align: right; }
-    .team-name.away { text-align: left; }
+    /* Abas do Painel Lateral */
+    .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); pb: 12px; margin-bottom: 12px; padding-bottom: 10px; }
+    .panel-header h2 { font-size: 0.95rem; font-weight: 700; }
+    
+    .tabs { display: flex; gap: 6px; background: #0d1117; padding: 4px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; }
+    .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-sub); font-weight: 600; cursor: pointer; border-radius: 6px; font-size: 0.8rem; transition: 0.2s; }
+    .tab-btn.active { background: var(--card-bg); color: #fff; }
 
-    .score-box { display: flex; align-items: center; gap: 4px; }
-    .score-box input { width: 32px; height: 32px; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; color: #fff; text-align: center; font-weight: bold; font-size: 0.85rem; }
-    .score-box input:focus { outline: none; border-color: var(--accent); }
+    /* Lista de Jogos */
+    .matches-list { display: flex; flex-col; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; }
+    .match-item { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+    .match-date { font-size: 0.7rem; color: var(--accent); text-align: center; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+    .match-teams { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; font-weight: 600; }
+    .team-name { flex: 1; text-align: center; }
+    
+    .score-inputs { display: flex; align-items: center; gap: 4px; }
+    .score-inputs input { width: 32px; height: 32px; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; color: #fff; text-align: center; font-weight: bold; font-size: 0.85rem; }
+    .score-inputs input:focus { outline: none; border-color: var(--accent); }
 
-    .btn-group { display: flex; gap: 8px; margin-top: 12px; }
-    .btn { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+    /* Botões */
+    .btn-group { display: flex; gap: 8px; margin-top: 14px; }
+    .btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
     .btn-confirm { background: var(--accent); color: #fff; }
-    .btn-confirm:hover { background: var(--accent-hover); }
-    .btn-reset { background: #334155; color: #fff; }
+    .btn-confirm:hover { background: #268a39; }
+    .btn-reset { background: #21262d; color: var(--text-sub); border: 1px solid var(--border); }
+    .btn-reset:hover { color: #fff; }
   </style>
 </head>
 <body>
 
   <header>
     <h1>BRASILEIRÃO SÉRIE A</h1>
-    <p>Classificação Oficial & Agenda da Competição</p>
+    <p>Classificação Oficial, Agenda de Jogos & Simulador</p>
   </header>
 
-  <div class="layout">
+  <div class="container">
+    
     <!-- Tabela Principal -->
     <div class="card">
-      <div class="table-container">
+      <div class="table-responsive">
         <table>
           <thead>
             <tr>
@@ -90,25 +98,41 @@
               <th>SG</th>
             </tr>
           </thead>
-          <tbody id="table-body"></tbody>
+          <tbody id="table-body">
+            <!-- Dados gerados via JS -->
+          </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Painel Lateral -->
+    <!-- Painel Lateral (Agenda & Simulador) -->
     <div class="card">
+      <div class="panel-header">
+        <h2 id="panel-title">Próximos Jogos</h2>
+        <select id="round-select" onchange="renderMatches()" style="background: #0d1117; color: var(--accent); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; font-weight: bold;">
+          <option value="29">Rodada 29</option>
+          <option value="30">Rodada 30</option>
+        </select>
+      </div>
+
+      <!-- Alternador de Abas -->
       <div class="tabs">
         <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
         <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">⚡ Simulador</button>
       </div>
 
-      <div id="matches-list"></div>
+      <!-- Container de Jogos -->
+      <div id="matches-list" class="matches-list">
+        <!-- Jogos via JS -->
+      </div>
 
+      <!-- Botões de Ação do Simulador -->
       <div id="sim-actions" class="btn-group" style="display: none;">
-        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar</button>
+        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar Placares</button>
         <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
       </div>
     </div>
+
   </div>
 
   <script>
@@ -123,7 +147,7 @@
       { name: 'Santos', pts: 41, j: 28, v: 11, e: 8, d: 9, gp: 43, gc: 41 },
       { name: 'Coritiba', pts: 38, j: 28, v: 10, e: 8, d: 10, gp: 37, gc: 43 },
       { name: 'São Paulo', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'RB Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
+      { name: 'Red Bull Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
       { name: 'Botafogo', pts: 35, j: 28, v: 9, e: 8, d: 11, gp: 41, gc: 45 },
       { name: 'Vitória', pts: 33, j: 28, v: 9, e: 6, d: 13, gp: 28, gc: 42 },
       { name: 'Corinthians', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 29, gc: 32 },
@@ -135,26 +159,34 @@
       { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
     ];
 
-    const roundGames = [
+    const round29 = [
       { id: 1, home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 2, home: 'RB Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 2, home: 'Red Bull Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
       { id: 3, home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
       { id: 4, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
       { id: 5, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
     ];
 
-    let currentTeams = JSON.parse(JSON.stringify(initialTeams));
+    const round30 = [
+      { id: 6, home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10 - 18:00', hScore: '', aScore: '' },
+      { id: 7, home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 8, home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 9, home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' }
+    ];
+
+    let activeTeams = JSON.parse(JSON.stringify(initialTeams));
     let activeTab = 'agenda';
 
     function renderTable() {
-      currentTeams.sort((a, b) => (b.pts - a.pts) || (b.v - a.v) || ((b.gp - b.gc) - (a.gp - a.gc)));
+      activeTeams.sort((a, b) => (b.pts - a.pts) || (b.v - a.v) || ((b.gp - b.gc) - (a.gp - a.gc)));
       const tbody = document.getElementById('table-body');
       tbody.innerHTML = '';
-      currentTeams.forEach((t, i) => {
-        const pos = i + 1;
+      
+      activeTeams.forEach((t, index) => {
+        const pos = index + 1;
         const sg = t.gp - t.gc;
         let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
-        
+
         tbody.innerHTML += `
           <tr class="${zoneClass}">
             <td><b>${pos}</b></td>
@@ -167,39 +199,8 @@
             <td>${t.gp}</td>
             <td>${t.gc}</td>
             <td>${sg > 0 ? '+' + sg : sg}</td>
-          </tr>`;
-      });
-    }
-
-    function renderMatches() {
-      const container = document.getElementById('matches-list');
-      container.innerHTML = '';
-      roundGames.forEach(g => {
-        if (activeTab === 'agenda') {
-          container.innerHTML += `
-            <div class="match">
-              <div class="match-header">${g.date}</div>
-              <div class="match-body">
-                <span class="team-name home">${g.home}</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: bold;">VS</span>
-                <span class="team-name away">${g.away}</span>
-              </div>
-            </div>`;
-        } else {
-          container.innerHTML += `
-            <div class="match">
-              <div class="match-header">${g.date}</div>
-              <div class="match-body">
-                <span class="team-name home">${g.home}</span>
-                <div class="score-box">
-                  <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
-                  <span style="color: var(--text-muted);">x</span>
-                  <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
-                </div>
-                <span class="team-name away">${g.away}</span>
-              </div>
-            </div>`;
-        }
+          </tr>
+        `;
       });
     }
 
@@ -208,25 +209,65 @@
       document.getElementById('tab-agenda').className = tab === 'agenda' ? 'tab-btn active' : 'tab-btn';
       document.getElementById('tab-sim').className = tab === 'simulador' ? 'tab-btn active' : 'tab-btn';
       document.getElementById('sim-actions').style.display = tab === 'simulador' ? 'flex' : 'none';
+      document.getElementById('panel-title').textContent = tab === 'agenda' ? 'Próximos Jogos' : 'Simulador de Placares';
       renderMatches();
     }
 
+    function renderMatches() {
+      const selectedRound = document.getElementById('round-select').value;
+      const games = selectedRound === '29' ? round29 : round30;
+      const container = document.getElementById('matches-list');
+      container.innerHTML = '';
+
+      games.forEach(g => {
+        if (activeTab === 'agenda') {
+          container.innerHTML += `
+            <div class="match-item">
+              <div class="match-date">${g.date}</div>
+              <div class="match-teams">
+                <span class="team-name">${g.home}</span>
+                <span style="color: var(--text-sub); font-size: 0.7rem; padding: 0 6px;">VS</span>
+                <span class="team-name">${g.away}</span>
+              </div>
+            </div>`;
+        } else {
+          container.innerHTML += `
+            <div class="match-item">
+              <div class="match-date">${g.date}</div>
+              <div class="match-teams">
+                <span class="team-name" style="text-align: right;">${g.home}</span>
+                <div class="score-inputs">
+                  <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
+                  <span style="color: var(--text-sub); font-size: 0.75rem;">x</span>
+                  <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
+                </div>
+                <span class="team-name" style="text-align: left;">${g.away}</span>
+              </div>
+            </div>`;
+        }
+      });
+    }
+
     function updateScore(id, side, val) {
-      const g = roundGames.find(item => item.id === id);
-      if (g) {
-        if (side === 'h') g.hScore = val;
-        else g.aScore = val;
+      const allGames = [...round29, ...round30];
+      const game = allGames.find(g => g.id === id);
+      if (game) {
+        if (side === 'h') game.hScore = val;
+        else game.aScore = val;
       }
     }
 
     function confirmSimulation() {
-      currentTeams = JSON.parse(JSON.stringify(initialTeams));
-      roundGames.forEach(g => {
+      activeTeams = JSON.parse(JSON.stringify(initialTeams));
+      const allGames = [...round29, ...round30];
+
+      allGames.forEach(g => {
         if (g.hScore !== '' && g.aScore !== '') {
           const h = parseInt(g.hScore);
           const a = parseInt(g.aScore);
-          const home = currentTeams.find(t => t.name === g.home);
-          const away = currentTeams.find(t => t.name === g.away);
+          const home = activeTeams.find(t => t.name === g.home);
+          const away = activeTeams.find(t => t.name === g.away);
+
           if (home && away) {
             home.j++; away.j++; home.gp += h; home.gc += a; away.gp += a; away.gc += h;
             if (h > a) { home.pts += 3; home.v++; away.d++; }
@@ -235,12 +276,13 @@
           }
         }
       });
+
       renderTable();
     }
 
     function resetSimulation() {
-      roundGames.forEach(g => { g.hScore = ''; g.aScore = ''; });
-      currentTeams = JSON.parse(JSON.stringify(initialTeams));
+      [...round29, ...round30].forEach(g => { g.hScore = ''; g.aScore = ''; });
+      activeTeams = JSON.parse(JSON.stringify(initialTeams));
       renderMatches();
       renderTable();
     }
