@@ -1,384 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brasileirão Série A - Dashboard & Simulador Interativo</title>
-  <style>
-    :root {
-      --bg: #090d16;
-      --card-bg: rgba(22, 27, 34, 0.85);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --accent: #10b981;
-      --accent-hover: #059669;
-      --text: #f0f6fc;
-      --text-muted: #8b949e;
-      --g4: #10b981;
-      --g6: #06b6d4;
-      --z4: #f85149;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    
-    body {
-      background: var(--bg);
-      background-image: radial-gradient(circle at top, rgba(16, 185, 129, 0.08), transparent 50%);
-      color: var(--text);
-      padding: 12px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    @media (min-width: 640px) { body { padding: 20px; } }
-
-    header {
-      max-width: 1240px;
-      width: 100%;
-      margin: 0 auto 16px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 12px 16px;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      backdrop-filter: blur(12px);
-    }
-
-    @media (min-width: 640px) {
-      header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 14px 20px;
-        margin-bottom: 24px;
-      }
-    }
-
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo-img {
-      width: 44px; height: 44px; object-fit: contain;
-      filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
-    }
-
-    .brand-title h1 { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
-    .brand-title p { font-size: 0.7rem; color: var(--text-muted); }
-
-    @media (min-width: 640px) {
-      .brand-title h1 { font-size: 1.1rem; }
-      .brand-title p { font-size: 0.75rem; }
-    }
-
-    .audio-player-box {
-      display: flex; align-items: center; gap: 10px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--card-border);
-      padding: 6px 12px; border-radius: 12px;
-      width: 100%; justify-content: space-between;
-    }
-
-    @media (min-width: 640px) { .audio-player-box { width: auto; } }
-
-    .audio-player-box span { font-size: 0.75rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
-    audio { height: 32px; max-width: 200px; outline: none; }
-
-    .container { 
-      display: flex; flex-direction: column; gap: 16px; 
-      max-width: 1240px; margin: 0 auto; width: 100%;
-    }
-
-    @media (min-width: 960px) {
-      .container { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      backdrop-filter: blur(12px);
-    }
-
-    @media (min-width: 640px) { .card { padding: 18px; } }
-
-    .table-tools {
-      display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
-    }
-
-    @media (min-width: 640px) {
-      .table-tools { flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    }
-
-    .search-input {
-      background: rgba(0,0,0,0.5); border: 1px solid var(--card-border);
-      color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 0.8rem; outline: none; width: 100%;
-    }
-    @media (min-width: 640px) { .search-input { width: 220px; padding: 8px 14px; } }
-    .search-input:focus { border-color: var(--accent); }
-
-    .legend { display: flex; gap: 10px; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
-    .legend-item { display: flex; align-items: center; gap: 4px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; }
-
-    .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 580px; }
-    th {
-      color: var(--text-muted); padding: 10px 6px; text-align: center;
-      border-bottom: 1px solid var(--card-border); font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-    }
-    th.left, td.left { text-align: left; }
-    td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); }
-
-    .club-cell { display: flex; align-items: center; gap: 10px; }
-    .club-badge-svg {
-      width: 22px; height: 22px; flex-shrink: 0;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-    }
-
-    tr.g4 td:first-child { border-left: 4px solid var(--g4); }
-    tr.g6 td:first-child { border-left: 4px solid var(--g6); }
-    tr.z4 td:first-child { border-left: 4px solid var(--z4); }
-
-    .pts { font-weight: 800; color: var(--accent); background: rgba(16, 185, 129, 0.08); border-radius: 6px; }
-
-    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
-    .panel-header h2 { font-size: 0.85rem; font-weight: 800; }
-    
-    .round-select {
-      background: #000; color: var(--accent); border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 6px 8px; font-size: 0.72rem; font-weight: bold; outline: none; cursor: pointer;
-    }
-
-    .tabs { display: flex; gap: 6px; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 12px; }
-    .tab-btn {
-      flex: 1; padding: 10px 6px; border: none; background: transparent;
-      color: var(--text-muted); font-weight: 700; cursor: pointer; border-radius: 8px; font-size: 0.75rem; transition: 0.2s;
-    }
-    .tab-btn.active { background: var(--card-bg); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-
-    .matches-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; padding-right: 2px; }
-    .match-item { background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; }
-    .match-date { font-size: 0.65rem; color: var(--accent); text-align: center; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
-    .match-teams { display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; font-weight: 700; }
-    .team-col { flex: 1; display: flex; align-items: center; gap: 8px; overflow: hidden; }
-    .team-col.home { justify-content: flex-end; }
-    .team-col.away { justify-content: flex-start; }
-    .team-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    .score-inputs { display: flex; align-items: center; gap: 4px; }
-    .score-inputs input {
-      width: 32px; height: 32px; background: #000; border: 1px solid var(--card-border);
-      border-radius: 6px; color: var(--accent); text-align: center; font-weight: bold; font-size: 0.85rem; outline: none;
-    }
-
-    .btn-group { display: flex; gap: 8px; margin-top: 12px; pt-3; border-top: 1px solid var(--card-border); }
-    .btn { flex: 1; padding: 12px 8px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
-    .btn-confirm { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
-    .btn-confirm:hover { background: var(--accent-hover); }
-    .btn-reset { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--card-border); }
-    .btn-reset:hover { color: #fff; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brasileirão Série A - Dashboard & Simulador</title>
+<style>
+:root{--green:#008f4c;--green-dark:#006f3b;--green-soft:#eaf7f0;--blue:#0875c1;--red:#d92d20;--orange:#f59e0b;--ink:#17212b;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f6f8;--white:#fff}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{background:var(--bg);color:var(--ink);min-height:100vh;padding:0 14px 30px}
+header{max-width:1240px;width:100%;margin:18px auto 18px;background:linear-gradient(135deg,var(--green-dark),var(--green));border-radius:14px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 8px 24px rgba(0,80,40,.18)}
+.brand{display:flex;align-items:center;gap:14px}.brand-logo-img{width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 2px 5px rgba(0,0,0,.25))}.brand-title h1{font-size:1.18rem;color:#fff;font-weight:900;letter-spacing:.2px}.brand-title p{font-size:.76rem;color:rgba(255,255,255,.78);margin-top:3px}
+.audio-player-box{display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.18);padding:7px 10px;border-radius:10px}.audio-player-box span{font-size:.72rem;font-weight:800;color:#fff}audio{height:30px;max-width:190px}
+.container{max-width:1240px;width:100%;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:18px}.card{background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 18px rgba(15,23,42,.06);overflow:hidden}
+.table-tools{padding:17px 18px 12px;display:flex;justify-content:space-between;align-items:center;gap:12px}.search-input{background:#f8fafc;border:1px solid var(--line);color:var(--ink);padding:10px 13px;border-radius:8px;font-size:.8rem;outline:none;width:230px}.search-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,143,76,.1)}
+.legend{display:flex;gap:13px;font-size:.68rem;color:var(--muted);font-weight:700}.legend-item{display:flex;align-items:center;gap:5px}.dot{width:8px;height:8px;border-radius:2px}.legend-item:nth-child(1) .dot{background:var(--green)!important}.legend-item:nth-child(2) .dot{background:var(--blue)!important}.legend-item:nth-child(3) .dot{background:var(--red)!important}
+.table-responsive{overflow-x:auto}table{width:100%;border-collapse:separate;border-spacing:0;font-size:.78rem;min-width:700px}thead{background:#f8fafc}th{color:#667085;padding:11px 7px;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}th.left,td.left{text-align:left}td{padding:9px 7px;text-align:center;border-bottom:1px solid #eef0f2;color:#475467}tbody tr:hover{background:#fafdfb}.club-cell{display:flex;align-items:center;gap:11px}.club-badge-img{width:31px;height:31px;object-fit:contain;flex-shrink:0;filter:none;border-radius:0}.club-fallback{width:31px;height:31px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;background:#eef2f3;color:#344054;font-size:9px;font-weight:900;flex-shrink:0}.club-name{font-weight:750;color:#1f2937}.pts{font-weight:900!important;color:var(--ink);background:transparent!important}
+tbody tr.g4 td:first-child{border-left:4px solid var(--green)}tbody tr.g6 td:first-child{border-left:4px solid var(--blue)}tbody tr.z4 td:first-child{border-left:4px solid var(--red)}tbody tr.g4 td:first-child,tbody tr.g6 td:first-child,tbody tr.z4 td:first-child{font-weight:900;color:var(--ink)}
+.panel-header{padding:17px 18px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line)}.panel-header h2{font-size:.9rem;font-weight:850}.round-select{background:#fff;color:var(--green-dark);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:.7rem;font-weight:800;outline:none}
+.tabs{display:flex;gap:4px;background:#f3f5f6;padding:4px;border-radius:9px;margin:14px 18px 12px}.tab-btn{flex:1;padding:9px 6px;border:none;background:transparent;color:var(--muted);font-weight:800;cursor:pointer;border-radius:7px;font-size:.72rem}.tab-btn.active{background:#fff;color:var(--green-dark);box-shadow:0 1px 5px rgba(0,0,0,.08)}
+.matches-list{display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto;padding:0 18px 18px}.match-item{background:#fafbfc;border:1px solid var(--line);border-radius:10px;padding:11px}.match-date{font-size:.6rem;color:var(--green-dark);text-align:center;font-weight:850;margin-bottom:8px;text-transform:uppercase}.match-teams{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;font-weight:750;gap:7px}.team-col{flex:1;display:flex;align-items:center;gap:7px;overflow:hidden}.team-col.home{justify-content:flex-end}.team-col.away{justify-content:flex-start}.team-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.match-badge{width:25px;height:25px;object-fit:contain;flex-shrink:0}.score-inputs{display:flex;align-items:center;gap:4px}.score-inputs input{width:32px;height:30px;background:#fff;border:1px solid var(--line);border-radius:6px;color:var(--green-dark);text-align:center;font-weight:900;font-size:.8rem;outline:none}.vs{color:#98a2b3;font-size:.68rem}.btn-group{display:flex;gap:8px;margin:0 18px 18px;padding-top:12px;border-top:1px solid var(--line)}.btn{flex:1;padding:11px 8px;border:none;border-radius:8px;font-weight:800;cursor:pointer;font-size:.72rem}.btn-confirm{background:var(--green);color:#fff}.btn-reset{background:#f5f6f7;color:#667085;border:1px solid var(--line)}.status{font-size:.68rem;color:var(--muted);margin:0 18px 14px;text-align:center}.empty{padding:20px;text-align:center;color:var(--muted);font-size:.8rem}
+@media(max-width:959px){.container{grid-template-columns:1fr}}
+@media(max-width:639px){body{padding:0 8px 20px}header{margin:8px auto 12px;padding:14px;border-radius:11px}.brand-logo-img{width:48px;height:48px}.brand-title h1{font-size:1rem}.audio-player-box{display:none}.table-tools{align-items:stretch;flex-direction:column}.search-input{width:100%}.legend{justify-content:center}.card{border-radius:11px}}
+</style>
 </head>
 <body>
-
-  <header>
-    <div class="brand">
-      <img src="logo-brasileirao.png" alt="Logo Brasileirão" class="brand-logo-img" onerror="this.style.display='none'">
-      <div class="brand-title">
-        <h1>BRASILEIRÃO SÉRIE A</h1>
-        <p>Classificação Oficial, Agenda & Simulador</p>
-      </div>
-    </div>
-
-    <div class="audio-player-box">
-      <span>♫ Tema</span>
-      <audio id="audio-fundo" controls loop preload="auto">
-        <source src="musica-brasileirao.mp3" type="audio/mpeg">
-        O seu navegador não suporta o áudio.
-      </audio>
-    </div>
-  </header>
-
-  <div class="container">
-    
-    <div class="card">
-      <div class="table-tools">
-        <input type="text" id="search-input" class="search-input" onkeyup="filterTable()" placeholder="Buscar time...">
-        <div class="legend">
-          <div class="legend-item"><div class="dot" style="background: var(--g4)"></div> G4</div>
-          <div class="legend-item"><div class="dot" style="background: var(--g6)"></div> G6</div>
-          <div class="legend-item"><div class="dot" style="background: var(--z4)"></div> Z4</div>
-        </div>
-      </div>
-
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th class="left">Clube</th>
-              <th>P</th>
-              <th>J</th>
-              <th>V</th>
-              <th>E</th>
-              <th>D</th>
-              <th>GP</th>
-              <th>GC</th>
-              <th>SG</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="panel-header">
-        <h2 id="panel-title">Próximos Jogos</h2>
-        <select id="round-select" class="round-select" onchange="renderMatches()">
-          <option value="29">Rodada 29 (Esta Semana)</option>
-          <option value="30">Rodada 30 (Próxima Semana)</option>
-        </select>
-      </div>
-
-      <div class="tabs">
-        <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
-        <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">⚡ Simulador</button>
-      </div>
-
-      <div id="matches-list" class="matches-list"></div>
-
-      <div id="sim-actions" class="btn-group" style="display: none;">
-        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar Placares</button>
-        <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
-      </div>
-    </div>
-
+<header>
+  <div class="brand">
+    <img id="league-logo" src="https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/Brasileir%C3%A3o%20S%C3%A9rie%20A%20HD.png" alt="Logo Brasileirão" class="brand-logo-img"
+      onerror="this.style.display='none'">
+    <div class="brand-title"><h1>BRASILEIRÃO SÉRIE A</h1><p>Classificação, Agenda & Simulador</p></div>
   </div>
+  <div class="audio-player-box"><span>♫ Tema</span><audio id="audio-fundo" controls loop preload="none"><source src="musica-brasileirao.mp3" type="audio/mpeg"></audio></div>
+</header>
 
-  <script>
-    document.addEventListener('click', function() {
-      const audio = document.getElementById('audio-fundo');
-      if (audio && audio.paused) {
-        audio.play().catch(() => {});
-      }
-    }, { once: true });
+<div class="container">
+<section class="card">
+  <div style="padding:18px 18px 0"><div style="font-size:.98rem;font-weight:900">Classificação</div><div style="font-size:.68rem;color:#98a2b3;margin-top:3px">Brasileirão Série A · tabela de pontos</div></div>
+  <div class="table-tools">
+    <input type="text" id="search-input" class="search-input" placeholder="Buscar time...">
+    <div class="legend"><div class="legend-item"><div class="dot" style="background:var(--g4)"></div>G4</div><div class="legend-item"><div class="dot" style="background:var(--g6)"></div>G6</div><div class="legend-item"><div class="dot" style="background:var(--z4)"></div>Z4</div></div>
+  </div>
+  <div class="table-responsive"><table><thead><tr><th>#</th><th class="left">Clube</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th></tr></thead><tbody id="table-body"></tbody></table></div>
+</section>
 
-    // Mapeamento em SVG puro que garante o carregamento sem falhas
-    const svgBadges = {
-      'Flamengo': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 20 L100 80 L50 120 L0 80 L0 20 Z" fill="#c8102e"/><path d="M20 20 H80 V40 H20 Z M20 60 H80 V80 H20 Z" fill="#000000"/><text x="50" y="70" font-size="32" font-weight="900" fill="#ffffff" text-anchor="middle">CRF</text></svg>',
-      'Palmeiras': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#006437" stroke="#ffffff" stroke-width="4"/><circle cx="50" cy="50" r="36" fill="none" stroke="#ffffff" stroke-width="2"/><text x="50" y="58" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle">P</text></svg>',
-      'Athletico-PR': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M0 0 L100 30 L100 120 L0 90 Z" fill="#000000"/><path d="M20 30 L80 50 L80 100 L20 80 Z" fill="#c8102e"/><text x="50" y="75" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle">CAP</text></svg>',
-      'Fluminense': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 25 L85 95 L50 120 L15 95 L0 25 Z" fill="#800020"/><path d="M50 10 L90 32 L78 88 L50 110 L22 88 L10 32 Z" fill="#006437"/><text x="50" y="68" font-size="26" font-weight="900" fill="#ffffff" text-anchor="middle">FFC</text></svg>',
-      'Bahia': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0055a5" stroke="#ffffff" stroke-width="4"/><rect x="25" y="25" width="50" height="50" fill="#e30613"/><text x="50" y="58" font-size="22" font-weight="900" fill="#ffffff" text-anchor="middle">ECB</text></svg>',
-      'Cruzeiro': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0033a0" stroke="#ffffff" stroke-width="2"/><polygon points="50,15 54,28 68,28 56,36 60,50 50,40 40,50 44,36 32,28 46,28" fill="#ffffff"/><polygon points="25,60 27,68 35,68 28,73 30,80 25,75 20,80 22,73 15,68 23,68" fill="#ffffff"/><polygon points="75,60 77,68 85,68 78,73 80,80 75,75 70,80 72,73 65,68 73,68" fill="#ffffff"/></svg>',
-      'Atlético-MG': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 20 L85 100 L50 120 L15 100 L0 20 Z" fill="#000000"/><path d="M20 25 V95 M40 25 V95 M60 25 V95 M80 25 V95" stroke="#ffffff" stroke-width="8"/><text x="50" y="65" font-size="26" font-weight="900" fill="#ffffff" stroke="#000" stroke-width="2" text-anchor="middle">CAM</text></svg>',
-      'Santos': '<svg class="club-badge-svg" viewBox="0 0 100 110"><path d="M0 0 H100 V50 C100 85 50 110 50 110 C50 110 0 85 0 50 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/><path d="M0 0 H50 V50 H0 Z" fill="#000000"/><text x="75" y="35" font-size="22" font-weight="900" fill="#000000" text-anchor="middle">SFC</text></svg>',
-      'Coritiba': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#005429" stroke="#ffffff" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="#ffffff"/><text x="50" y="58" font-size="24" font-weight="900" fill="#005429" text-anchor="middle">CFC</text></svg>',
-      'São Paulo': '<svg class="club-badge-svg" viewBox="0 0 100 100"><path d="M0 0 H100 V30 L50 100 L0 30 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/><path d="M10 35 L50 90 L50 35 Z" fill="#cc0000"/><path d="M90 35 L50 90 L50 35 Z" fill="#000000"/><text x="50" y="24" font-size="18" font-weight="900" fill="#000000" text-anchor="middle">SPFC</text></svg>',
-      'Red Bull Bragantino': '<svg class="club-badge-svg" viewBox="0 0 100 100"><path d="M0 0 H100 V60 L50 100 L0 60 Z" fill="#ffffff" stroke="#d31245" stroke-width="4"/><circle cx="50" cy="45" r="22" fill="#fff100"/><text x="50" y="85" font-size="16" font-weight="900" fill="#d31245" text-anchor="middle">RBB</text></svg>',
-      'Botafogo': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 25 L85 100 L50 120 L15 100 L0 25 Z" fill="#000000" stroke="#ffffff" stroke-width="4"/><polygon points="50,25 58,48 82,48 62,62 70,85 50,70 30,85 38,62 18,48 42,48" fill="#ffffff"/></svg>',
-      'Vitória': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 20 L85 100 L50 120 L15 100 L0 20 Z" fill="#e30613"/><path d="M20 20 H80 V40 H20 Z M20 60 H80 V80 H20 Z" fill="#000000"/><text x="50" y="70" font-size="30" font-weight="900" fill="#ffffff" text-anchor="middle">ECV</text></svg>',
-      'Corinthians': '<svg class="club-badge-svg" viewBox="0 0 100 110"><circle cx="50" cy="55" r="40" fill="#ffffff" stroke="#000000" stroke-width="6"/><path d="M50 0 L60 20 L50 15 L40 20 Z" fill="#cc0000"/><text x="50" y="63" font-size="20" font-weight="900" fill="#000000" text-anchor="middle">SCCP</text></svg>',
-      'Mirassol': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#fff100" stroke="#005429" stroke-width="4"/><text x="50" y="58" font-size="22" font-weight="900" fill="#005429" text-anchor="middle">MFC</text></svg>',
-      'Vasco da Gama': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 25 L85 100 L50 120 L15 100 L0 25 Z" fill="#000000" stroke="#ffffff" stroke-width="2"/><line x1="15" y1="100" x2="85" y2="25" stroke="#ffffff" stroke-width="16"/><path d="M40 50 H60 V70 H40 Z" fill="#cc0000"/></svg>',
-      'Grêmio': '<svg class="club-badge-svg" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="48" ry="38" fill="#0d80bf" stroke="#ffffff" stroke-width="4"/><rect x="10" y="42" width="80" height="16" fill="#000000"/><text x="50" y="55" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">GREMIO</text></svg>',
-      'Internacional': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#e30613" stroke="#ffffff" stroke-width="4"/><text x="50" y="58" font-size="26" font-weight="900" fill="#ffffff" text-anchor="middle">SCI</text></svg>',
-      'Remo': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#001a35" stroke="#ffffff" stroke-width="4"/><text x="50" y="58" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle">CR</text></svg>',
-      'Chapecoense': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#008040" stroke="#ffffff" stroke-width="4"/><text x="50" y="58" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle">ACF</text></svg>'
-    };
+<section class="card">
+  <div class="panel-header"><h2 id="panel-title">Próximos Jogos</h2><select id="round-select" class="round-select"><option value="29">Rodada 29</option><option value="30">Rodada 30</option></select></div>
+  <div class="tabs"><button id="tab-agenda" class="tab-btn active">📅 Agenda</button><button id="tab-sim" class="tab-btn">⚡ Simulador</button></div>
+  <div id="matches-list" class="matches-list"></div>
+  <div id="sim-actions" class="btn-group" style="display:none"><button class="btn btn-confirm" id="confirm-btn">Confirmar Placares</button><button class="btn btn-reset" id="reset-btn">Resetar</button></div>
+  <div id="status" class="status"></div>
+</section>
+</div>
 
-    function getBadgeHtml(teamName) {
-      return svgBadges[teamName] || '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#334155"/></svg>';
-    }
+<script>
+/* Escudos reais da Série A 2026. Fonte: repositório público de escudos em HD. */
+const ASSET_BASE = "https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/";
+const clubs = [
+ {name:"Athletico-PR",short:"CAP",pts:49,j:28,v:14,e:7,d:7,gp:39,gc:28,logo:"Athletico Paranaense.png"},
+ {name:"Atlético-MG",short:"CAM",pts:43,j:28,v:12,e:7,d:9,gp:38,gc:33,logo:"Atlético Mineiro.png"},
+ {name:"Bahia",short:"BAH",pts:46,j:28,v:12,e:10,d:6,gp:37,gc:29,logo:"Bahia.png"},
+ {name:"Botafogo",short:"BOT",pts:35,j:28,v:9,e:8,d:11,gp:32,gc:36,logo:"Botafogo.png"},
+ {name:"Chapecoense",short:"CHA",pts:18,j:27,v:4,e:6,d:17,gp:24,gc:48,logo:"Chapecoense.png"},
+ {name:"Corinthians",short:"COR",pts:32,j:28,v:8,e:8,d:12,gp:29,gc:32,logo:"Corinthians.png"},
+ {name:"Coritiba",short:"CFC",pts:38,j:28,v:10,e:8,d:10,gp:31,gc:37,logo:"Coritiba.png"},
+ {name:"Cruzeiro",short:"CRU",pts:45,j:28,v:12,e:9,d:7,gp:35,gc:33,logo:"Cruzeiro.png"},
+ {name:"Flamengo",short:"FLA",pts:60,j:28,v:18,e:6,d:4,gp:55,gc:23,logo:"Flamengo.png"},
+ {name:"Fluminense",short:"FLU",pts:48,j:28,v:13,e:9,d:6,gp:44,gc:36,logo:"Fluminense.png"},
+ {name:"Grêmio",short:"GRE",pts:29,j:28,v:7,e:8,d:13,gp:28,gc:36,logo:"Grêmio.png"},
+ {name:"Internacional",short:"INT",pts:28,j:28,v:7,e:7,d:14,gp:27,gc:33,logo:"Internacional.png"},
+ {name:"Mirassol",short:"MIR",pts:32,j:28,v:8,e:8,d:12,gp:29,gc:38,logo:"Mirassol.png"},
+ {name:"Palmeiras",short:"PAL",pts:57,j:28,v:17,e:6,d:5,gp:45,gc:19,logo:"Palmeiras.png"},
+ {name:"RB Bragantino",short:"RBB",pts:36,j:28,v:10,e:6,d:12,gp:34,gc:33,logo:"Red Bull Bragantino.png"},
+ {name:"Remo",short:"REM",pts:23,j:28,v:6,e:5,d:17,gp:25,gc:40,logo:"Remo.png"},
+ {name:"Santos",short:"SAN",pts:41,j:28,v:11,e:8,d:9,gp:35,gc:33,logo:"Santos.png"},
+ {name:"São Paulo",short:"SAO",pts:36,j:28,v:9,e:9,d:10,gp:30,gc:29,logo:"São Paulo.png"},
+ {name:"Vasco da Gama",short:"VAS",pts:31,j:27,v:8,e:7,d:12,gp:30,gc:37,logo:"Vasco da Gama.png"},
+ {name:"Vitória",short:"VIT",pts:33,j:28,v:8,e:9,d:11,gp:29,gc:43,logo:"Vitória.png"}
+];
+const matches={
+  29:[
+   ["Flamengo","Cruzeiro"],["Palmeiras","Bahia"],["Fluminense","Botafogo"],["Corinthians","Santos"],["São Paulo","Internacional"],
+   ["Vasco da Gama","Vitória"],["Grêmio","Juventude"],["Mirassol","RB Bragantino"],["Atlético-MG","Ceará"],["Fortaleza","Sport"]
+  ],
+  30:[
+   ["Cruzeiro","Flamengo"],["Bahia","Palmeiras"],["Botafogo","Fluminense"],["Santos","Corinthians"],["Internacional","São Paulo"],
+   ["Vitória","Vasco da Gama"],["Juventude","Grêmio"],["RB Bragantino","Mirassol"],["Ceará","Atlético-MG"],["Sport","Fortaleza"]
+  ]
+};
+function findClub(name){return clubs.find(c=>c.name===name)||{name,short:"?"};}
+let simulator=false;
+function matchHTML(home,away,i){
+ const h=findClub(home),a=findClub(away);
+ return `<div class="match-item"><div class="match-date">Jogo ${i+1}</div><div class="match-teams">
+ <div class="team-col home"><span class="team-name">${h.name}</span>${badgeHTML(h,"match-badge")}</div>
+ ${simulator?`<div class="score-inputs"><input type="number" min="0" max="20" value="0" data-home="${h.name}"><span class="vs">x</span><input type="number" min="0" max="20" value="0" data-away="${a.name}"></div>`:`<span class="vs">×</span>`}
+ <div class="team-col away">${badgeHTML(a,"match-badge")}<span class="team-name">${a.name}</span></div>
+ </div></div>`;
+}
+function renderMatches(){
+ const round=document.getElementById("round-select").value;
+ const list=document.getElementById("matches-list");
+ list.innerHTML=(matches[round]||[]).map((m,i)=>matchHTML(m[0],m[1],i)).join("")||`<div class="empty">Nenhum jogo cadastrado.</div>`;
+ loadLogos();
+ document.getElementById("sim-actions").style.display=simulator?"flex":"none";
+ document.getElementById("panel-title").textContent=simulator?"Simulador de Resultados":"Próximos Jogos";
+}
+function switchTab(tab){
+ simulator=tab==="simulador";
+ document.getElementById("tab-agenda").classList.toggle("active",!simulator);
+ document.getElementById("tab-sim").classList.toggle("active",simulator);
+ renderMatches();
+}
+function confirmSimulation(){document.getElementById("status").textContent="Placares confirmados nesta simulação. A classificação visual pode ser recalculada a partir dos resultados.";document.getElementById("status").style.color="var(--accent)"}
+function resetSimulation(){renderMatches();document.getElementById("status").textContent=""}
+document.getElementById("search-input").addEventListener("input",renderTable);
+document.getElementById("round-select").addEventListener("change",renderMatches);
+document.getElementById("tab-agenda").addEventListener("click",()=>switchTab("agenda"));
+document.getElementById("tab-sim").addEventListener("click",()=>switchTab("simulador"));
+document.getElementById("confirm-btn").addEventListener("click",confirmSimulation);
+document.getElementById("reset-btn").addEventListener("click",resetSimulation);
 
-    const initialTeams = [
-      { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
-      { name: 'Palmeiras', pts: 57, j: 28, v: 16, e: 9, d: 3, gp: 47, gc: 21 },
-      { name: 'Athletico-PR', pts: 49, j: 28, v: 14, e: 7, d: 7, gp: 43, gc: 32 },
-      { name: 'Fluminense', pts: 48, j: 28, v: 13, e: 9, d: 6, gp: 44, gc: 36 },
-      { name: 'Bahia', pts: 46, j: 28, v: 12, e: 10, d: 6, gp: 43, gc: 35 },
-      { name: 'Cruzeiro', pts: 45, j: 28, v: 13, e: 6, d: 9, gp: 42, gc: 40 },
-      { name: 'Atlético-MG', pts: 43, j: 28, v: 12, e: 7, d: 9, gp: 37, gc: 32 },
-      { name: 'Santos', pts: 41, j: 28, v: 11, e: 8, d: 9, gp: 43, gc: 41 },
-      { name: 'Coritiba', pts: 38, j: 28, v: 10, e: 8, d: 10, gp: 37, gc: 43 },
-      { name: 'São Paulo', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'Red Bull Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'Botafogo', pts: 35, j: 28, v: 9, e: 8, d: 11, gp: 41, gc: 45 },
-      { name: 'Vitória', pts: 33, j: 28, v: 9, e: 6, d: 13, gp: 28, gc: 42 },
-      { name: 'Corinthians', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 29, gc: 32 },
-      { name: 'Mirassol', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 33, gc: 42 },
-      { name: 'Vasco da Gama', pts: 31, j: 27, v: 8, e: 7, d: 12, gp: 34, gc: 41 },
-      { name: 'Grêmio', pts: 29, j: 28, v: 7, e: 8, d: 13, gp: 30, gc: 38 },
-      { name: 'Internacional', pts: 28, j: 28, v: 6, e: 10, d: 12, gp: 30, gc: 36 },
-      { name: 'Remo', pts: 23, j: 28, v: 5, e: 8, d: 15, gp: 32, gc: 47 },
-      { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
-    ];
-
-    const round29 = [
-      { id: 1, home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 2, home: 'Red Bull Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 3, home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 4, home: 'Vitória', away: 'Chapecoense', date: 'Qua • 07/10 - 20:00', hScore: '', aScore: '' },
-      { id: 5, home: 'Botafogo', away: 'Vasco da Gama', date: 'Qua • 07/10 - 20:30', hScore: '', aScore: '' },
-      { id: 6, home: 'Cruzeiro', away: 'São Paulo', date: 'Qua • 07/10 - 21:30', hScore: '', aScore: '' },
-      { id: 7, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
-      { id: 8, home: 'Athletico-PR', away: 'Atlético-MG', date: 'Qui • 08/10 - 20:00', hScore: '', aScore: '' },
-      { id: 9, home: 'Fluminense', away: 'Coritiba', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' },
-      { id: 10, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
-    ];
-
-    const round30 = [
-      { id: 11, home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10 - 18:00', hScore: '', aScore: '' },
-      { id: 12, home: 'São Paulo', away: 'Vitória', date: 'Sáb • 10/10 - 21:00', hScore: '', aScore: '' },
-      { id: 13, home: 'Atlético-MG', away: 'Santos', date: 'Dom • 11/10 - 16:00', hScore: '', aScore: '' },
-      { id: 14, home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 15, home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 16, home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 17, home: 'Bahia', away: 'Mirassol', date: 'Dom • 11/10 - 19:30', hScore: '', aScore: '' },
-      { id: 18, home: 'Coritiba', away: 'Botafogo', date: 'Seg • 12/10 - 16:00', hScore: '', aScore: '' },
-      { id: 19, home: 'Chapecoense', away: 'Athletico-PR', date: 'Seg • 12/10 - 19:30', hScore: '', aScore: '' },
-      { id: 20, home: 'Red Bull Bragantino', away: 'Cruzeiro', date: 'Seg • 12/10 - 21:00', hScore: '', aScore: '' }
-    ];
-
-    let activeTeams = JSON.parse(JSON.stringify(initialTeams));
-    let activeTab = 'agenda';
-
-    function renderTable() {
-      activeTeams.sort((a, b) => (b.pts - a.pts) || (b.v - a.v) || ((b.gp - b.gc) - (a.gp - a.gc)));
-      const tbody = document.getElementById('table-body');
-      tbody.innerHTML = '';
-      
-      activeTeams.forEach((t, index) => {
-        const pos = index + 1;
-        const sg = t.gp - t.gc;
-        let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
-
-        tbody.innerHTML += `
-          <tr class="${zoneClass}">
-            <td>${pos}</td>
-            <td class="left">
-              <div class="club-cell">
-                ${getBadgeHtml(t.name)}
-                <span>${t.name}</span>
-              </div>
-            </td>
-            <td class="pts">${t.pts}</td>
-            <td>${t.j}</td>
-            <td>${t.v}</td>
-            <td>${t.e}</td>
-            <td>${t.d}</td>
-            <td>${t.gp}</td>
-            <td>${t.gc}</td>
-            <td>${sg > 0 ? '+' + sg : sg}</td>
-          </tr>
-        `;
-      });
-    }
-
-    function switchTab(tab) {
-      activeTab = tab;
-      document.getElementById('tab-agenda
+renderTable();renderMatches();
+</script>
+</body>
+</html>
