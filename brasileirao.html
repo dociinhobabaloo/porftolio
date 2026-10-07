@@ -29,7 +29,7 @@
           <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
             BRASILEIRÃO <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded-full border border-emerald-500/20 font-medium">SÉRIE A</span>
           </h1>
-          <p class="text-xs text-slate-400 hidden sm:block">Classificação Oficial & Agenda de Jogos</p>
+          <p class="text-xs text-slate-400 hidden sm:block">Classificação Oficial & Agenda do Campeonato</p>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
           <div>
             <h2 class="text-sm font-bold text-white">Próximos Jogos</h2>
-            <p class="text-[11px] text-slate-400">Agenda Oficial da Série A</p>
+            <p class="text-[11px] text-slate-400">Agenda de Partidas da Série A</p>
           </div>
           <!-- Seletor de Rodada -->
           <select id="round-select" onchange="renderGames()" class="bg-slate-950 border border-slate-700 text-xs text-emerald-400 font-semibold px-2 py-1 rounded focus:outline-none">
@@ -89,7 +89,7 @@
           </select>
         </div>
 
-        <!-- Lista de Confrontos -->
+        <!-- Lista de Confrontos Simplificada -->
         <div id="matches-container" class="flex flex-col gap-3 custom-scrollbar overflow-y-auto max-h-[600px] pr-1">
           <!-- Renderizado via JS -->
         </div>
@@ -97,123 +97,3 @@
     </aside>
 
   </main>
-
-  <script>
-    const teams = [
-      { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
-      { name: 'Palmeiras', pts: 57, j: 28, v: 16, e: 9, d: 3, gp: 47, gc: 21 },
-      { name: 'Athletico-PR', pts: 49, j: 28, v: 14, e: 7, d: 7, gp: 43, gc: 32 },
-      { name: 'Fluminense', pts: 48, j: 28, v: 13, e: 9, d: 6, gp: 44, gc: 36 },
-      { name: 'Bahia', pts: 46, j: 28, v: 12, e: 10, d: 6, gp: 43, gc: 35 },
-      { name: 'Cruzeiro', pts: 45, j: 28, v: 13, e: 6, d: 9, gp: 42, gc: 40 },
-      { name: 'Atlético-MG', pts: 43, j: 28, v: 12, e: 7, d: 9, gp: 37, gc: 32 },
-      { name: 'Santos', pts: 41, j: 28, v: 11, e: 8, d: 9, gp: 43, gc: 41 },
-      { name: 'Coritiba', pts: 38, j: 28, v: 10, e: 8, d: 10, gp: 37, gc: 43 },
-      { name: 'São Paulo', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'Red Bull Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'Botafogo', pts: 35, j: 28, v: 9, e: 8, d: 11, gp: 41, gc: 45 },
-      { name: 'Vitória', pts: 33, j: 28, v: 9, e: 6, d: 13, gp: 28, gc: 42 },
-      { name: 'Corinthians', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 29, gc: 32 },
-      { name: 'Mirassol', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 33, gc: 42 },
-      { name: 'Vasco da Gama', pts: 31, j: 27, v: 8, e: 7, d: 12, gp: 34, gc: 41 },
-      { name: 'Grêmio', pts: 29, j: 28, v: 7, e: 8, d: 13, gp: 30, gc: 38 },
-      { name: 'Internacional', pts: 28, j: 28, v: 6, e: 10, d: 12, gp: 30, gc: 36 },
-      { name: 'Remo', pts: 23, j: 28, v: 5, e: 8, d: 15, gp: 32, gc: 47 },
-      { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
-    ];
-
-    const round29Games = [
-      { home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10', time: '19:30' },
-      { home: 'RB Bragantino', away: 'Mirassol', date: 'Qua • 07/10', time: '19:30' },
-      { home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10', time: '19:30' },
-      { home: 'Vitória', away: 'Chapecoense', date: 'Qua • 07/10', time: '20:00' },
-      { home: 'Botafogo', away: 'Vasco da Gama', date: 'Qua • 07/10', time: '20:30' },
-      { home: 'Cruzeiro', away: 'São Paulo', date: 'Qua • 07/10', time: '21:30' },
-      { home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10', time: '19:30' },
-      { home: 'Athletico-PR', away: 'Atlético-MG', date: 'Qui • 08/10', time: '20:00' },
-      { home: 'Fluminense', away: 'Coritiba', date: 'Qui • 08/10', time: '21:30' },
-      { home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10', time: '21:30' }
-    ];
-
-    const round30Games = [
-      { home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10', time: '18:00' },
-      { home: 'São Paulo', away: 'Vitória', date: 'Sáb • 10/10', time: '21:00' },
-      { home: 'Atlético-MG', away: 'Santos', date: 'Dom • 11/10', time: '16:00' },
-      { home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10', time: '17:30' },
-      { home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10', time: '17:30' },
-      { home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10', time: '17:30' },
-      { home: 'Bahia', away: 'Mirassol', date: 'Dom • 11/10', time: '19:30' },
-      { home: 'Coritiba', away: 'Botafogo', date: 'Seg • 12/10', time: '16:00' },
-      { home: 'Chapecoense', away: 'Athletico-PR', date: 'Seg • 12/10', time: '19:30' },
-      { home: 'RB Bragantino', away: 'Cruzeiro', date: 'Seg • 12/10', time: '21:00' }
-    ];
-
-    function renderTable() {
-      const tbody = document.getElementById('table-body');
-      tbody.innerHTML = '';
-
-      teams.forEach((team, index) => {
-        const pos = index + 1;
-        const sg = team.gp - team.gc;
-
-        let zoneBorder = 'border-l-transparent';
-        if (pos <= 4) zoneBorder = 'border-l-4 border-l-emerald-500 bg-emerald-500/5';
-        else if (pos <= 6) zoneBorder = 'border-l-4 border-l-cyan-500 bg-cyan-500/5';
-        else if (pos >= 17) zoneBorder = 'border-l-4 border-l-rose-500 bg-rose-500/5';
-
-        const row = document.createElement('tr');
-        row.className = `hover:bg-slate-800/50 transition text-xs ${zoneBorder}`;
-
-        row.innerHTML = `
-          <td class="py-3 px-3 text-center font-bold ${pos <= 4 ? 'text-emerald-400' : pos >= 17 ? 'text-rose-400' : 'text-slate-400'}">${pos}</td>
-          <td class="py-3 px-3 font-semibold text-slate-100">${team.name}</td>
-          <td class="py-3 px-2 text-center font-extrabold text-emerald-400 bg-emerald-500/5">${team.pts}</td>
-          <td class="py-3 px-2 text-center text-slate-300">${team.j}</td>
-          <td class="py-3 px-2 text-center text-slate-300">${team.v}</td>
-          <td class="py-3 px-2 text-center text-slate-400">${team.e}</td>
-          <td class="py-3 px-2 text-center text-slate-400">${team.d}</td>
-          <td class="py-3 px-2 text-center text-slate-300">${team.gp}</td>
-          <td class="py-3 px-2 text-center text-slate-400">${team.gc}</td>
-          <td class="py-3 px-2 text-center font-bold ${sg > 0 ? 'text-emerald-400' : sg < 0 ? 'text-rose-400' : 'text-slate-400'}">${sg > 0 ? '+' + sg : sg}</td>
-        `;
-
-        tbody.appendChild(row);
-      });
-    }
-
-    function renderGames() {
-      const selectedRound = document.getElementById('round-select').value;
-      const games = selectedRound === '29' ? round29Games : round30Games;
-      const container = document.getElementById('matches-container');
-      container.innerHTML = '';
-
-      games.forEach(game => {
-        const card = document.createElement('div');
-        card.className = "bg-slate-950/60 border border-slate-800 rounded-xl p-3 flex flex-col gap-1.5 hover:border-slate-700 transition";
-        card.innerHTML = `
-          <div class="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider text-center">${game.date} • ${game.time}</div>
-          <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-slate-200 text-right flex-1 truncate">${game.home}</span>
-            <span class="px-2 text-slate-500 font-extrabold text-[11px]">VS</span>
-            <span class="font-bold text-slate-200 text-left flex-1 truncate">${game.away}</span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function filterTable() {
-      const query = document.getElementById('search-input').value.toLowerCase();
-      const rows = document.querySelectorAll('#table-body tr');
-
-      rows.forEach(row => {
-        const teamName = row.children[1].textContent.toLowerCase();
-        row.style.display = teamName.includes(query) ? '' : 'none';
-      });
-    }
-
-    renderTable();
-    renderGames();
-  </script>
-</body>
-</html>
