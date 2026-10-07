@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brasileirão Série A - Tabela & Próximas Rodadas</title>
+  <title>Brasileirão Série A - Tabela & Agenda Interativa</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -11,6 +11,7 @@
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.8); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(71, 85, 105, 1); }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
@@ -29,7 +30,7 @@
           <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
             BRASILEIRÃO <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded-full border border-emerald-500/20 font-medium">SÉRIE A</span>
           </h1>
-          <p class="text-xs text-slate-400 hidden sm:block">Classificação Oficial & Agenda do Campeonato</p>
+          <p class="text-xs text-slate-400 hidden sm:block">Classificação Oficial, Agenda & Simulador</p>
         </div>
       </div>
     </div>
@@ -74,26 +75,41 @@
       </div>
     </section>
 
-    <!-- LADO DIREITO: Próximas Rodadas (4 colunas) -->
+    <!-- LADO DIREITO: Painel Lateral com Abas (4 colunas) -->
     <aside class="lg:col-span-4 flex flex-col gap-4">
       <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 shadow-lg flex flex-col h-full">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-          <div>
-            <h2 class="text-sm font-bold text-white">Próximos Jogos</h2>
-            <p class="text-[11px] text-slate-400">Agenda de Partidas da Série A</p>
+        
+        <!-- Cabeçalho do Painel com Abas de Navegação -->
+        <div class="border-b border-slate-800 pb-3 mb-4 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 id="panel-title" class="text-sm font-bold text-white">Próximos Jogos</h2>
+              <p id="panel-subtitle" class="text-[11px] text-slate-400">Agenda Oficial da Série A</p>
+            </div>
+            <!-- Seletor de Rodada -->
+            <select id="round-select" onchange="switchRound()" class="bg-slate-950 border border-slate-700 text-xs text-emerald-400 font-semibold px-2 py-1 rounded focus:outline-none">
+              <option value="29">Rodada 29</option>
+              <option value="30">Rodada 30</option>
+            </select>
           </div>
-          <!-- Seletor de Rodada -->
-          <select id="round-select" onchange="renderGames()" class="bg-slate-950 border border-slate-700 text-xs text-emerald-400 font-semibold px-2 py-1 rounded focus:outline-none">
-            <option value="29">Rodada 29 (Esta Semana)</option>
-            <option value="30">Rodada 30 (Próxima Semana)</option>
-          </select>
+
+          <!-- Botões de Alternância entre Agenda e Simulador -->
+          <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-lg border border-slate-800">
+            <button id="tab-agenda" onclick="setActiveTab('agenda')" class="py-1.5 text-xs font-semibold rounded-md transition text-slate-100 bg-slate-800 shadow">
+              📅 Agenda
+            </button>
+            <button id="tab-simulador" onclick="setActiveTab('simulador')" class="py-1.5 text-xs font-semibold rounded-md transition text-slate-400 hover:text-slate-200">
+              ⚡ Simulador
+            </button>
+          </div>
         </div>
 
-        <!-- Lista de Confrontos Simplificada -->
-        <div id="matches-container" class="flex flex-col gap-3 custom-scrollbar overflow-y-auto max-h-[600px] pr-1">
+        <!-- Conteúdo Principal da Lateral -->
+        <div id="matches-container" class="flex flex-col gap-3 custom-scrollbar overflow-y-auto max-h-[520px] pr-1">
           <!-- Renderizado via JS -->
         </div>
-      </div>
-    </aside>
 
-  </main>
+        <!-- Rodapé do Simulador com Ações (Apenas visível na aba Simulador) -->
+        <div id="simulator-actions" class="mt-4 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 hidden">
+          <button onclick="confirmSimulation()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-lg text-xs shadow-md shadow-emerald-600/20 transition flex items-center justify-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-
