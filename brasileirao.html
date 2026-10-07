@@ -11,8 +11,8 @@
       --card-border: rgba(255, 255, 255, 0.08);
       --accent: #10b981;
       --accent-hover: #059669;
-      --text: #f0f6fc;
-      --text-muted: #8b949e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
       --g4: #10b981;
       --g6: #06b6d4;
       --z4: #f85149;
@@ -30,9 +30,7 @@
       flex-direction: column;
     }
 
-    @media (min-width: 640px) {
-      body { padding: 20px; }
-    }
+    @media (min-width: 640px) { body { padding: 20px; } }
 
     /* Header Responsivo com Logo Oficial */
     header {
@@ -61,12 +59,16 @@
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo-img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4));
+    
+    /* Logo em Destaque */
+    .brand-logo-container {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #10b981, #0284c7);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
     }
+    .brand-logo-svg { width: 28px; height: 28px; fill: #fff; }
 
     .brand-title h1 { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
     .brand-title p { font-size: 0.7rem; color: var(--text-muted); }
@@ -76,37 +78,41 @@
       .brand-title p { font-size: 0.75rem; }
     }
 
-    .audio-player {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(0, 0, 0, 0.4);
+    /* Player Personalizado com Pause/Play */
+    .audio-player-box {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(0, 0, 0, 0.6);
       border: 1px solid var(--card-border);
-      padding: 6px 10px; border-radius: 12px;
+      padding: 6px 14px; border-radius: 12px;
       width: 100%; justify-content: space-between;
     }
 
-    @media (min-width: 640px) {
-      .audio-player { width: auto; justify-content: flex-start; }
+    @media (min-width: 640px) { .audio-player-box { width: auto; } }
+
+    .audio-btn {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: 0.2s;
     }
+    .audio-btn:hover { background: var(--accent-hover); }
 
-    .audio-player span { font-size: 0.75rem; font-weight: 600; color: var(--accent); white-space: nowrap; }
-    audio { height: 28px; width: 100%; max-width: 220px; }
+    audio { height: 28px; max-width: 180px; }
 
-    /* Layout Responsivo */
+    /* Layout */
     .container { 
-      display: flex; 
-      flex-direction: column; 
-      gap: 16px; 
-      max-width: 1240px; 
-      margin: 0 auto; 
-      width: 100%;
+      display: flex; flex-direction: column; gap: 16px; 
+      max-width: 1240px; margin: 0 auto; width: 100%;
     }
 
     @media (min-width: 960px) {
-      .container { 
-        display: grid; 
-        grid-template-columns: 1fr 360px; 
-        gap: 20px; 
-      }
+      .container { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
     }
 
     .card {
@@ -118,57 +124,45 @@
       backdrop-filter: blur(12px);
     }
 
-    @media (min-width: 640px) {
-      .card { padding: 18px; }
-    }
+    @media (min-width: 640px) { .card { padding: 18px; } }
 
-    /* Filtro e Legenda */
+    /* Ferramentas */
     .table-tools {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 14px;
+      display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
     }
 
     @media (min-width: 640px) {
-      .table-tools {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-      }
+      .table-tools { flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     }
 
     .search-input {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--card-border);
-      color: #fff; padding: 10px 14px;
-      border-radius: 10px; font-size: 0.8rem; outline: none; width: 100%;
+      background: rgba(0,0,0,0.5); border: 1px solid var(--card-border);
+      color: #fff; padding: 10px 14px; border-radius: 10px; font-size: 0.8rem; outline: none; width: 100%;
     }
-
-    @media (min-width: 640px) {
-      .search-input { width: 220px; padding: 8px 14px; }
-    }
-
+    @media (min-width: 640px) { .search-input { width: 220px; padding: 8px 14px; } }
     .search-input:focus { border-color: var(--accent); }
 
-    .legend { display: flex; gap: 10px; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; justify-content: flex-start; }
+    .legend { display: flex; gap: 10px; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
     .legend-item { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* Tabela com Escudos */
+    /* Tabela */
     .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 580px; }
     th {
       color: var(--text-muted); padding: 10px 6px; text-align: center;
-      border-bottom: 1px solid var(--card-border); font-size: 0.68rem;
-      font-weight: 700; text-transform: uppercase;
+      border-bottom: 1px solid var(--card-border); font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
     }
     th.left, td.left { text-align: left; }
     td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
-    .club-cell { display: flex; align-items: center; gap: 8px; }
-    .club-badge { width: 20px; height: 20px; object-fit: contain; }
+    .club-cell { display: flex; align-items: center; gap: 10px; }
+    .team-badge-icon {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 800; color: #fff; flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
 
     tr.g4 td:first-child { border-left: 4px solid var(--g4); }
     tr.g6 td:first-child { border-left: 4px solid var(--g6); }
@@ -176,22 +170,19 @@
 
     .pts { font-weight: 800; color: var(--accent); background: rgba(16, 185, 129, 0.08); border-radius: 6px; }
 
-    /* Painel Lateral / Jogos */
+    /* Painel Lateral */
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
     .panel-header h2 { font-size: 0.85rem; font-weight: 800; }
     
     .round-select {
-      background: #000; color: var(--accent);
-      border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 6px 8px;
-      font-size: 0.72rem; font-weight: bold; outline: none; cursor: pointer;
+      background: #000; color: var(--accent); border: 1px solid var(--card-border);
+      border-radius: 8px; padding: 6px 8px; font-size: 0.72rem; font-weight: bold; outline: none; cursor: pointer;
     }
 
     .tabs { display: flex; gap: 6px; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 10px; border: 1px solid var(--card-border); margin-bottom: 12px; }
     .tab-btn {
       flex: 1; padding: 10px 6px; border: none; background: transparent;
-      color: var(--text-muted); font-weight: 700; cursor: pointer;
-      border-radius: 8px; font-size: 0.75rem; transition: 0.2s;
+      color: var(--text-muted); font-weight: 700; cursor: pointer; border-radius: 8px; font-size: 0.75rem; transition: 0.2s;
     }
     .tab-btn.active { background: var(--card-bg); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
 
@@ -206,12 +197,10 @@
 
     .score-inputs { display: flex; align-items: center; gap: 4px; }
     .score-inputs input {
-      width: 32px; height: 32px; background: #000;
-      border: 1px solid var(--card-border); border-radius: 6px;
-      color: var(--accent); text-align: center; font-weight: bold; font-size: 0.85rem; outline: none;
+      width: 32px; height: 32px; background: #000; border: 1px solid var(--card-border);
+      border-radius: 6px; color: var(--accent); text-align: center; font-weight: bold; font-size: 0.85rem; outline: none;
     }
 
-    /* Botões */
     .btn-group { display: flex; gap: 8px; margin-top: 12px; pt-3; border-top: 1px solid var(--card-border); }
     .btn { flex: 1; padding: 12px 8px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.75rem; transition: 0.2s; }
     .btn-confirm { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
@@ -222,20 +211,24 @@
 </head>
 <body>
 
-  <!-- Header com Logo Oficial -->
+  <!-- Header -->
   <header>
     <div class="brand">
-      <img src="https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png" alt="Logo Brasileirão" class="brand-logo-img">
+      <div class="brand-logo-container">
+        <svg class="brand-logo-svg" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
       <div class="brand-title">
         <h1>BRASILEIRÃO SÉRIE A</h1>
         <p>Classificação Oficial, Agenda & Simulador</p>
       </div>
     </div>
 
-    <!-- Player de Áudio com Controles Manuais -->
-    <div class="audio-player">
-      <span>♫ Tema</span>
-      <audio id="audio-fundo" src="musica-brasileirao.mp3" controls loop preload="auto"></audio>
+    <!-- Player de Áudio com Controle Total de Pause/Play -->
+    <div class="audio-player-box">
+      <button class="audio-btn" id="toggle-audio-btn" onclick="toggleAudio()">
+        <span id="btn-icon">▶</span> <span id="btn-text">Tocar Tema</span>
+      </button>
+      <audio id="audio-fundo" src="musica-brasileirao.mp3" loop preload="auto" controls></audio>
     </div>
   </header>
 
@@ -268,9 +261,7 @@
               <th>SG</th>
             </tr>
           </thead>
-          <tbody id="table-body">
-            <!-- Dados via JS -->
-          </tbody>
+          <tbody id="table-body"></tbody>
         </table>
       </div>
     </div>
@@ -285,18 +276,13 @@
         </select>
       </div>
 
-      <!-- Abas -->
       <div class="tabs">
         <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
         <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">⚡ Simulador</button>
       </div>
 
-      <!-- Jogos -->
-      <div id="matches-list" class="matches-list">
-        <!-- Jogos via JS -->
-      </div>
+      <div id="matches-list" class="matches-list"></div>
 
-      <!-- Botões do Simulador -->
       <div id="sim-actions" class="btn-group" style="display: none;">
         <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar Placares</button>
         <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
@@ -306,37 +292,65 @@
   </div>
 
   <script>
-    // Ativa a música no primeiro toque/clique na página
+    // Controle do Player de Áudio
+    function toggleAudio() {
+      const audio = document.getElementById('audio-fundo');
+      const icon = document.getElementById('btn-icon');
+      const text = document.getElementById('btn-text');
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          icon.textContent = '⏸';
+          text.textContent = 'Pausar';
+        }).catch(err => console.log(err));
+      } else {
+        audio.pause();
+        icon.textContent = '▶';
+        text.textContent = 'Tocar Tema';
+      }
+    }
+
+    // Ativação Automática no Primeiro Clique
     document.addEventListener('click', function() {
       const audio = document.getElementById('audio-fundo');
       if (audio && audio.paused) {
-        audio.play().catch(e => console.log("Aguardando interação do usuário."));
+        audio.play().then(() => {
+          document.getElementById('btn-icon').textContent = '⏸';
+          document.getElementById('btn-text').textContent = 'Pausar';
+        }).catch(() => {});
       }
     }, { once: true });
 
-    // Mapeamento de Escudos Oficiais PNG
-    const teamBadges = {
-      'Flamengo': 'https://logodownload.org/wp-content/uploads/2016/09/flamengo-logo-escudo-1.png',
-      'Palmeiras': 'https://logodownload.org/wp-content/uploads/2016/09/palmeiras-logo-escudo-1.png',
-      'Athletico-PR': 'https://logodownload.org/wp-content/uploads/2016/09/athletico-paranaense-logo-escudo-1.png',
-      'Fluminense': 'https://logodownload.org/wp-content/uploads/2016/09/fluminense-logo-escudo-1.png',
-      'Bahia': 'https://logodownload.org/wp-content/uploads/2016/09/bahia-logo-escudo-1.png',
-      'Cruzeiro': 'https://logodownload.org/wp-content/uploads/2016/09/cruzeiro-logo-escudo-1.png',
-      'Atlético-MG': 'https://logodownload.org/wp-content/uploads/2016/09/atletico-mineiro-logo-escudo-1.png',
-      'Santos': 'https://logodownload.org/wp-content/uploads/2016/09/santos-logo-escudo-1.png',
-      'Coritiba': 'https://logodownload.org/wp-content/uploads/2016/09/coritiba-logo-escudo-1.png',
-      'São Paulo': 'https://logodownload.org/wp-content/uploads/2016/09/sao-paulo-logo-escudo-1.png',
-      'Red Bull Bragantino': 'https://logodownload.org/wp-content/uploads/2017/02/red-bull-bragantino-logo-escudo-1.png',
-      'Botafogo': 'https://logodownload.org/wp-content/uploads/2016/09/botafogo-logo-escudo-1.png',
-      'Vitória': 'https://logodownload.org/wp-content/uploads/2016/09/vitoria-logo-escudo-1.png',
-      'Corinthians': 'https://logodownload.org/wp-content/uploads/2016/09/corinthians-logo-escudo-1.png',
-      'Mirassol': 'https://upload.wikimedia.org/wikipedia/commons/2/23/Mirassol_FC_logo.png',
-      'Vasco da Gama': 'https://logodownload.org/wp-content/uploads/2016/09/vasco-logo-escudo-1.png',
-      'Grêmio': 'https://logodownload.org/wp-content/uploads/2016/09/gremio-logo-escudo-1.png',
-      'Internacional': 'https://logodownload.org/wp-content/uploads/2016/09/internacional-logo-escudo-1.png',
-      'Remo': 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Clube_do_Remo.png',
-      'Chapecoense': 'https://logodownload.org/wp-content/uploads/2016/09/chapecoense-logo-escudo-1.png'
+    // Cores das insignias dos times
+    const teamColors = {
+      'Flamengo': '#c8102e',
+      'Palmeiras': '#006437',
+      'Athletico-PR': '#000000',
+      'Fluminense': '#800020',
+      'Bahia': '#0055a5',
+      'Cruzeiro': '#0033a0',
+      'Atlético-MG': '#000000',
+      'Santos': '#ffffff',
+      'Coritiba': '#005429',
+      'São Paulo': '#ff0000',
+      'Red Bull Bragantino': '#d31245',
+      'Botafogo': '#000000',
+      'Vitória': '#e30613',
+      'Corinthians': '#000000',
+      'Mirassol': '#fff100',
+      'Vasco da Gama': '#000000',
+      'Grêmio': '#0d80bf',
+      'Internacional': '#e30613',
+      'Remo': '#001a35',
+      'Chapecoense': '#008040'
     };
+
+    function getTeamBadge(name) {
+      const color = teamColors[name] || '#334155';
+      const textColor = (color === '#ffffff' || color === '#fff100') ? '#000000' : '#ffffff';
+      const initial = name.substring(0, 1);
+      return `<div class="team-badge-icon" style="background-color: ${color}; color: ${textColor};">${initial}</div>`;
+    }
 
     const initialTeams = [
       { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
@@ -399,14 +413,13 @@
         const pos = index + 1;
         const sg = t.gp - t.gc;
         let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
-        const badgeUrl = teamBadges[t.name] || '';
 
         tbody.innerHTML += `
           <tr class="${zoneClass}">
             <td>${pos}</td>
             <td class="left">
               <div class="club-cell">
-                <img src="${badgeUrl}" alt="${t.name}" class="club-badge" onerror="this.style.display='none'">
+                ${getTeamBadge(t.name)}
                 <span>${t.name}</span>
               </div>
             </td>
@@ -439,9 +452,6 @@
       container.innerHTML = '';
 
       games.forEach(g => {
-        const homeBadge = teamBadges[g.home] || '';
-        const awayBadge = teamBadges[g.away] || '';
-
         if (activeTab === 'agenda') {
           container.innerHTML += `
             <div class="match-item">
@@ -449,11 +459,11 @@
               <div class="match-teams">
                 <div class="team-col home">
                   <span class="team-name">${g.home}</span>
-                  <img src="${homeBadge}" alt="${g.home}" class="club-badge" onerror="this.style.display='none'">
+                  ${getTeamBadge(g.home)}
                 </div>
                 <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 6px;">VS</span>
                 <div class="team-col away">
-                  <img src="${awayBadge}" alt="${g.away}" class="club-badge" onerror="this.style.display='none'">
+                  ${getTeamBadge(g.away)}
                   <span class="team-name">${g.away}</span>
                 </div>
               </div>
@@ -465,7 +475,7 @@
               <div class="match-teams">
                 <div class="team-col home">
                   <span class="team-name">${g.home}</span>
-                  <img src="${homeBadge}" alt="${g.home}" class="club-badge" onerror="this.style.display='none'">
+                  ${getTeamBadge(g.home)}
                 </div>
                 <div class="score-inputs">
                   <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
@@ -473,7 +483,7 @@
                   <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
                 </div>
                 <div class="team-col away">
-                  <img src="${awayBadge}" alt="${g.away}" class="club-badge" onerror="this.style.display='none'">
+                  ${getTeamBadge(g.away)}
                   <span class="team-name">${g.away}</span>
                 </div>
               </div>
