@@ -34,7 +34,7 @@
       body { padding: 20px; }
     }
 
-    /* Header Responsivo */
+    /* Header Responsivo com Logo Oficial */
     header {
       max-width: 1240px;
       width: 100%;
@@ -60,14 +60,12 @@
       }
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: #000; font-weight: bold; font-size: 1.1rem;
-      flex-shrink: 0;
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo-img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4));
     }
 
     .brand-title h1 { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
@@ -158,7 +156,7 @@
     .legend-item { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* Tabela com Scroll Horizontal no Telemóvel */
+    /* Tabela com Escudos */
     .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 580px; }
     th {
@@ -168,6 +166,9 @@
     }
     th.left, td.left { text-align: left; }
     td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); }
+
+    .club-cell { display: flex; align-items: center; gap: 8px; }
+    .club-badge { width: 20px; height: 20px; object-fit: contain; }
 
     tr.g4 td:first-child { border-left: 4px solid var(--g4); }
     tr.g6 td:first-child { border-left: 4px solid var(--g6); }
@@ -198,7 +199,10 @@
     .match-item { background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; }
     .match-date { font-size: 0.65rem; color: var(--accent); text-align: center; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
     .match-teams { display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; font-weight: 700; }
-    .team-name { flex: 1; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .team-col { flex: 1; display: flex; align-items: center; gap: 6px; overflow: hidden; }
+    .team-col.home { justify-content: flex-end; }
+    .team-col.away { justify-content: flex-start; }
+    .team-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .score-inputs { display: flex; align-items: center; gap: 4px; }
     .score-inputs input {
@@ -218,16 +222,17 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header com Logo Oficial -->
   <header>
     <div class="brand">
-      <div class="brand-icon">⚽</div>
+      <img src="https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png" alt="Logo Brasileirão" class="brand-logo-img">
       <div class="brand-title">
         <h1>BRASILEIRÃO SÉRIE A</h1>
         <p>Classificação Oficial, Agenda & Simulador</p>
       </div>
     </div>
 
+    <!-- Player de Áudio com Controles Manuais -->
     <div class="audio-player">
       <span>♫ Tema</span>
       <audio id="audio-fundo" src="musica-brasileirao.mp3" controls loop preload="auto"></audio>
@@ -239,7 +244,7 @@
     <!-- Tabela Principal -->
     <div class="card">
       <div class="table-tools">
-        <input type="text" id="search-input" class="search-input" onkeyup="filterTable()" placeholder="Buscar time...">
+        <input type="text" id="search-input" class="search-box" onkeyup="filterTable()" placeholder="Buscar time...">
         <div class="legend">
           <div class="legend-item"><div class="dot" style="background: var(--g4)"></div> G4</div>
           <div class="legend-item"><div class="dot" style="background: var(--g6)"></div> G6</div>
@@ -301,13 +306,37 @@
   </div>
 
   <script>
-    // Ativa a música no primeiro toque/clique no telemóvel
+    // Ativa a música no primeiro toque/clique na página
     document.addEventListener('click', function() {
       const audio = document.getElementById('audio-fundo');
       if (audio && audio.paused) {
-        audio.play().catch(e => console.log("Aguardando interação."));
+        audio.play().catch(e => console.log("Aguardando interação do usuário."));
       }
     }, { once: true });
+
+    // Mapeamento de Escudos Oficiais PNG
+    const teamBadges = {
+      'Flamengo': 'https://logodownload.org/wp-content/uploads/2016/09/flamengo-logo-escudo-1.png',
+      'Palmeiras': 'https://logodownload.org/wp-content/uploads/2016/09/palmeiras-logo-escudo-1.png',
+      'Athletico-PR': 'https://logodownload.org/wp-content/uploads/2016/09/athletico-paranaense-logo-escudo-1.png',
+      'Fluminense': 'https://logodownload.org/wp-content/uploads/2016/09/fluminense-logo-escudo-1.png',
+      'Bahia': 'https://logodownload.org/wp-content/uploads/2016/09/bahia-logo-escudo-1.png',
+      'Cruzeiro': 'https://logodownload.org/wp-content/uploads/2016/09/cruzeiro-logo-escudo-1.png',
+      'Atlético-MG': 'https://logodownload.org/wp-content/uploads/2016/09/atletico-mineiro-logo-escudo-1.png',
+      'Santos': 'https://logodownload.org/wp-content/uploads/2016/09/santos-logo-escudo-1.png',
+      'Coritiba': 'https://logodownload.org/wp-content/uploads/2016/09/coritiba-logo-escudo-1.png',
+      'São Paulo': 'https://logodownload.org/wp-content/uploads/2016/09/sao-paulo-logo-escudo-1.png',
+      'Red Bull Bragantino': 'https://logodownload.org/wp-content/uploads/2017/02/red-bull-bragantino-logo-escudo-1.png',
+      'Botafogo': 'https://logodownload.org/wp-content/uploads/2016/09/botafogo-logo-escudo-1.png',
+      'Vitória': 'https://logodownload.org/wp-content/uploads/2016/09/vitoria-logo-escudo-1.png',
+      'Corinthians': 'https://logodownload.org/wp-content/uploads/2016/09/corinthians-logo-escudo-1.png',
+      'Mirassol': 'https://upload.wikimedia.org/wikipedia/commons/2/23/Mirassol_FC_logo.png',
+      'Vasco da Gama': 'https://logodownload.org/wp-content/uploads/2016/09/vasco-logo-escudo-1.png',
+      'Grêmio': 'https://logodownload.org/wp-content/uploads/2016/09/gremio-logo-escudo-1.png',
+      'Internacional': 'https://logodownload.org/wp-content/uploads/2016/09/internacional-logo-escudo-1.png',
+      'Remo': 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Clube_do_Remo.png',
+      'Chapecoense': 'https://logodownload.org/wp-content/uploads/2016/09/chapecoense-logo-escudo-1.png'
+    };
 
     const initialTeams = [
       { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
@@ -370,11 +399,17 @@
         const pos = index + 1;
         const sg = t.gp - t.gc;
         let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
+        const badgeUrl = teamBadges[t.name] || '';
 
         tbody.innerHTML += `
           <tr class="${zoneClass}">
             <td>${pos}</td>
-            <td class="left">${t.name}</td>
+            <td class="left">
+              <div class="club-cell">
+                <img src="${badgeUrl}" alt="${t.name}" class="club-badge" onerror="this.style.display='none'">
+                <span>${t.name}</span>
+              </div>
+            </td>
             <td class="pts">${t.pts}</td>
             <td>${t.j}</td>
             <td>${t.v}</td>
@@ -404,28 +439,43 @@
       container.innerHTML = '';
 
       games.forEach(g => {
+        const homeBadge = teamBadges[g.home] || '';
+        const awayBadge = teamBadges[g.away] || '';
+
         if (activeTab === 'agenda') {
           container.innerHTML += `
             <div class="match-item">
               <div class="match-date">${g.date}</div>
-              <div class="match-body">
-                <span class="team-name" style="text-align: right;">${g.home}</span>
-                <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 8px;">VS</span>
-                <span class="team-name" style="text-align: left;">${g.away}</span>
+              <div class="match-teams">
+                <div class="team-col home">
+                  <span class="team-name">${g.home}</span>
+                  <img src="${homeBadge}" alt="${g.home}" class="club-badge" onerror="this.style.display='none'">
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 6px;">VS</span>
+                <div class="team-col away">
+                  <img src="${awayBadge}" alt="${g.away}" class="club-badge" onerror="this.style.display='none'">
+                  <span class="team-name">${g.away}</span>
+                </div>
               </div>
             </div>`;
         } else {
           container.innerHTML += `
             <div class="match-item">
               <div class="match-date">${g.date}</div>
-              <div class="match-body">
-                <span class="team-name" style="text-align: right;">${g.home}</span>
+              <div class="match-teams">
+                <div class="team-col home">
+                  <span class="team-name">${g.home}</span>
+                  <img src="${homeBadge}" alt="${g.home}" class="club-badge" onerror="this.style.display='none'">
+                </div>
                 <div class="score-inputs">
                   <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
                   <span style="color: var(--text-muted); font-size: 0.7rem;">x</span>
                   <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
                 </div>
-                <span class="team-name" style="text-align: left;">${g.away}</span>
+                <div class="team-col away">
+                  <img src="${awayBadge}" alt="${g.away}" class="club-badge" onerror="this.style.display='none'">
+                  <span class="team-name">${g.away}</span>
+                </div>
               </div>
             </div>`;
         }
