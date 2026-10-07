@@ -283,4 +283,206 @@
       <!-- Abas -->
       <div class="tabs">
         <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
-        <button id="tab-sim" class="tab-btn" onclick="switch
+        <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">⚡ Simulador</button>
+      </div>
+
+      <!-- Jogos -->
+      <div id="matches-list" class="matches-list">
+        <!-- Jogos via JS -->
+      </div>
+
+      <!-- Botões do Simulador -->
+      <div id="sim-actions" class="btn-group" style="display: none;">
+        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar Placares</button>
+        <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Ativa a música no primeiro toque/clique no telemóvel
+    document.addEventListener('click', function() {
+      const audio = document.getElementById('audio-fundo');
+      if (audio && audio.paused) {
+        audio.play().catch(e => console.log("Aguardando interação."));
+      }
+    }, { once: true });
+
+    const initialTeams = [
+      { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
+      { name: 'Palmeiras', pts: 57, j: 28, v: 16, e: 9, d: 3, gp: 47, gc: 21 },
+      { name: 'Athletico-PR', pts: 49, j: 28, v: 14, e: 7, d: 7, gp: 43, gc: 32 },
+      { name: 'Fluminense', pts: 48, j: 28, v: 13, e: 9, d: 6, gp: 44, gc: 36 },
+      { name: 'Bahia', pts: 46, j: 28, v: 12, e: 10, d: 6, gp: 43, gc: 35 },
+      { name: 'Cruzeiro', pts: 45, j: 28, v: 13, e: 6, d: 9, gp: 42, gc: 40 },
+      { name: 'Atlético-MG', pts: 43, j: 28, v: 12, e: 7, d: 9, gp: 37, gc: 32 },
+      { name: 'Santos', pts: 41, j: 28, v: 11, e: 8, d: 9, gp: 43, gc: 41 },
+      { name: 'Coritiba', pts: 38, j: 28, v: 10, e: 8, d: 10, gp: 37, gc: 43 },
+      { name: 'São Paulo', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
+      { name: 'Red Bull Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
+      { name: 'Botafogo', pts: 35, j: 28, v: 9, e: 8, d: 11, gp: 41, gc: 45 },
+      { name: 'Vitória', pts: 33, j: 28, v: 9, e: 6, d: 13, gp: 28, gc: 42 },
+      { name: 'Corinthians', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 29, gc: 32 },
+      { name: 'Mirassol', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 33, gc: 42 },
+      { name: 'Vasco da Gama', pts: 31, j: 27, v: 8, e: 7, d: 12, gp: 34, gc: 41 },
+      { name: 'Grêmio', pts: 29, j: 28, v: 7, e: 8, d: 13, gp: 30, gc: 38 },
+      { name: 'Internacional', pts: 28, j: 28, v: 6, e: 10, d: 12, gp: 30, gc: 36 },
+      { name: 'Remo', pts: 23, j: 28, v: 5, e: 8, d: 15, gp: 32, gc: 47 },
+      { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
+    ];
+
+    const round29 = [
+      { id: 1, home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 2, home: 'Red Bull Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 3, home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 4, home: 'Vitória', away: 'Chapecoense', date: 'Qua • 07/10 - 20:00', hScore: '', aScore: '' },
+      { id: 5, home: 'Botafogo', away: 'Vasco da Gama', date: 'Qua • 07/10 - 20:30', hScore: '', aScore: '' },
+      { id: 6, home: 'Cruzeiro', away: 'São Paulo', date: 'Qua • 07/10 - 21:30', hScore: '', aScore: '' },
+      { id: 7, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
+      { id: 8, home: 'Athletico-PR', away: 'Atlético-MG', date: 'Qui • 08/10 - 20:00', hScore: '', aScore: '' },
+      { id: 9, home: 'Fluminense', away: 'Coritiba', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' },
+      { id: 10, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
+    ];
+
+    const round30 = [
+      { id: 11, home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10 - 18:00', hScore: '', aScore: '' },
+      { id: 12, home: 'São Paulo', away: 'Vitória', date: 'Sáb • 10/10 - 21:00', hScore: '', aScore: '' },
+      { id: 13, home: 'Atlético-MG', away: 'Santos', date: 'Dom • 11/10 - 16:00', hScore: '', aScore: '' },
+      { id: 14, home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 15, home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 16, home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 17, home: 'Bahia', away: 'Mirassol', date: 'Dom • 11/10 - 19:30', hScore: '', aScore: '' },
+      { id: 18, home: 'Coritiba', away: 'Botafogo', date: 'Seg • 12/10 - 16:00', hScore: '', aScore: '' },
+      { id: 19, home: 'Chapecoense', away: 'Athletico-PR', date: 'Seg • 12/10 - 19:30', hScore: '', aScore: '' },
+      { id: 20, home: 'Red Bull Bragantino', away: 'Cruzeiro', date: 'Seg • 12/10 - 21:00', hScore: '', aScore: '' }
+    ];
+
+    let activeTeams = JSON.parse(JSON.stringify(initialTeams));
+    let activeTab = 'agenda';
+
+    function renderTable() {
+      activeTeams.sort((a, b) => (b.pts - a.pts) || (b.v - a.v) || ((b.gp - b.gc) - (a.gp - a.gc)));
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      
+      activeTeams.forEach((t, index) => {
+        const pos = index + 1;
+        const sg = t.gp - t.gc;
+        let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
+
+        tbody.innerHTML += `
+          <tr class="${zoneClass}">
+            <td>${pos}</td>
+            <td class="left">${t.name}</td>
+            <td class="pts">${t.pts}</td>
+            <td>${t.j}</td>
+            <td>${t.v}</td>
+            <td>${t.e}</td>
+            <td>${t.d}</td>
+            <td>${t.gp}</td>
+            <td>${t.gc}</td>
+            <td>${sg > 0 ? '+' + sg : sg}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tab-agenda').className = tab === 'agenda' ? 'tab-btn active' : 'tab-btn';
+      document.getElementById('tab-sim').className = tab === 'simulador' ? 'tab-btn active' : 'tab-btn';
+      document.getElementById('sim-actions').style.display = tab === 'simulador' ? 'flex' : 'none';
+      document.getElementById('panel-title').textContent = tab === 'agenda' ? 'Próximos Jogos' : 'Simulador';
+      renderMatches();
+    }
+
+    function renderMatches() {
+      const selectedRound = document.getElementById('round-select').value;
+      const games = selectedRound === '29' ? round29 : round30;
+      const container = document.getElementById('matches-list');
+      container.innerHTML = '';
+
+      games.forEach(g => {
+        if (activeTab === 'agenda') {
+          container.innerHTML += `
+            <div class="match-item">
+              <div class="match-date">${g.date}</div>
+              <div class="match-body">
+                <span class="team-name" style="text-align: right;">${g.home}</span>
+                <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 8px;">VS</span>
+                <span class="team-name" style="text-align: left;">${g.away}</span>
+              </div>
+            </div>`;
+        } else {
+          container.innerHTML += `
+            <div class="match-item">
+              <div class="match-date">${g.date}</div>
+              <div class="match-body">
+                <span class="team-name" style="text-align: right;">${g.home}</span>
+                <div class="score-inputs">
+                  <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
+                  <span style="color: var(--text-muted); font-size: 0.7rem;">x</span>
+                  <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
+                </div>
+                <span class="team-name" style="text-align: left;">${g.away}</span>
+              </div>
+            </div>`;
+        }
+      });
+    }
+
+    function updateScore(id, side, val) {
+      const allGames = [...round29, ...round30];
+      const game = allGames.find(g => g.id === id);
+      if (game) {
+        if (side === 'h') game.hScore = val;
+        else game.aScore = val;
+      }
+    }
+
+    function confirmSimulation() {
+      activeTeams = JSON.parse(JSON.stringify(initialTeams));
+      const allGames = [...round29, ...round30];
+
+      allGames.forEach(g => {
+        if (g.hScore !== '' && g.aScore !== '') {
+          const h = parseInt(g.hScore);
+          const a = parseInt(g.aScore);
+          const home = activeTeams.find(t => t.name === g.home);
+          const away = activeTeams.find(t => t.name === g.away);
+
+          if (home && away) {
+            home.j++; away.j++; home.gp += h; home.gc += a; away.gp += a; away.gc += h;
+            if (h > a) { home.pts += 3; home.v++; away.d++; }
+            else if (a > h) { away.pts += 3; away.v++; home.d++; }
+            else { home.pts++; away.pts++; home.e++; away.e++; }
+          }
+        }
+      });
+
+      renderTable();
+    }
+
+    function resetSimulation() {
+      [...round29, ...round30].forEach(g => { g.hScore = ''; g.aScore = ''; });
+      activeTeams = JSON.parse(JSON.stringify(initialTeams));
+      renderMatches();
+      renderTable();
+    }
+
+    function filterTable() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const rows = document.querySelectorAll('#table-body tr');
+
+      rows.forEach(row => {
+        const teamName = row.children[1].textContent.toLowerCase();
+        row.style.display = teamName.includes(query) ? '' : 'none';
+      });
+    }
+
+    renderTable();
+    renderMatches();
+  </script>
+</body>
+</html>
