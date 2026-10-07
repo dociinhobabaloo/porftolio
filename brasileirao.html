@@ -165,7 +165,7 @@
 </head>
 <body>
 
-  <!-- Header apontando estritamente para o ficheiro correto musica-brasileirao.mp3 -->
+  <!-- Header -->
   <header>
     <div class="brand">
       <div class="brand-logo">⚽</div>
@@ -175,35 +175,12 @@
       </div>
     </div>
 
-   <!-- Audio com ID para o script conseguir controlar -->
-        <audio id="audio-fundo" src="musica-brasileirao.mp3" loop></audio>
-        
-        <h2>Classificação 2026 (Live)</h2>
-        <div class="tabela-container">
-            <table>
-                <thead>
-                    <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
-                </thead>
-                <tbody id="corpo-tabela">
-                    <!-- Preenchido via script -->
-                </tbody>
-            </table>
-        </div>
-
-        <h2>Últimos Jogos</h2>
-        <div id="lista-jogos" class="jogos-container">
-            <!-- Preenchido via script -->
-        </div>
+    <!-- Player de Som Integrado -->
+    <div class="player-box">
+      <span>♫ Tema</span>
+      <audio id="audio-fundo" src="musica-brasileirao.mp3" controls loop preload="auto"></audio>
     </div>
-
-    <script>
-        // Força a música a tocar assim que o usuário clicar em qualquer lugar da tela (exigência do navegador)
-        document.addEventListener('click', function() {
-            const audio = document.getElementById('audio-fundo');
-            if (audio.paused) {
-                audio.play();
-            }
-        }, { once: true });
+  </header>
 
   <div class="layout">
     
@@ -235,7 +212,7 @@
             </tr>
           </thead>
           <tbody id="table-body">
-            <!-- Gerado por JS -->
+            <!-- Gerado via JS -->
           </tbody>
         </table>
       </div>
@@ -262,7 +239,7 @@
 
       <!-- Jogos -->
       <div id="matches-list" class="matches-list">
-        <!-- Gerado por JS -->
+        <!-- Gerado via JS -->
       </div>
 
       <!-- Botões do Simulador -->
@@ -271,3 +248,14 @@
         <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
       </div>
     </div>
+
+  </div>
+
+  <script>
+    // Ativa a música no primeiro clique do usuário na tela (exigência dos navegadores)
+    document.addEventListener('click', function() {
+      const audio = document.getElementById('audio-fundo');
+      if (audio && audio.paused) {
+        audio.play().catch(e => console.log("Aguardando interação do usuário."));
+      }
+    }, { once: true
