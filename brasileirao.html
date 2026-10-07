@@ -3,68 +3,186 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brasileirão Série A - Tabela & Agenda Interativa</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Brasileirão Série A - Tabela & Simulador</title>
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.8); border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(71, 85, 105, 1); }
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --accent: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 20px; }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { font-size: 1.8rem; color: #fff; }
+    header p { color: var(--text-muted); font-size: 0.9rem; }
+    .layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1200px; margin: 0 auto; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; background: #0f172a; padding: 4px; border-radius: 8px; }
+    .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 6px; font-size: 0.8rem; }
+    .tab-btn.active { background: var(--card-bg); color: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th { color: var(--text-muted); padding: 10px 6px; text-align: center; border-bottom: 1px solid var(--border); }
+    th.left, td.left { text-align: left; }
+    td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .pts { font-weight: bold; color: var(--accent); }
+    .match { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+    .match-header { font-size: 0.75rem; color: var(--accent); text-align: center; margin-bottom: 6px; font-weight: bold; }
+    .match-body { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; gap: 6px; }
+    .score-box { display: flex; align-items: center; gap: 4px; }
+    .score-box input { width: 30px; height: 30px; background: #0f172a; border: 1px solid var(--border); border-radius: 4px; color: #fff; text-align: center; font-weight: bold; }
+    .btn-group { display: flex; gap: 8px; margin-top: 12px; }
+    .btn { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+    .btn-confirm { background: var(--accent); color: #fff; }
+    .btn-reset { background: #334155; color: #fff; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+<body>
 
-  <!-- Header / Navbar -->
-  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-          <svg class="w-6 h-6 text-slate-950 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-            BRASILEIRÃO <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2 py-0.5 rounded-full border border-emerald-500/20 font-medium">SÉRIE A</span>
-          </h1>
-          <p class="text-xs text-slate-400 hidden sm:block">Classificação Oficial, Agenda & Simulador</p>
-        </div>
-      </div>
-    </div>
+  <header>
+    <h1>Brasileirão Série A</h1>
+    <p>Classificação Oficial & Agenda da Competição</p>
   </header>
 
-  <!-- Conteúdo Principal - Layout Lado a Lado -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <div class="layout">
+    <!-- Tabela -->
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th class="left">Clube</th>
+            <th>P</th>
+            <th>J</th>
+            <th>V</th>
+            <th>E</th>
+            <th>D</th>
+            <th>GP</th>
+            <th>GC</th>
+            <th>SG</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
 
-    <!-- LADO ESQUERDO: Tabela de Classificação (8 colunas) -->
-    <section class="lg:col-span-8 flex flex-col gap-4">
-      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
-        <input type="text" id="search-input" onkeyup="filterTable()" placeholder="Buscar time por nome..." class="w-full md:w-64 bg-slate-950 border border-slate-800 text-slate-200 text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-emerald-500">
-        <div class="hidden sm:flex items-center gap-3 text-[11px] text-slate-400 font-medium">
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> G4 Libertadores</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span> G6 Pré-Lib.</span>
-          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Z4</span>
-        </div>
+    <!-- Painel Lateral -->
+    <div class="card">
+      <div class="tabs">
+        <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">Agenda</button>
+        <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">Simulador</button>
       </div>
 
-      <div class="bg-slate-900/90 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="bg-slate-800/60 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
-                <th class="py-3 px-3 text-center w-12">#</th>
-                <th class="py-3 px-3">CLUBE</th>
-                <th class="py-3 px-2 text-center font-bold text-slate-200">P</th>
-                <th class="py-3 px-2 text-center">J</th>
-                <th class="py-3 px-2 text-center">V</th>
-                <th class="py-3 px-2 text-center">E</th>
-                <th class="py-3 px-2 text-center">D</th>
-                <th class="py-3 px-2 text-center">GP</th>
-                <th class="py-3 px-2 text-center">GC</th>
-                <th class="py-3 px-2 text-center">SG</th>
-              </tr>
-            </thead>
-            <tbody id="table-body" class="divide-y divide-slate-80
+      <div id="matches-list"></div>
+
+      <div id="sim-actions" class="btn-group" style="display: none;">
+        <button class="btn btn-confirm" onclick="confirmSimulation()">Confirmar</button>
+        <button class="btn btn-reset" onclick="resetSimulation()">Resetar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const initialTeams = [
+      { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
+      { name: 'Palmeiras', pts: 57, j: 28, v: 16, e: 9, d: 3, gp: 47, gc: 21 },
+      { name: 'Athletico-PR', pts: 49, j: 28, v: 14, e: 7, d: 7, gp: 43, gc: 32 },
+      { name: 'Fluminense', pts: 48, j: 28, v: 13, e: 9, d: 6, gp: 44, gc: 36 },
+      { name: 'Bahia', pts: 46, j: 28, v: 12, e: 10, d: 6, gp: 43, gc: 35 },
+      { name: 'Cruzeiro', pts: 45, j: 28, v: 13, e: 6, d: 9, gp: 42, gc: 40 },
+      { name: 'Atlético-MG', pts: 43, j: 28, v: 12, e: 7, d: 9, gp: 37, gc: 32 },
+      { name: 'Santos', pts: 41, j: 28, v: 11, e: 8, d: 9, gp: 43, gc: 41 },
+      { name: 'Coritiba', pts: 38, j: 28, v: 10, e: 8, d: 10, gp: 37, gc: 43 },
+      { name: 'São Paulo', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
+      { name: 'RB Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
+      { name: 'Botafogo', pts: 35, j: 28, v: 9, e: 8, d: 11, gp: 41, gc: 45 },
+      { name: 'Vitória', pts: 33, j: 28, v: 9, e: 6, d: 13, gp: 28, gc: 42 },
+      { name: 'Corinthians', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 29, gc: 32 },
+      { name: 'Mirassol', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 33, gc: 42 },
+      { name: 'Vasco da Gama', pts: 31, j: 27, v: 8, e: 7, d: 12, gp: 34, gc: 41 },
+      { name: 'Grêmio', pts: 29, j: 28, v: 7, e: 8, d: 13, gp: 30, gc: 38 },
+      { name: 'Internacional', pts: 28, j: 28, v: 6, e: 10, d: 12, gp: 30, gc: 36 },
+      { name: 'Remo', pts: 23, j: 28, v: 5, e: 8, d: 15, gp: 32, gc: 47 },
+      { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
+    ];
+
+    const roundGames = [
+      { id: 1, home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 2, home: 'RB Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 3, home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
+      { id: 4, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
+      { id: 5, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
+    ];
+
+    let currentTeams = JSON.parse(JSON.stringify(initialTeams));
+    let activeTab = 'agenda';
+
+    function renderTable() {
+      currentTeams.sort((a, b) => (b.pts - a.pts) || (b.v - a.v) || ((b.gp - b.gc) - (a.gp - a.gc)));
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      currentTeams.forEach((t, i) => {
+        const sg = t.gp - t.gc;
+        tbody.innerHTML += `
+          <tr>
+            <td><b>${i + 1}</b></td>
+            <td class="left"><b>${t.name}</b></td>
+            <td class="pts">${t.pts}</td>
+            <td>${t.j}</td>
+            <td>${t.v}</td>
+            <td>${t.e}</td>
+            <td>${t.d}</td>
+            <td>${t.gp}</td>
+            <td>${t.gc}</td>
+            <td>${sg > 0 ? '+' + sg : sg}</td>
+          </tr>`;
+      });
+    }
+
+    function renderMatches() {
+      const container = document.getElementById('matches-list');
+      container.innerHTML = '';
+      roundGames.forEach(g => {
+        if (activeTab === 'agenda') {
+          container.innerHTML += `
+            <div class="match">
+              <div class="match-header">${g.date}</div>
+              <div class="match-body">
+                <span><b>${g.home}</b></span>
+                <span style="color: var(--text-muted); font-size: 0.75rem;">VS</span>
+                <span><b>${g.away}</b></span>
+              </div>
+            </div>`;
+        } else {
+          container.innerHTML += `
+            <div class="match">
+              <div class="match-header">${g.date}</div>
+              <div class="match-body">
+                <span><b>${g.home}</b></span>
+                <div class="score-box">
+                  <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
+                  <span>x</span>
+                  <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
+                </div>
+                <span><b>${g.away}</b></span>
+              </div>
+            </div>`;
+        }
+      });
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tab-agenda').className = tab === 'agenda' ? 'tab-btn active' : 'tab-btn';
+      document.getElementById('tab-sim').className = tab === 'simulador' ? 'tab-btn active' : 'tab-btn';
+      document.getElementById('sim-actions').style.display = tab === 'simulador' ? 'flex' : 'none';
+      renderMatches();
+    }
+
+    function updateScore(id, side, val) {
+      const g = roundGames.find(item => item.id === id);
+      if (g) {
+        if (side === 'h') g.hScore = val;
