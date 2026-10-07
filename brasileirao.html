@@ -11,8 +11,8 @@
       --card-border: rgba(255, 255, 255, 0.08);
       --accent: #10b981;
       --accent-hover: #059669;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
+      --text: #f0f6fc;
+      --text-muted: #8b949e;
       --g4: #10b981;
       --g6: #06b6d4;
       --z4: #f85149;
@@ -32,7 +32,6 @@
 
     @media (min-width: 640px) { body { padding: 20px; } }
 
-    /* Header Responsivo com Logo Oficial */
     header {
       max-width: 1240px;
       width: 100%;
@@ -59,16 +58,11 @@
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
-    
-    /* Logo em Destaque */
-    .brand-logo-container {
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, #10b981, #0284c7);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+    .brand-logo-img {
+      width: 40px; height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4));
     }
-    .brand-logo-svg { width: 28px; height: 28px; fill: #fff; }
 
     .brand-title h1 { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
     .brand-title p { font-size: 0.7rem; color: var(--text-muted); }
@@ -78,34 +72,19 @@
       .brand-title p { font-size: 0.75rem; }
     }
 
-    /* Player Personalizado com Pause/Play */
     .audio-player-box {
       display: flex; align-items: center; gap: 10px;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
       border: 1px solid var(--card-border);
-      padding: 6px 14px; border-radius: 12px;
+      padding: 6px 12px; border-radius: 12px;
       width: 100%; justify-content: space-between;
     }
 
     @media (min-width: 640px) { .audio-player-box { width: auto; } }
 
-    .audio-btn {
-      background: var(--accent);
-      border: none;
-      color: #fff;
-      font-weight: bold;
-      font-size: 0.75rem;
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex; align-items: center; gap: 6px;
-      transition: 0.2s;
-    }
-    .audio-btn:hover { background: var(--accent-hover); }
+    .audio-player-box span { font-size: 0.75rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    audio { height: 30px; width: 100%; max-width: 220px; }
 
-    audio { height: 28px; max-width: 180px; }
-
-    /* Layout */
     .container { 
       display: flex; flex-direction: column; gap: 16px; 
       max-width: 1240px; margin: 0 auto; width: 100%;
@@ -126,7 +105,6 @@
 
     @media (min-width: 640px) { .card { padding: 18px; } }
 
-    /* Ferramentas */
     .table-tools {
       display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
     }
@@ -146,7 +124,6 @@
     .legend-item { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* Tabela */
     .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 580px; }
     th {
@@ -156,13 +133,8 @@
     th.left, td.left { text-align: left; }
     td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
-    .club-cell { display: flex; align-items: center; gap: 10px; }
-    .team-badge-icon {
-      width: 22px; height: 22px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 0.65rem; font-weight: 800; color: #fff; flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
+    .club-cell { display: flex; align-items: center; gap: 8px; }
+    .club-badge { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
 
     tr.g4 td:first-child { border-left: 4px solid var(--g4); }
     tr.g6 td:first-child { border-left: 4px solid var(--g6); }
@@ -170,7 +142,6 @@
 
     .pts { font-weight: 800; color: var(--accent); background: rgba(16, 185, 129, 0.08); border-radius: 6px; }
 
-    /* Painel Lateral */
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
     .panel-header h2 { font-size: 0.85rem; font-weight: 800; }
     
@@ -211,24 +182,22 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div class="brand">
-      <div class="brand-logo-container">
-        <svg class="brand-logo-svg" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      </div>
+      <img src="https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png" alt="Logo Brasileirão" class="brand-logo-img">
       <div class="brand-title">
         <h1>BRASILEIRÃO SÉRIE A</h1>
         <p>Classificação Oficial, Agenda & Simulador</p>
       </div>
     </div>
 
-    <!-- Player de Áudio com Controle Total de Pause/Play -->
+    <!-- Player de Áudio NATIVO com controles de Play/Pause -->
     <div class="audio-player-box">
-      <button class="audio-btn" id="toggle-audio-btn" onclick="toggleAudio()">
-        <span id="btn-icon">▶</span> <span id="btn-text">Tocar Tema</span>
-      </button>
-      <audio id="audio-fundo" src="musica-brasileirao.mp3" loop preload="auto" controls></audio>
+      <span>♫ Tema</span>
+      <audio id="audio-fundo" controls preload="auto">
+        <source src="musica-brasileirao.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
+      </audio>
     </div>
   </header>
 
@@ -292,257 +261,15 @@
   </div>
 
   <script>
-    // Controle do Player de Áudio
-    function toggleAudio() {
-      const audio = document.getElementById('audio-fundo');
-      const icon = document.getElementById('btn-icon');
-      const text = document.getElementById('btn-text');
-
-      if (audio.paused) {
-        audio.play().then(() => {
-          icon.textContent = '⏸';
-          text.textContent = 'Pausar';
-        }).catch(err => console.log(err));
-      } else {
-        audio.pause();
-        icon.textContent = '▶';
-        text.textContent = 'Tocar Tema';
-      }
-    }
-
-    // Ativação Automática no Primeiro Clique
+    // Tenta dar Play automático ao clicar na página caso o navegador tenha bloqueado
     document.addEventListener('click', function() {
       const audio = document.getElementById('audio-fundo');
       if (audio && audio.paused) {
-        audio.play().then(() => {
-          document.getElementById('btn-icon').textContent = '⏸';
-          document.getElementById('btn-text').textContent = 'Pausar';
-        }).catch(() => {});
+        audio.play().catch(() => {});
       }
     }, { once: true });
 
-    // Cores das insignias dos times
-    const teamColors = {
-      'Flamengo': '#c8102e',
-      'Palmeiras': '#006437',
-      'Athletico-PR': '#000000',
-      'Fluminense': '#800020',
-      'Bahia': '#0055a5',
-      'Cruzeiro': '#0033a0',
-      'Atlético-MG': '#000000',
-      'Santos': '#ffffff',
-      'Coritiba': '#005429',
-      'São Paulo': '#ff0000',
-      'Red Bull Bragantino': '#d31245',
-      'Botafogo': '#000000',
-      'Vitória': '#e30613',
-      'Corinthians': '#000000',
-      'Mirassol': '#fff100',
-      'Vasco da Gama': '#000000',
-      'Grêmio': '#0d80bf',
-      'Internacional': '#e30613',
-      'Remo': '#001a35',
-      'Chapecoense': '#008040'
-    };
-
-    function getTeamBadge(name) {
-      const color = teamColors[name] || '#334155';
-      const textColor = (color === '#ffffff' || color === '#fff100') ? '#000000' : '#ffffff';
-      const initial = name.substring(0, 1);
-      return `<div class="team-badge-icon" style="background-color: ${color}; color: ${textColor};">${initial}</div>`;
-    }
-
-    const initialTeams = [
-      { name: 'Flamengo', pts: 60, j: 28, v: 18, e: 6, d: 4, gp: 55, gc: 23 },
-      { name: 'Palmeiras', pts: 57, j: 28, v: 16, e: 9, d: 3, gp: 47, gc: 21 },
-      { name: 'Athletico-PR', pts: 49, j: 28, v: 14, e: 7, d: 7, gp: 43, gc: 32 },
-      { name: 'Fluminense', pts: 48, j: 28, v: 13, e: 9, d: 6, gp: 44, gc: 36 },
-      { name: 'Bahia', pts: 46, j: 28, v: 12, e: 10, d: 6, gp: 43, gc: 35 },
-      { name: 'Cruzeiro', pts: 45, j: 28, v: 13, e: 6, d: 9, gp: 42, gc: 40 },
-      { name: 'Atlético-MG', pts: 43, j: 28, v: 12, e: 7, d: 9, gp: 37, gc: 32 },
-      { name: 'Santos', pts: 41, j: 28, v: 11, e: 8, d: 9, gp: 43, gc: 41 },
-      { name: 'Coritiba', pts: 38, j: 28, v: 10, e: 8, d: 10, gp: 37, gc: 43 },
-      { name: 'São Paulo', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'Red Bull Bragantino', pts: 36, j: 28, v: 10, e: 6, d: 12, gp: 33, gc: 32 },
-      { name: 'Botafogo', pts: 35, j: 28, v: 9, e: 8, d: 11, gp: 41, gc: 45 },
-      { name: 'Vitória', pts: 33, j: 28, v: 9, e: 6, d: 13, gp: 28, gc: 42 },
-      { name: 'Corinthians', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 29, gc: 32 },
-      { name: 'Mirassol', pts: 32, j: 28, v: 8, e: 8, d: 12, gp: 33, gc: 42 },
-      { name: 'Vasco da Gama', pts: 31, j: 27, v: 8, e: 7, d: 12, gp: 34, gc: 41 },
-      { name: 'Grêmio', pts: 29, j: 28, v: 7, e: 8, d: 13, gp: 30, gc: 38 },
-      { name: 'Internacional', pts: 28, j: 28, v: 6, e: 10, d: 12, gp: 30, gc: 36 },
-      { name: 'Remo', pts: 23, j: 28, v: 5, e: 8, d: 15, gp: 32, gc: 47 },
-      { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
-    ];
-
-    const round29 = [
-      { id: 1, home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 2, home: 'Red Bull Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 3, home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 4, home: 'Vitória', away: 'Chapecoense', date: 'Qua • 07/10 - 20:00', hScore: '', aScore: '' },
-      { id: 5, home: 'Botafogo', away: 'Vasco da Gama', date: 'Qua • 07/10 - 20:30', hScore: '', aScore: '' },
-      { id: 6, home: 'Cruzeiro', away: 'São Paulo', date: 'Qua • 07/10 - 21:30', hScore: '', aScore: '' },
-      { id: 7, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
-      { id: 8, home: 'Athletico-PR', away: 'Atlético-MG', date: 'Qui • 08/10 - 20:00', hScore: '', aScore: '' },
-      { id: 9, home: 'Fluminense', away: 'Coritiba', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' },
-      { id: 10, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
-    ];
-
-    const round30 = [
-      { id: 11, home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10 - 18:00', hScore: '', aScore: '' },
-      { id: 12, home: 'São Paulo', away: 'Vitória', date: 'Sáb • 10/10 - 21:00', hScore: '', aScore: '' },
-      { id: 13, home: 'Atlético-MG', away: 'Santos', date: 'Dom • 11/10 - 16:00', hScore: '', aScore: '' },
-      { id: 14, home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 15, home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 16, home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 17, home: 'Bahia', away: 'Mirassol', date: 'Dom • 11/10 - 19:30', hScore: '', aScore: '' },
-      { id: 18, home: 'Coritiba', away: 'Botafogo', date: 'Seg • 12/10 - 16:00', hScore: '', aScore: '' },
-      { id: 19, home: 'Chapecoense', away: 'Athletico-PR', date: 'Seg • 12/10 - 19:30', hScore: '', aScore: '' },
-      { id: 20, home: 'Red Bull Bragantino', away: 'Cruzeiro', date: 'Seg • 12/10 - 21:00', hScore: '', aScore: '' }
-    ];
-
-    let activeTeams = JSON.parse(JSON.stringify(initialTeams));
-    let activeTab = 'agenda';
-
-    function renderTable() {
-      activeTeams.sort((a, b) => (b.pts - a.pts) || (b.v - a.v) || ((b.gp - b.gc) - (a.gp - a.gc)));
-      const tbody = document.getElementById('table-body');
-      tbody.innerHTML = '';
-      
-      activeTeams.forEach((t, index) => {
-        const pos = index + 1;
-        const sg = t.gp - t.gc;
-        let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
-
-        tbody.innerHTML += `
-          <tr class="${zoneClass}">
-            <td>${pos}</td>
-            <td class="left">
-              <div class="club-cell">
-                ${getTeamBadge(t.name)}
-                <span>${t.name}</span>
-              </div>
-            </td>
-            <td class="pts">${t.pts}</td>
-            <td>${t.j}</td>
-            <td>${t.v}</td>
-            <td>${t.e}</td>
-            <td>${t.d}</td>
-            <td>${t.gp}</td>
-            <td>${t.gc}</td>
-            <td>${sg > 0 ? '+' + sg : sg}</td>
-          </tr>
-        `;
-      });
-    }
-
-    function switchTab(tab) {
-      activeTab = tab;
-      document.getElementById('tab-agenda').className = tab === 'agenda' ? 'tab-btn active' : 'tab-btn';
-      document.getElementById('tab-sim').className = tab === 'simulador' ? 'tab-btn active' : 'tab-btn';
-      document.getElementById('sim-actions').style.display = tab === 'simulador' ? 'flex' : 'none';
-      document.getElementById('panel-title').textContent = tab === 'agenda' ? 'Próximos Jogos' : 'Simulador';
-      renderMatches();
-    }
-
-    function renderMatches() {
-      const selectedRound = document.getElementById('round-select').value;
-      const games = selectedRound === '29' ? round29 : round30;
-      const container = document.getElementById('matches-list');
-      container.innerHTML = '';
-
-      games.forEach(g => {
-        if (activeTab === 'agenda') {
-          container.innerHTML += `
-            <div class="match-item">
-              <div class="match-date">${g.date}</div>
-              <div class="match-teams">
-                <div class="team-col home">
-                  <span class="team-name">${g.home}</span>
-                  ${getTeamBadge(g.home)}
-                </div>
-                <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 6px;">VS</span>
-                <div class="team-col away">
-                  ${getTeamBadge(g.away)}
-                  <span class="team-name">${g.away}</span>
-                </div>
-              </div>
-            </div>`;
-        } else {
-          container.innerHTML += `
-            <div class="match-item">
-              <div class="match-date">${g.date}</div>
-              <div class="match-teams">
-                <div class="team-col home">
-                  <span class="team-name">${g.home}</span>
-                  ${getTeamBadge(g.home)}
-                </div>
-                <div class="score-inputs">
-                  <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
-                  <span style="color: var(--text-muted); font-size: 0.7rem;">x</span>
-                  <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
-                </div>
-                <div class="team-col away">
-                  ${getTeamBadge(g.away)}
-                  <span class="team-name">${g.away}</span>
-                </div>
-              </div>
-            </div>`;
-        }
-      });
-    }
-
-    function updateScore(id, side, val) {
-      const allGames = [...round29, ...round30];
-      const game = allGames.find(g => g.id === id);
-      if (game) {
-        if (side === 'h') game.hScore = val;
-        else game.aScore = val;
-      }
-    }
-
-    function confirmSimulation() {
-      activeTeams = JSON.parse(JSON.stringify(initialTeams));
-      const allGames = [...round29, ...round30];
-
-      allGames.forEach(g => {
-        if (g.hScore !== '' && g.aScore !== '') {
-          const h = parseInt(g.hScore);
-          const a = parseInt(g.aScore);
-          const home = activeTeams.find(t => t.name === g.home);
-          const away = activeTeams.find(t => t.name === g.away);
-
-          if (home && away) {
-            home.j++; away.j++; home.gp += h; home.gc += a; away.gp += a; away.gc += h;
-            if (h > a) { home.pts += 3; home.v++; away.d++; }
-            else if (a > h) { away.pts += 3; away.v++; home.d++; }
-            else { home.pts++; away.pts++; home.e++; away.e++; }
-          }
-        }
-      });
-
-      renderTable();
-    }
-
-    function resetSimulation() {
-      [...round29, ...round30].forEach(g => { g.hScore = ''; g.aScore = ''; });
-      activeTeams = JSON.parse(JSON.stringify(initialTeams));
-      renderMatches();
-      renderTable();
-    }
-
-    function filterTable() {
-      const query = document.getElementById('search-input').value.toLowerCase();
-      const rows = document.querySelectorAll('#table-body tr');
-
-      rows.forEach(row => {
-        const teamName = row.children[1].textContent.toLowerCase();
-        row.style.display = teamName.includes(query) ? '' : 'none';
-      });
-    }
-
-    renderTable();
-    renderMatches();
-  </script>
-</body>
-</html>
+    // Escudos Oficiais PNG com Fallback
+    const teamBadges = {
+      'Flamengo': 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Flamengo_braz_logo.svg',
+      'Palme
