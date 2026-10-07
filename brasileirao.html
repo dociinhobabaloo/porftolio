@@ -32,7 +32,6 @@
 
     @media (min-width: 640px) { body { padding: 20px; } }
 
-    /* Header */
     header {
       max-width: 1240px;
       width: 100%;
@@ -59,12 +58,8 @@
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
-    
-    /* Logo Oficial do Brasileirão */
     .brand-logo-img {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
+      width: 42px; height: 42px; object-fit: contain;
       filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
     }
 
@@ -76,12 +71,11 @@
       .brand-title p { font-size: 0.75rem; }
     }
 
-    /* ÚNICO Player de Áudio */
     .audio-player-box {
       display: flex; align-items: center; gap: 10px;
       background: rgba(0, 0, 0, 0.5);
       border: 1px solid var(--card-border);
-      padding: 6px 14px; border-radius: 12px;
+      padding: 6px 12px; border-radius: 12px;
       width: 100%; justify-content: space-between;
     }
 
@@ -90,7 +84,6 @@
     .audio-player-box span { font-size: 0.75rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
     audio { height: 32px; max-width: 200px; outline: none; }
 
-    /* Layout */
     .container { 
       display: flex; flex-direction: column; gap: 16px; 
       max-width: 1240px; margin: 0 auto; width: 100%;
@@ -111,7 +104,6 @@
 
     @media (min-width: 640px) { .card { padding: 18px; } }
 
-    /* Ferramentas */
     .table-tools {
       display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
     }
@@ -131,7 +123,6 @@
     .legend-item { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* Tabela */
     .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 580px; }
     th {
@@ -153,7 +144,6 @@
 
     .pts { font-weight: 800; color: var(--accent); background: rgba(16, 185, 129, 0.08); border-radius: 6px; }
 
-    /* Painel Lateral */
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; }
     .panel-header h2 { font-size: 0.85rem; font-weight: 800; }
     
@@ -194,7 +184,6 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div class="brand">
       <img src="https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png" alt="Logo Brasileirão" class="brand-logo-img">
@@ -204,7 +193,6 @@
       </div>
     </div>
 
-    <!-- ÚNICO PLAYER DE ÁUDIO -->
     <div class="audio-player-box">
       <span>♫ Tema</span>
       <audio id="audio-fundo" controls loop preload="auto">
@@ -216,7 +204,6 @@
 
   <div class="container">
     
-    <!-- Tabela Principal -->
     <div class="card">
       <div class="table-tools">
         <input type="text" id="search-input" class="search-box" onkeyup="filterTable()" placeholder="Buscar time...">
@@ -248,7 +235,6 @@
       </div>
     </div>
 
-    <!-- Painel Lateral -->
     <div class="card">
       <div class="panel-header">
         <h2 id="panel-title">Próximos Jogos</h2>
@@ -274,7 +260,6 @@
   </div>
 
   <script>
-    // Inicia o áudio na primeira interação se estiver pausado
     document.addEventListener('click', function() {
       const audio = document.getElementById('audio-fundo');
       if (audio && audio.paused) {
@@ -282,28 +267,28 @@
       }
     }, { once: true });
 
-    // Escudos Reais dos Times (Wikimedia & Logos Oficiais)
+    // Escudos Oficiais Corrigidos com Links Diretos e Confiáveis
     const teamBadges = {
-      'Flamengo': 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Flamengo_braz_logo.svg',
-      'Palmeiras': 'https://upload.wikimedia.org/wikipedia/commons/1/10/Palmeiras_logo.svg',
-      'Athletico-PR': 'https://upload.wikimedia.org/wikipedia/commons/b/b3/Athletico_Paranaense_2019.svg',
-      'Fluminense': 'https://upload.wikimedia.org/wikipedia/commons/a/ad/Fluminense_FC_escudo.svg',
-      'Bahia': 'https://upload.wikimedia.org/wikipedia/pt/2/2c/Esporte_Clube_Bahia_logo.png',
-      'Cruzeiro': 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Cruzeiro_Esporte_Clube_%28logo_2021%29.svg',
-      'Atlético-MG': 'https://upload.wikimedia.org/wikipedia/commons/2/22/Clube_Atl%C3%A9tico_Mineiro_logo.svg',
-      'Santos': 'https://upload.wikimedia.org/wikipedia/commons/1/15/Santos_Logo.png',
-      'Coritiba': 'https://upload.wikimedia.org/wikipedia/commons/5/50/Coritiba_FCD.svg',
-      'São Paulo': 'https://upload.wikimedia.org/wikipedia/commons/6/6f/Brasao_do_Sao_Paulo_Futebol_Clube.svg',
-      'Red Bull Bragantino': 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Red_Bull_Bragantino.svg',
-      'Botafogo': 'https://upload.wikimedia.org/wikipedia/commons/c/db/Botafogo_de_Futebol_e_Regatas_logo.svg',
-      'Vitória': 'https://upload.wikimedia.org/wikipedia/commons/4/40/Esporte_Clube_Vit%C3%B3ria_logo.svg',
-      'Corinthians': 'https://upload.wikimedia.org/wikipedia/pt/b/b4/Corinthians_simbolo.png',
-      'Mirassol': 'https://upload.wikimedia.org/wikipedia/commons/2/23/Mirassol_FC_logo.png',
-      'Vasco da Gama': 'https://upload.wikimedia.org/wikipedia/pt/a/ac/CRVascodaGama.png',
-      'Grêmio': 'https://upload.wikimedia.org/wikipedia/commons/0/08/Gremio_logo.svg',
-      'Internacional': 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Escudo_do_Sport_Club_Internacional.svg',
-      'Remo': 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Clube_do_Remo.png',
-      'Chapecoense': 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Associacao_Chapecoense_de_Futebol.svg'
+      'Flamengo': 'https://api.sofascore.app/api/v1/team/5981/image',
+      'Palmeiras': 'https://api.sofascore.app/api/v1/team/1963/image',
+      'Athletico-PR': 'https://api.sofascore.app/api/v1/team/1960/image',
+      'Fluminense': 'https://api.sofascore.app/api/v1/team/1961/image',
+      'Bahia': 'https://api.sofascore.app/api/v1/team/1955/image',
+      'Cruzeiro': 'https://api.sofascore.app/api/v1/team/1954/image',
+      'Atlético-MG': 'https://api.sofascore.app/api/v1/team/1977/image',
+      'Santos': 'https://api.sofascore.app/api/v1/team/1964/image',
+      'Coritiba': 'https://api.sofascore.app/api/v1/team/1982/image',
+      'São Paulo': 'https://api.sofascore.app/api/v1/team/1981/image',
+      'Red Bull Bragantino': 'https://api.sofascore.app/api/v1/team/1999/image',
+      'Botafogo': 'https://api.sofascore.app/api/v1/team/1958/image',
+      'Vitória': 'https://api.sofascore.app/api/v1/team/1968/image',
+      'Corinthians': 'https://api.sofascore.app/api/v1/team/1957/image',
+      'Mirassol': 'https://api.sofascore.app/api/v1/team/32014/image',
+      'Vasco da Gama': 'https://api.sofascore.app/api/v1/team/1974/image',
+      'Grêmio': 'https://api.sofascore.app/api/v1/team/1959/image',
+      'Internacional': 'https://api.sofascore.app/api/v1/team/1966/image',
+      'Remo': 'https://api.sofascore.app/api/v1/team/2000/image',
+      'Chapecoense': 'https://api.sofascore.app/api/v1/team/32281/image'
     };
 
     function getBadgeHtml(teamName) {
