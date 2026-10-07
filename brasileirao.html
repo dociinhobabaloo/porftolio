@@ -577,41 +577,127 @@ td{padding:6px 5px;font-size:12px}
 }
 
 
+/* ===== ATUALIZAÇÃO AUTOMÁTICA ===== */
 .live-status{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin:0 0 10px;
-  padding:7px 9px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:10px;
-  background:rgba(255,255,255,.035);
-  color:rgba(255,255,255,.72);
-  font-size:11px;
+  display:flex;align-items:center;gap:7px;
+  margin:0 0 9px;padding:6px 8px;
+  border:1px solid rgba(218,229,222,.95);
+  border-radius:9px;background:#f7faf8;
+  color:#718078;font-size:10px;
 }
-.live-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#22c55e;
-  flex:0 0 auto;
-}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#20a05a;flex:none}
+.live-status.loading .live-dot{background:#e59b18}
+.live-status.error .live-dot{background:#d94a4a}
 .live-status button{
-  margin-left:auto;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);
-  color:inherit;
-  border-radius:7px;
-  padding:4px 8px;
-  cursor:pointer;
-  font-size:11px;
+  margin-left:auto;width:25px;height:23px;padding:0;
+  border:0;border-radius:6px;background:#eaf1ec;color:#185638;
+  cursor:pointer;font-size:13px;
 }
-.live-status button:hover{background:rgba(255,255,255,.11)}
-.live-status.loading .live-dot{background:#f59e0b}
-.live-status.error .live-dot{background:#ef4444}
-@media(max-width:430px){
-  .live-status{font-size:10px}
-  .live-status button{font-size:10px}
+
+/* ===== CELULAR COMPACTO ===== */
+@media(max-width:700px){
+  .container{width:100%;padding:8px 7px 20px}
+  .card{padding:10px;border-radius:11px}
+  .dashboard-grid{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:8px!important;
+  }
+  .classification-card,.side-column{
+    width:100%!important;
+    min-width:0!important;
+  }
+  .side-column{
+    position:static!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:8px!important;
+  }
+
+  header{padding:16px 8px 17px}
+  header img{width:64px}
+  header h1{font-size:19px;margin:7px 0 3px}
+  header p{font-size:10px}
+
+  .music-player{
+    max-width:280px!important;
+    width:100%!important;
+    margin:8px auto 0!important;
+    padding:6px 7px!important;
+    gap:5px!important;
+    flex-wrap:nowrap!important;
+  }
+  .music-player .music-title{display:none!important}
+  .music-player button{
+    min-width:68px!important;
+    padding:6px 8px!important;
+    font-size:10px!important;
+  }
+  .music-player input[type="range"]{
+    width:72px!important;
+    min-width:72px!important;
+  }
+
+  .classification-card h2,
+  .agenda-card h2,
+  .simulator-card h2{font-size:16px}
+
+  .classification-card>p,
+  .agenda-card>p,
+  .simulator-card>p{font-size:10px;margin-bottom:8px}
+
+  .controls{gap:5px;margin-bottom:8px}
+  input,select,button{padding:8px 9px;font-size:11px}
+
+  /* tabela: cabe inteira sem aumentar a página horizontalmente */
+  .table-wrap{
+    width:100%;
+    overflow-x:auto;
+    border-radius:8px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{min-width:610px}
+  th{padding:7px 3px;font-size:9px}
+  td{padding:5px 3px;font-size:10px}
+  .team img{width:23px;height:23px;margin-right:4px}
+  .badge{font-size:7px;padding:2px 4px;margin-left:2px}
+
+  .agenda-card .controls select{width:100%}
+  .match-day{margin-top:5px;border-radius:8px}
+  .match-day h3{padding:7px 8px;font-size:10px}
+  .match{
+    grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr);
+    gap:2px;padding:7px 4px;
+  }
+  .match-team{font-size:9px}
+  .match-team img{width:20px;height:20px;margin:0 2px}
+  .time{font-size:8px;min-width:50px}
+  .time b{font-size:9px}
+
+  .sim-grid{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    gap:5px!important;
+  }
+  .sim-card{padding:7px;border-radius:8px}
+  .sim-card strong{font-size:9px;margin-bottom:5px}
+  .score-row input{width:30px!important;padding:5px 2px!important;font-size:11px}
+  .simulator-card .controls{
+    display:grid!important;
+    grid-template-columns:1fr 65px!important;
+    gap:5px!important;
+  }
+  .simulator-card .controls button{font-size:9px;padding:7px 4px}
+  .sim-help{font-size:8px}
+}
+
+@media(max-width:380px){
+  header img{width:58px}
+  header h1{font-size:17px}
+  table{min-width:580px}
+  th,td{padding:4px 2px;font-size:9px}
+  .team img{width:20px;height:20px}
+  .sim-grid{grid-template-columns:1fr!important}
 }
 
 </style>
@@ -636,10 +722,10 @@ td{padding:6px 5px;font-size:12px}
 <main class="container">
   <div class="dashboard-grid">
     <section class="card classification-card">
-      <div id="live-status" class="live-status" role="status" aria-live="polite">
+      <div id="live-status" class="live-status" aria-live="polite">
         <span class="live-dot"></span>
-        <span id="live-status-text">Carregando classificação...</span>
-        <button id="refresh-live" type="button">↻ Atualizar</button>
+        <span id="live-status-text">Atualizando...</span>
+        <button id="refresh-live" type="button" title="Atualizar agora">↻</button>
       </div>
       <h2>Classificação</h2>
       <p>Brasileirão Série A · tabela de pontos</p>
@@ -737,7 +823,7 @@ const clubs = [
 {name:"Remo",pts:23,j:28,v:5,e:8,d:15,gp:32,gc:47,logo:"Remo.png"},
 {name:"Chapecoense",pts:18,j:27,v:3,e:9,d:15,gp:29,gc:53,logo:"Chapecoense.png"}
 ];
-let initialClubs = clubs.map(club => ({...club}));
+const initialClubs = clubs.map(club => ({...club}));
 
 function restoreOriginalTable(){
   clubs.forEach((club, index) => {
@@ -850,119 +936,23 @@ function renderSimulator(){
   });
 }
 
-
-const LIVE_DATA_URL = "https://valorfinal.com.br/brasileirao/dados.json";
-const LIVE_REFRESH_MS = 5 * 60 * 1000;
-
-const apiNameMap = {
-  "Bragantino": "RB Bragantino",
-  "Vasco": "Vasco da Gama"
-};
-
-function normalizeApiName(name){
-  return apiNameMap[name] || name;
-}
-
-function setLiveStatus(message, state=""){
-  const box = document.getElementById("live-status");
-  const text = document.getElementById("live-status-text");
-  if(!box || !text) return;
-  box.classList.remove("loading","error");
-  if(state) box.classList.add(state);
-  text.textContent = message;
-}
-
-function applyLiveTable(snapshot){
-  if(!snapshot || !Array.isArray(snapshot.clubes)) {
-    throw new Error("Formato de dados não reconhecido.");
-  }
-
-  const byName = new Map(snapshot.clubes.map(c => [normalizeApiName(c.nome), c]));
-  let updated = 0;
-
-  clubs.forEach(club => {
-    const live = byName.get(club.name);
-    if(!live) return;
-
-    club.pts = Number(live.pontos ?? club.pts);
-    club.j   = Number(live.jogos ?? club.j);
-    club.v   = Number(live.vitorias ?? club.v);
-    club.e   = Number(live.empates ?? club.e);
-    club.d   = Number(live.derrotas ?? club.d);
-    club.gp  = Number(live.golsPro ?? club.gp);
-    club.gc  = Number(live.golsContra ?? club.gc);
-    updated++;
-  });
-
-  // O "Resetar" do simulador volta para a última classificação real recebida.
-  initialClubs = clubs.map(club => ({...club}));
-
-  renderTable();
-  renderMatches();
-  renderSimulator();
-
-  const rodada = snapshot.rodadaDeReferencia ?? "?";
-  const atualizado = snapshot.atualizadoEm
-    ? new Date(snapshot.atualizadoEm).toLocaleString("pt-BR", {
-        dateStyle:"short",
-        timeStyle:"short"
-      })
-    : "agora";
-
-  setLiveStatus(`Ao vivo • ${updated}/20 clubes • rodada ${rodada} • ${atualizado}`);
-  localStorage.setItem("brasileirao-live-snapshot", JSON.stringify({
-    snapshot: snapshot.snapshot || "",
-    atualizadoEm: snapshot.atualizadoEm || "",
-    rodadaDeReferencia: snapshot.rodadaDeReferencia || null
-  }));
-}
-
-async function updateLiveTable({silent=false} = {}){
-  const refresh = document.getElementById("refresh-live");
-  if(refresh) refresh.disabled = true;
-  if(!silent) setLiveStatus("Buscando classificação atual...", "loading");
-
-  try{
-    const response = await fetch(`${LIVE_DATA_URL}?t=${Date.now()}`, {
-      cache: "no-store"
-    });
-
-    if(!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const snapshot = await response.json();
-    applyLiveTable(snapshot);
-  }catch(error){
-    console.error("Falha ao atualizar classificação:", error);
-
-    const cached = localStorage.getItem("brasileirao-live-snapshot");
-    if(cached){
-      setLiveStatus("Última atualização mantida • tentando novamente...", "error");
-    }else{
-      setLiveStatus("Não foi possível atualizar agora • tabela local mantida", "error");
-    }
-  }finally{
-    if(refresh) refresh.disabled = false;
-  }
-}
-
 document.addEventListener("DOMContentLoaded",()=>{
+  const liveRefresh=document.getElementById("refresh-live");
+  if(liveRefresh) liveRefresh.addEventListener("click",updateLiveTable);
+  updateLiveTable();
+  setInterval(updateLiveTable,LIVE_REFRESH_MS);
+
   renderTable();
   renderMatches();
   renderSimulator();
 
   document.getElementById("search").addEventListener("input",renderTable);
-
   document.getElementById("round-select").addEventListener("change",()=>{
     renderMatches();
     renderSimulator();
   });
-
-  const refreshButton = document.getElementById("refresh-live");
-  if(refreshButton){
-    refreshButton.addEventListener("click",()=>updateLiveTable());
-  }
-
   document.getElementById("reset-btn").addEventListener("click",()=>{
+    // Volta a tabela inteira para os números originais e limpa todos os placares.
     restoreOriginalTable();
 
     const confirmButton = document.getElementById("confirm-btn");
@@ -971,13 +961,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     renderTable();
     renderSimulator();
 
-    alert("Simulador resetado! A tabela voltou para a última classificação real carregada.");
+    alert("Simulador resetado! A tabela voltou aos números originais e os placares foram limpos.");
   });
-
   document.getElementById("confirm-btn").addEventListener("click",()=>{
     const round=document.getElementById("round-select").value;
     const button=document.getElementById("confirm-btn");
 
+    // Impede que o mesmo placar seja contabilizado duas vezes.
     if(button.dataset.confirmedRound===round){
       alert("Esses placares já foram contabilizados. Clique em Resetar para simular novamente.");
       return;
@@ -1016,11 +1006,100 @@ document.addEventListener("DOMContentLoaded",()=>{
     renderTable();
     alert("Placares confirmados! A tabela foi atualizada com os pontos, jogos, vitórias, empates, derrotas e gols.");
   });
-
-  // Primeira sincronização + atualização periódica.
-  updateLiveTable();
-  setInterval(()=>updateLiveTable({silent:true}), LIVE_REFRESH_MS);
 });
+
+/* ===== CLASSIFICAÇÃO AUTOMÁTICA =====
+   Fonte pública: ValorFinal.
+   O arquivo possui CORS aberto e é atualizado quando entram resultados novos.
+*/
+const LIVE_DATA_URL = "https://valorfinal.com.br/brasileirao/dados.json";
+const LIVE_REFRESH_MS = 5 * 60 * 1000;
+
+const liveAliases = {
+  "bragantino":"RB Bragantino",
+  "red bull bragantino":"RB Bragantino",
+  "vasco":"Vasco da Gama",
+  "vasco da gama":"Vasco da Gama",
+  "atletico-mg":"Atlético-MG",
+  "atletico mineiro":"Atlético-MG",
+  "athletico-pr":"Athletico-PR",
+  "atletico paranaense":"Athletico-PR"
+};
+
+function liveNormalize(name){
+  const key=String(name||"").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+  return liveAliases[key] || name;
+}
+
+function setLiveStatus(text,state=""){
+  const box=document.getElementById("live-status");
+  const label=document.getElementById("live-status-text");
+  if(!box||!label)return;
+  box.className="live-status"+(state?" "+state:"");
+  label.textContent=text;
+}
+
+async function updateLiveTable(){
+  const btn=document.getElementById("refresh-live");
+  if(btn)btn.disabled=true;
+  setLiveStatus("Atualizando tabela...","loading");
+
+  try{
+    const response=await fetch(LIVE_DATA_URL+"?t="+Date.now(),{
+      cache:"no-store",
+      headers:{"Accept":"application/json"}
+    });
+    if(!response.ok)throw new Error("HTTP "+response.status);
+
+    const data=await response.json();
+    if(!Array.isArray(data.clubes))throw new Error("Formato de dados inválido");
+
+    const map=new Map(
+      data.clubes.map(c=>[liveNormalize(c.nome),c])
+    );
+
+    let count=0;
+
+    clubs.forEach(club=>{
+      const live=map.get(club.name);
+      if(!live)return;
+
+      club.pts=Number(live.pontos ?? club.pts);
+      club.j=Number(live.jogos ?? club.j);
+      club.v=Number(live.vitorias ?? club.v);
+      club.e=Number(live.empates ?? club.e);
+      club.d=Number(live.derrotas ?? club.d);
+      club.gp=Number(live.gols_pro ?? live.golsPro ?? club.gp);
+      club.gc=Number(live.gols_contra ?? live.golsContra ?? club.gc);
+      count++;
+    });
+
+    // Reset do simulador passa a voltar para a última tabela real recebida.
+    initialClubs=clubs.map(c=>({...c}));
+
+    renderTable();
+    renderMatches();
+    renderSimulator();
+
+    const round=data.rodada_referencia ?? data.rodadaDeReferencia ?? "?";
+    let when="agora";
+    if(data.atualizado_em || data.atualizadoEm){
+      const raw=data.atualizado_em || data.atualizadoEm;
+      const d=new Date(raw);
+      if(!Number.isNaN(d.getTime())){
+        when=d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
+      }
+    }
+
+    setLiveStatus("Atualizado • "+count+"/20 clubes • rodada "+round+" • "+when);
+  }catch(error){
+    console.error("Falha ao atualizar Brasileirão:",error);
+    setLiveStatus("Sem conexão • tabela anterior mantida","error");
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
 
 </script>
 </body>
