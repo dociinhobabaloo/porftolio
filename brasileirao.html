@@ -175,14 +175,35 @@
       </div>
     </div>
 
-    <div class="player-box">
-      <span>♫ Tema</span>
-      <audio controls preload="auto">
-        <source src="musica-brasileirao.mp3" type="audio/mpeg">
-        O seu navegador não suporta o elemento de áudio.
-      </audio>
+   <!-- Audio com ID para o script conseguir controlar -->
+        <audio id="audio-fundo" src="musica-brasileirao.mp3" loop></audio>
+        
+        <h2>Classificação 2026 (Live)</h2>
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Clube</th><th>Pts</th><th>J</th><th>V</th></tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    <!-- Preenchido via script -->
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Últimos Jogos</h2>
+        <div id="lista-jogos" class="jogos-container">
+            <!-- Preenchido via script -->
+        </div>
     </div>
-  </header>
+
+    <script>
+        // Força a música a tocar assim que o usuário clicar em qualquer lugar da tela (exigência do navegador)
+        document.addEventListener('click', function() {
+            const audio = document.getElementById('audio-fundo');
+            if (audio.paused) {
+                audio.play();
+            }
+        }, { once: true });
 
   <div class="layout">
     
