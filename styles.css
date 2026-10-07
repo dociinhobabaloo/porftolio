@@ -22,9 +22,9 @@ body {
     color: var(--claro);
 }
 
-.navegacao { 
+.navegacao {
     position: fixed;
-    background: rgba(15, 23, 42, 0.8); 
+    background: rgba(15, 23, 42, 0.8);
     width: 100%;
     padding: 1.5rem;
     z-index: 1000;
@@ -37,7 +37,7 @@ body {
     gap: 3rem;
 }
 
-.menu a { 
+.menu a {
     color: var(--claro);
     text-decoration: none;
     transition: color 0.3s;
@@ -51,10 +51,10 @@ body {
     position: absolute;
     width: 0;
     height: 2px;
-    bottom: 0; 
+    bottom: 0;
     left: 0;
-    background: linear-gradient(98deg, var(--primaria), var(--secundaria)); 
-    transition: width 0.3s ease; 
+    background: linear-gradient(98deg, var(--primaria), var(--secundaria));
+    transition: width 0.3s ease;
 }
 
 .menu a:hover::after {
@@ -62,12 +62,12 @@ body {
 }
 
 .cabecalho {
-   min-height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   text-align: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
 }
 
 .foto-perfil {
@@ -83,19 +83,19 @@ body {
 h1 {
     font-size: 1.8rem;
     color: var(--primaria);
-    font-weight: 700;        
-    letter-spacing: -0.5px;  
+    font-weight: 700;
+    letter-spacing: -0.5px;
     margin: 20px;
 }
 
 .cabecalho-sobre-titulo {
-   min-height: 70vh;        
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   text-align: center;
-   padding-top: 80px; 
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding-top: 80px;
 }
 
 .sobre {
@@ -110,13 +110,13 @@ h1 {
 }
 
 .sobre-caixa {
-   padding: 2rem;
-   max-width: 800px;
-   margin: 0 auto;
-   border-radius: 10px;
-   border: 1px solid var(--vidro);
-   backdrop-filter: blur(10px);
-   background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 1px solid var(--vidro);
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .sobre-caixa p {
@@ -132,11 +132,11 @@ h1 {
 
 section {
     padding: 3rem 2rem;
-    max-width: 1000px;       
-    margin: 0 auto;          
+    max-width: 1000px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;     
+    align-items: center;
 }
 
 section h2 {
@@ -148,8 +148,8 @@ section h2 {
 }
 
 section img {
-    max-width: 100%;         
-    border-radius: 16px;     
+    max-width: 100%;
+    border-radius: 16px;
     margin-bottom: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
@@ -164,7 +164,7 @@ section img {
 
 .projetos-caixa {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     width: 100%;
     max-width: 1100px;
@@ -201,7 +201,8 @@ section img {
     margin-bottom: 0.8rem;
 }
 
-.paragrafo-projetos {
+.paragrafo-projetos,
+.paragrafoprojetos {
     font-size: 0.95rem;
     color: var(--claro);
     line-height: 1.6;
@@ -225,44 +226,36 @@ section img {
     background-color: var(--secundaria);
 }
 
-/* RESPONSIVO — somente celular */
+/* Ajuste exclusivo para telas pequenas */
 @media (max-width: 700px) {
     .navegacao {
-        padding: 0.8rem 0.5rem;
+        padding: 0.7rem 0.5rem;
     }
 
     .menu {
-        gap: 0.15rem;
-        width: 100%;
+        gap: 0.2rem;
         justify-content: space-between;
     }
 
-    .menu li {
-        flex: 1;
-        text-align: center;
-    }
-
     .menu a {
-        display: block;
         font-size: 0.72rem;
-        padding: 0.35rem 0.1rem;
+        padding: 0.4rem 0.2rem;
     }
 
     .cabecalho {
-        min-height: 100vh;
-        padding: 75px 20px 30px;
+        min-height: 100svh;
+        padding: 70px 15px 20px;
     }
 
     .foto-perfil {
-        width: 165px;
-        height: 165px;
-        border-width: 3px;
-        margin-bottom: 0.5rem;
+        width: 180px;
+        height: 180px;
+        margin-bottom: 0.6rem;
     }
 
     h1 {
-        font-size: 1.45rem;
-        margin: 10px 0 4px;
+        font-size: 1.5rem;
+        margin: 10px;
     }
 
     .cabecalho-sub-titulo {
@@ -275,18 +268,18 @@ section img {
 
     .sobre-titulo,
     section h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.2rem;
+        font-size: 1.6rem;
+        margin-bottom: 1.3rem;
     }
 
     .sobre-caixa {
         width: 100%;
-        padding: 1.1rem;
+        padding: 1.2rem;
     }
 
     .sobre-caixa p,
     .sobre-paragrafo {
-        font-size: 0.88rem;
+        font-size: 0.9rem;
         line-height: 1.55;
     }
 
@@ -312,52 +305,114 @@ section img {
         border-radius: 12px;
     }
 
-    .projetos-imagem {
+    .projetos-card > img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .info-projetos {
+        font-size: 1.15rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .paragrafo-projetos,
+    .paragrafoprojetos {
+        font-size: 0.84rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .btn-projeto {
+        padding: 0.65rem;
+        font-size: 0.84rem;
+    }
+}
+
+
+/* Ajustes complementares para manter todas as imagens dos cards consistentes */
+.projetos-card > img {
+    display: block;
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
+}
+
+.paragrafoprojetos {
+    font-size: 0.95rem;
+    color: var(--claro);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+/* Formulário de contato */
+.formulario-contato {
+    width: 100%;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.grupo-form {
+    width: 100%;
+}
+
+.campo-form,
+.text-form {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    color: var(--claro);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font: inherit;
+}
+
+.text-form {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.btn-enviar {
+    align-self: flex-start;
+    padding: 0.8rem 1.2rem;
+    color: white;
+    background: var(--primaria);
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-enviar:hover {
+    background: var(--secundaria);
+}
+
+@media (max-width: 700px) {
+    .projetos-card > img {
         height: 135px;
         margin-bottom: 0.9rem;
     }
 
-    .info-projetos {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .paragrafo-projetos {
+    .paragrafoprojetos {
         font-size: 0.82rem;
         line-height: 1.45;
         margin-bottom: 0.9rem;
     }
 
-    .btn-projeto {
-        padding: 0.65rem;
-        font-size: 0.82rem;
-    }
-}
-
-@media (max-width: 380px) {
-    .menu a {
-        font-size: 0.66rem;
+    .formulario-contato {
+        gap: 0.8rem;
     }
 
-    .foto-perfil {
-        width: 150px;
-        height: 150px;
-    }
-
-    h1 {
-        font-size: 1.3rem;
-    }
-
-    .cabecalho-sub-titulo {
-        font-size: 0.8rem;
-    }
-
-    .sobre-caixa {
-        padding: 0.9rem;
-    }
-
-    .sobre-caixa p,
-    .sobre-paragrafo {
-        font-size: 0.82rem;
+    .btn-enviar {
+        width: 100%;
     }
 }
