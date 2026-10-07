@@ -1,259 +1,29 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-:root {
-    --primaria: #4f46e5;
-    --secundaria: #7c3aed;
-    --claro: #e2e8f0;
-    --escuro: #0f172a;
-    --vidro: rgba(255, 255, 255, 0.1);
-}
-
-body {
-    background-color: var(--escuro);
-    color: var(--claro);
-}
-
-.navegacao { 
-    position: fixed;
-    background: rgba(15, 23, 42, 0.8); 
-    width: 100%;
-    padding: 1.5rem;
-    z-index: 1000;
-}
-
-.menu {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    gap: 3rem;
-}
-
-.menu a { 
-    color: var(--claro);
-    text-decoration: none;
-    transition: color 0.3s;
-    font-weight: 500;
-    position: relative;
-    padding: 0.5rem;
-}
-
-.menu a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0; 
-    left: 0;
-    background: linear-gradient(98deg, var(--primaria), var(--secundaria)); 
-    transition: width 0.3s ease; 
-}
-
-.menu a:hover::after {
-    width: 100%;
-}
-
-.cabecalho {
-   min-height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   text-align: center;
-}
-
-.foto-perfil {
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-    margin-bottom: 1rem;
-    border: 4px solid var(--vidro);
-}
-
-h1 {
-    font-size: 1.8rem;
-    color: var(--primaria);
-    font-weight: 700;        
-    letter-spacing: -0.5px;  
-    margin: 20px;
-}
-
-.cabecalho-sobre-titulo {
-   min-height: 70vh;        
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   text-align: center;
-   padding-top: 80px; 
-}
-
-.sobre {
-    padding: 2rem 2rem 4rem 2rem;
-}
-
-.sobre-titulo {
-    font-size: 2rem;
-    color: var(--claro);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.sobre-caixa {
-   padding: 2rem;
-   max-width: 800px;
-   margin: 0 auto;
-   border-radius: 10px;
-   border: 1px solid var(--vidro);
-   backdrop-filter: blur(10px);
-   background: rgba(255, 255, 255, 0.05);
-}
-
-.sobre-caixa p {
-    font-size: 1rem;
-    color: var(--claro);
-    line-height: 1.6;
-}
-
-.sobre-paragrafo {
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-section {
-    padding: 3rem 2rem;
-    max-width: 1000px;       
-    margin: 0 auto;          
-    display: flex;
-    flex-direction: column;
-    align-items: center;     
-}
-
-section h2 {
-    font-size: 2rem;
-    color: var(--claro);
-    text-align: center;
-    margin-bottom: 2rem;
-    letter-spacing: -0.5px;
-}
-
-section img {
-    max-width: 100%;         
-    border-radius: 16px;     
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* --- SEÇÃO DE PROJETOS --- */
-
-.projetos {
-    padding: 6rem 2rem;
-}
-
-.projetos-titulo {
-    margin-bottom: 3rem;
-}
-
-.projetos-caixa {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 2rem;
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.projetos-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1.5rem;
-    border-radius: 16px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.projetos-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--primaria);
-}
-
-.projetos-imagem,
-.projetos-card > img {
-    height: 160px;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 1.5rem;
-}
-
-.info-projetos {
-    font-size: 1.4rem;
-    color: var(--primaria);
-    margin-bottom: 0.8rem;
-}
-
-.paragrafo-projetos,
-.paragrafoprojetos {
-    font-size: 0.95rem;
-    color: var(--claro);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-}
-
-.btn-projeto {
-    display: block;
-    padding: 0.8rem;
-    background-color: var(--primaria);
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.btn-projeto:hover {
-    background-color: var(--secundaria);
-}
-
-/* =========================================================
-   AJUSTES PARA CELULAR
-   O visual do computador continua igual.
-   ========================================================= */
+/* =========================================
+   VERSÃO PARA CELULAR
+   ========================================= */
 
 @media (max-width: 700px) {
 
+    /* MENU */
     .navegacao {
-        padding: 0.75rem 0.4rem;
+        padding: 0.8rem 0.4rem;
     }
 
     .menu {
         gap: 0.2rem;
-        justify-content: space-around;
         width: 100%;
+        justify-content: space-around;
     }
 
     .menu a {
         font-size: 0.72rem;
-        padding: 0.35rem 0.45rem;
+        padding: 0.35rem 0.4rem;
     }
 
+    /* PRIMEIRA TELA */
     .cabecalho {
         min-height: 100svh;
-        padding: 75px 20px 30px;
+        padding: 70px 20px 30px;
     }
 
     .foto-perfil {
@@ -269,35 +39,42 @@ section img {
     }
 
     .cabecalho-sub-titulo {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
+    /* SOBRE */
     .sobre {
         padding: 1.5rem 1rem 2.5rem;
     }
 
-    .sobre-titulo,
-    section h2 {
+    .sobre-titulo {
         font-size: 1.45rem;
-        margin-bottom: 1.2rem;
+        margin-bottom: 1rem;
     }
 
     .sobre-caixa {
-        padding: 1rem;
         width: 100%;
+        padding: 1rem;
         border-radius: 12px;
     }
 
     .sobre-caixa p,
     .sobre-paragrafo {
-        font-size: 0.88rem;
-        line-height: 1.55;
+        font-size: 0.85rem;
+        line-height: 1.5;
     }
 
+    /* SEÇÕES */
     section {
         padding: 2rem 1rem;
     }
 
+    section h2 {
+        font-size: 1.45rem;
+        margin-bottom: 1.2rem;
+    }
+
+    /* PROJETOS */
     .projetos {
         padding: 2.5rem 1rem;
     }
@@ -309,7 +86,6 @@ section img {
     .projetos-caixa {
         grid-template-columns: 1fr;
         gap: 1rem;
-        width: 100%;
     }
 
     .projetos-card {
@@ -326,7 +102,7 @@ section img {
 
     .info-projetos {
         font-size: 1.05rem;
-        margin-bottom: 0.45rem;
+        margin-bottom: 0.4rem;
     }
 
     .paragrafo-projetos,
@@ -339,15 +115,16 @@ section img {
     .btn-projeto {
         padding: 0.6rem;
         font-size: 0.82rem;
-        border-radius: 7px;
     }
 }
 
+
+/* CELULARES PEQUENOS */
 @media (max-width: 380px) {
 
     .menu a {
-        font-size: 0.65rem;
-        padding: 0.3rem 0.25rem;
+        font-size: 0.64rem;
+        padding: 0.3rem 0.2rem;
     }
 
     .foto-perfil {
@@ -360,15 +137,15 @@ section img {
     }
 
     .cabecalho-sub-titulo {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
     }
 
     .sobre-caixa {
-        padding: 0.85rem;
+        padding: 0.8rem;
     }
 
     .sobre-caixa p,
     .sobre-paragrafo {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
     }
 }
