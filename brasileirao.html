@@ -439,6 +439,181 @@ td{padding:6px 5px;font-size:12px}
   }
 }
 
+
+/* =========================================================
+   LAYOUT FINAL — SIDEBAR NO CANTO + RESPONSIVO
+   Esta camada vem por último para prevalecer sobre regras antigas.
+   ========================================================= */
+.dashboard-grid{
+  display:grid !important;
+  grid-template-columns:minmax(0, 1fr) 310px !important;
+  gap:14px !important;
+  align-items:start !important;
+  width:100% !important;
+}
+
+.classification-card{
+  min-width:0 !important;
+  width:100% !important;
+}
+
+.side-column{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:12px !important;
+  width:310px !important;
+  min-width:0 !important;
+  position:sticky !important;
+  top:12px !important;
+  align-self:start !important;
+}
+
+.side-column .card{
+  width:100% !important;
+  margin:0 !important;
+}
+
+/* Agenda mais compacta */
+.agenda-card{
+  max-height:calc(100vh - 30px);
+  overflow:hidden;
+}
+
+.agenda-card #matches{
+  max-height:calc(100vh - 170px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+}
+
+/* Simulador compacto */
+.simulator-card{
+  max-height:calc(100vh - 30px);
+  overflow:hidden;
+}
+
+.simulator-card .sim-grid{
+  max-height:300px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:thin;
+}
+
+/* Player: somente Play/Pause + volume */
+.music-player{
+  width:max-content !important;
+  max-width:calc(100% - 20px) !important;
+  flex-wrap:nowrap !important;
+  justify-content:center !important;
+}
+
+.music-player .music-title{
+  display:none !important;
+}
+
+.music-player button{
+  min-width:76px !important;
+}
+
+.music-player input[type="range"]{
+  width:90px !important;
+  min-width:90px !important;
+  flex:none !important;
+}
+
+/* Somente celular estreito empilha */
+@media (max-width:700px){
+  .dashboard-grid{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .side-column{
+    width:100% !important;
+    position:static !important;
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .agenda-card,
+  .simulator-card{
+    max-height:none !important;
+  }
+
+  .agenda-card #matches,
+  .simulator-card .sim-grid{
+    max-height:none !important;
+    overflow:visible !important;
+  }
+
+  .music-player{
+    width:auto !important;
+    max-width:calc(100% - 16px) !important;
+  }
+}
+
+/* Celulares muito estreitos */
+@media (max-width:430px){
+  .side-column{
+    grid-template-columns:1fr !important;
+  }
+
+  .music-player{
+    gap:6px !important;
+    padding:7px 8px !important;
+  }
+
+  .music-player button{
+    min-width:70px !important;
+    padding:7px 9px !important;
+    font-size:11px !important;
+  }
+
+  .music-player input[type="range"]{
+    width:75px !important;
+    min-width:75px !important;
+  }
+}
+
+
+.live-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 10px;
+  padding:7px 9px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+  color:rgba(255,255,255,.72);
+  font-size:11px;
+}
+.live-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#22c55e;
+  flex:0 0 auto;
+}
+.live-status button{
+  margin-left:auto;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:inherit;
+  border-radius:7px;
+  padding:4px 8px;
+  cursor:pointer;
+  font-size:11px;
+}
+.live-status button:hover{background:rgba(255,255,255,.11)}
+.live-status.loading .live-dot{background:#f59e0b}
+.live-status.error .live-dot{background:#ef4444}
+@media(max-width:430px){
+  .live-status{font-size:10px}
+  .live-status button{font-size:10px}
+}
+
 </style>
 </head>
 <body>
@@ -461,6 +636,11 @@ td{padding:6px 5px;font-size:12px}
 <main class="container">
   <div class="dashboard-grid">
     <section class="card classification-card">
+      <div id="live-status" class="live-status" role="status" aria-live="polite">
+        <span class="live-dot"></span>
+        <span id="live-status-text">Carregando classificação...</span>
+        <button id="refresh-live" type="button">↻ Atualizar</button>
+      </div>
       <h2>Classificação</h2>
       <p>Brasileirão Série A · tabela de pontos</p>
       <div class="controls">
@@ -557,7 +737,7 @@ const clubs = [
 {name:"Remo",pts:23,j:28,v:5,e:8,d:15,gp:32,gc:47,logo:"Remo.png"},
 {name:"Chapecoense",pts:18,j:27,v:3,e:9,d:15,gp:29,gc:53,logo:"Chapecoense.png"}
 ];
-const initialClubs = clubs.map(club => ({...club}));
+let initialClubs = clubs.map(club => ({...club}));
 
 function restoreOriginalTable(){
   clubs.forEach((club, index) => {
@@ -670,18 +850,119 @@ function renderSimulator(){
   });
 }
 
+
+const LIVE_DATA_URL = "https://valorfinal.com.br/brasileirao/dados.json";
+const LIVE_REFRESH_MS = 5 * 60 * 1000;
+
+const apiNameMap = {
+  "Bragantino": "RB Bragantino",
+  "Vasco": "Vasco da Gama"
+};
+
+function normalizeApiName(name){
+  return apiNameMap[name] || name;
+}
+
+function setLiveStatus(message, state=""){
+  const box = document.getElementById("live-status");
+  const text = document.getElementById("live-status-text");
+  if(!box || !text) return;
+  box.classList.remove("loading","error");
+  if(state) box.classList.add(state);
+  text.textContent = message;
+}
+
+function applyLiveTable(snapshot){
+  if(!snapshot || !Array.isArray(snapshot.clubes)) {
+    throw new Error("Formato de dados não reconhecido.");
+  }
+
+  const byName = new Map(snapshot.clubes.map(c => [normalizeApiName(c.nome), c]));
+  let updated = 0;
+
+  clubs.forEach(club => {
+    const live = byName.get(club.name);
+    if(!live) return;
+
+    club.pts = Number(live.pontos ?? club.pts);
+    club.j   = Number(live.jogos ?? club.j);
+    club.v   = Number(live.vitorias ?? club.v);
+    club.e   = Number(live.empates ?? club.e);
+    club.d   = Number(live.derrotas ?? club.d);
+    club.gp  = Number(live.golsPro ?? club.gp);
+    club.gc  = Number(live.golsContra ?? club.gc);
+    updated++;
+  });
+
+  // O "Resetar" do simulador volta para a última classificação real recebida.
+  initialClubs = clubs.map(club => ({...club}));
+
+  renderTable();
+  renderMatches();
+  renderSimulator();
+
+  const rodada = snapshot.rodadaDeReferencia ?? "?";
+  const atualizado = snapshot.atualizadoEm
+    ? new Date(snapshot.atualizadoEm).toLocaleString("pt-BR", {
+        dateStyle:"short",
+        timeStyle:"short"
+      })
+    : "agora";
+
+  setLiveStatus(`Ao vivo • ${updated}/20 clubes • rodada ${rodada} • ${atualizado}`);
+  localStorage.setItem("brasileirao-live-snapshot", JSON.stringify({
+    snapshot: snapshot.snapshot || "",
+    atualizadoEm: snapshot.atualizadoEm || "",
+    rodadaDeReferencia: snapshot.rodadaDeReferencia || null
+  }));
+}
+
+async function updateLiveTable({silent=false} = {}){
+  const refresh = document.getElementById("refresh-live");
+  if(refresh) refresh.disabled = true;
+  if(!silent) setLiveStatus("Buscando classificação atual...", "loading");
+
+  try{
+    const response = await fetch(`${LIVE_DATA_URL}?t=${Date.now()}`, {
+      cache: "no-store"
+    });
+
+    if(!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const snapshot = await response.json();
+    applyLiveTable(snapshot);
+  }catch(error){
+    console.error("Falha ao atualizar classificação:", error);
+
+    const cached = localStorage.getItem("brasileirao-live-snapshot");
+    if(cached){
+      setLiveStatus("Última atualização mantida • tentando novamente...", "error");
+    }else{
+      setLiveStatus("Não foi possível atualizar agora • tabela local mantida", "error");
+    }
+  }finally{
+    if(refresh) refresh.disabled = false;
+  }
+}
+
 document.addEventListener("DOMContentLoaded",()=>{
   renderTable();
   renderMatches();
   renderSimulator();
 
   document.getElementById("search").addEventListener("input",renderTable);
+
   document.getElementById("round-select").addEventListener("change",()=>{
     renderMatches();
     renderSimulator();
   });
+
+  const refreshButton = document.getElementById("refresh-live");
+  if(refreshButton){
+    refreshButton.addEventListener("click",()=>updateLiveTable());
+  }
+
   document.getElementById("reset-btn").addEventListener("click",()=>{
-    // Volta a tabela inteira para os números originais e limpa todos os placares.
     restoreOriginalTable();
 
     const confirmButton = document.getElementById("confirm-btn");
@@ -690,13 +971,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     renderTable();
     renderSimulator();
 
-    alert("Simulador resetado! A tabela voltou aos números originais e os placares foram limpos.");
+    alert("Simulador resetado! A tabela voltou para a última classificação real carregada.");
   });
+
   document.getElementById("confirm-btn").addEventListener("click",()=>{
     const round=document.getElementById("round-select").value;
     const button=document.getElementById("confirm-btn");
 
-    // Impede que o mesmo placar seja contabilizado duas vezes.
     if(button.dataset.confirmedRound===round){
       alert("Esses placares já foram contabilizados. Clique em Resetar para simular novamente.");
       return;
@@ -735,7 +1016,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     renderTable();
     alert("Placares confirmados! A tabela foi atualizada com os pontos, jogos, vitórias, empates, derrotas e gols.");
   });
+
+  // Primeira sincronização + atualização periódica.
+  updateLiveTable();
+  setInterval(()=>updateLiveTable({silent:true}), LIVE_REFRESH_MS);
 });
+
 </script>
 </body>
 </html>
