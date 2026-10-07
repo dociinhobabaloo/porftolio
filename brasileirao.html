@@ -58,8 +58,10 @@
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
+    
+    /* Logo Local do Ficheiro logo-brasileirao.png */
     .brand-logo-img {
-      width: 42px; height: 42px; object-fit: contain;
+      width: 44px; height: 44px; object-fit: contain;
       filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
     }
 
@@ -186,7 +188,8 @@
 
   <header>
     <div class="brand">
-      <img src="https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png" alt="Logo Brasileirão" class="brand-logo-img">
+      <!-- Apontando para o ficheiro logo-brasileirao.png do teu repositorio -->
+      <img src="logo-brasileirao.png" alt="Logo Brasileirão" class="brand-logo-img">
       <div class="brand-title">
         <h1>BRASILEIRÃO SÉRIE A</h1>
         <p>Classificação Oficial, Agenda & Simulador</p>
@@ -197,7 +200,7 @@
       <span>♫ Tema</span>
       <audio id="audio-fundo" controls loop preload="auto">
         <source src="musica-brasileirao.mp3" type="audio/mpeg">
-        Seu navegador não suporta o áudio.
+        O seu navegador não suporta o áudio.
       </audio>
     </div>
   </header>
@@ -206,7 +209,7 @@
     
     <div class="card">
       <div class="table-tools">
-        <input type="text" id="search-input" class="search-box" onkeyup="filterTable()" placeholder="Buscar time...">
+        <input type="text" id="search-input" class="search-input" onkeyup="filterTable()" placeholder="Buscar time...">
         <div class="legend">
           <div class="legend-item"><div class="dot" style="background: var(--g4)"></div> G4</div>
           <div class="legend-item"><div class="dot" style="background: var(--g6)"></div> G6</div>
@@ -267,7 +270,7 @@
       }
     }, { once: true });
 
-    // Escudos Oficiais Corrigidos com Links Diretos e Confiáveis
+    // Escudos Oficiais
     const teamBadges = {
       'Flamengo': 'https://api.sofascore.app/api/v1/team/5981/image',
       'Palmeiras': 'https://api.sofascore.app/api/v1/team/1963/image',
