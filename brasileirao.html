@@ -58,8 +58,6 @@
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
-    
-    /* Logo Local do Ficheiro logo-brasileirao.png */
     .brand-logo-img {
       width: 44px; height: 44px; object-fit: contain;
       filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
@@ -135,8 +133,8 @@
     td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
     .club-cell { display: flex; align-items: center; gap: 10px; }
-    .club-badge-img {
-      width: 22px; height: 22px; object-fit: contain; flex-shrink: 0;
+    .club-badge-svg {
+      width: 22px; height: 22px; flex-shrink: 0;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     }
 
@@ -188,8 +186,7 @@
 
   <header>
     <div class="brand">
-      <!-- Apontando para o ficheiro logo-brasileirao.png do teu repositorio -->
-      <img src="logo-brasileirao.png" alt="Logo Brasileirão" class="brand-logo-img">
+      <img src="logo-brasileirao.png" alt="Logo Brasileirão" class="brand-logo-img" onerror="this.style.display='none'">
       <div class="brand-title">
         <h1>BRASILEIRÃO SÉRIE A</h1>
         <p>Classificação Oficial, Agenda & Simulador</p>
@@ -270,33 +267,32 @@
       }
     }, { once: true });
 
-    // Escudos Oficiais
-    const teamBadges = {
-      'Flamengo': 'https://api.sofascore.app/api/v1/team/5981/image',
-      'Palmeiras': 'https://api.sofascore.app/api/v1/team/1963/image',
-      'Athletico-PR': 'https://api.sofascore.app/api/v1/team/1960/image',
-      'Fluminense': 'https://api.sofascore.app/api/v1/team/1961/image',
-      'Bahia': 'https://api.sofascore.app/api/v1/team/1955/image',
-      'Cruzeiro': 'https://api.sofascore.app/api/v1/team/1954/image',
-      'Atlético-MG': 'https://api.sofascore.app/api/v1/team/1977/image',
-      'Santos': 'https://api.sofascore.app/api/v1/team/1964/image',
-      'Coritiba': 'https://api.sofascore.app/api/v1/team/1982/image',
-      'São Paulo': 'https://api.sofascore.app/api/v1/team/1981/image',
-      'Red Bull Bragantino': 'https://api.sofascore.app/api/v1/team/1999/image',
-      'Botafogo': 'https://api.sofascore.app/api/v1/team/1958/image',
-      'Vitória': 'https://api.sofascore.app/api/v1/team/1968/image',
-      'Corinthians': 'https://api.sofascore.app/api/v1/team/1957/image',
-      'Mirassol': 'https://api.sofascore.app/api/v1/team/32014/image',
-      'Vasco da Gama': 'https://api.sofascore.app/api/v1/team/1974/image',
-      'Grêmio': 'https://api.sofascore.app/api/v1/team/1959/image',
-      'Internacional': 'https://api.sofascore.app/api/v1/team/1966/image',
-      'Remo': 'https://api.sofascore.app/api/v1/team/2000/image',
-      'Chapecoense': 'https://api.sofascore.app/api/v1/team/32281/image'
+    // Mapeamento em SVG puro que garante o carregamento sem falhas
+    const svgBadges = {
+      'Flamengo': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 20 L100 80 L50 120 L0 80 L0 20 Z" fill="#c8102e"/><path d="M20 20 H80 V40 H20 Z M20 60 H80 V80 H20 Z" fill="#000000"/><text x="50" y="70" font-size="32" font-weight="900" fill="#ffffff" text-anchor="middle">CRF</text></svg>',
+      'Palmeiras': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#006437" stroke="#ffffff" stroke-width="4"/><circle cx="50" cy="50" r="36" fill="none" stroke="#ffffff" stroke-width="2"/><text x="50" y="58" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle">P</text></svg>',
+      'Athletico-PR': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M0 0 L100 30 L100 120 L0 90 Z" fill="#000000"/><path d="M20 30 L80 50 L80 100 L20 80 Z" fill="#c8102e"/><text x="50" y="75" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle">CAP</text></svg>',
+      'Fluminense': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 25 L85 95 L50 120 L15 95 L0 25 Z" fill="#800020"/><path d="M50 10 L90 32 L78 88 L50 110 L22 88 L10 32 Z" fill="#006437"/><text x="50" y="68" font-size="26" font-weight="900" fill="#ffffff" text-anchor="middle">FFC</text></svg>',
+      'Bahia': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0055a5" stroke="#ffffff" stroke-width="4"/><rect x="25" y="25" width="50" height="50" fill="#e30613"/><text x="50" y="58" font-size="22" font-weight="900" fill="#ffffff" text-anchor="middle">ECB</text></svg>',
+      'Cruzeiro': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0033a0" stroke="#ffffff" stroke-width="2"/><polygon points="50,15 54,28 68,28 56,36 60,50 50,40 40,50 44,36 32,28 46,28" fill="#ffffff"/><polygon points="25,60 27,68 35,68 28,73 30,80 25,75 20,80 22,73 15,68 23,68" fill="#ffffff"/><polygon points="75,60 77,68 85,68 78,73 80,80 75,75 70,80 72,73 65,68 73,68" fill="#ffffff"/></svg>',
+      'Atlético-MG': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 20 L85 100 L50 120 L15 100 L0 20 Z" fill="#000000"/><path d="M20 25 V95 M40 25 V95 M60 25 V95 M80 25 V95" stroke="#ffffff" stroke-width="8"/><text x="50" y="65" font-size="26" font-weight="900" fill="#ffffff" stroke="#000" stroke-width="2" text-anchor="middle">CAM</text></svg>',
+      'Santos': '<svg class="club-badge-svg" viewBox="0 0 100 110"><path d="M0 0 H100 V50 C100 85 50 110 50 110 C50 110 0 85 0 50 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/><path d="M0 0 H50 V50 H0 Z" fill="#000000"/><text x="75" y="35" font-size="22" font-weight="900" fill="#000000" text-anchor="middle">SFC</text></svg>',
+      'Coritiba': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#005429" stroke="#ffffff" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="#ffffff"/><text x="50" y="58" font-size="24" font-weight="900" fill="#005429" text-anchor="middle">CFC</text></svg>',
+      'São Paulo': '<svg class="club-badge-svg" viewBox="0 0 100 100"><path d="M0 0 H100 V30 L50 100 L0 30 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/><path d="M10 35 L50 90 L50 35 Z" fill="#cc0000"/><path d="M90 35 L50 90 L50 35 Z" fill="#000000"/><text x="50" y="24" font-size="18" font-weight="900" fill="#000000" text-anchor="middle">SPFC</text></svg>',
+      'Red Bull Bragantino': '<svg class="club-badge-svg" viewBox="0 0 100 100"><path d="M0 0 H100 V60 L50 100 L0 60 Z" fill="#ffffff" stroke="#d31245" stroke-width="4"/><circle cx="50" cy="45" r="22" fill="#fff100"/><text x="50" y="85" font-size="16" font-weight="900" fill="#d31245" text-anchor="middle">RBB</text></svg>',
+      'Botafogo': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 25 L85 100 L50 120 L15 100 L0 25 Z" fill="#000000" stroke="#ffffff" stroke-width="4"/><polygon points="50,25 58,48 82,48 62,62 70,85 50,70 30,85 38,62 18,48 42,48" fill="#ffffff"/></svg>',
+      'Vitória': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 20 L85 100 L50 120 L15 100 L0 20 Z" fill="#e30613"/><path d="M20 20 H80 V40 H20 Z M20 60 H80 V80 H20 Z" fill="#000000"/><text x="50" y="70" font-size="30" font-weight="900" fill="#ffffff" text-anchor="middle">ECV</text></svg>',
+      'Corinthians': '<svg class="club-badge-svg" viewBox="0 0 100 110"><circle cx="50" cy="55" r="40" fill="#ffffff" stroke="#000000" stroke-width="6"/><path d="M50 0 L60 20 L50 15 L40 20 Z" fill="#cc0000"/><text x="50" y="63" font-size="20" font-weight="900" fill="#000000" text-anchor="middle">SCCP</text></svg>',
+      'Mirassol': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#fff100" stroke="#005429" stroke-width="4"/><text x="50" y="58" font-size="22" font-weight="900" fill="#005429" text-anchor="middle">MFC</text></svg>',
+      'Vasco da Gama': '<svg class="club-badge-svg" viewBox="0 0 100 120"><path d="M50 0 L100 25 L85 100 L50 120 L15 100 L0 25 Z" fill="#000000" stroke="#ffffff" stroke-width="2"/><line x1="15" y1="100" x2="85" y2="25" stroke="#ffffff" stroke-width="16"/><path d="M40 50 H60 V70 H40 Z" fill="#cc0000"/></svg>',
+      'Grêmio': '<svg class="club-badge-svg" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="48" ry="38" fill="#0d80bf" stroke="#ffffff" stroke-width="4"/><rect x="10" y="42" width="80" height="16" fill="#000000"/><text x="50" y="55" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle">GREMIO</text></svg>',
+      'Internacional': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#e30613" stroke="#ffffff" stroke-width="4"/><text x="50" y="58" font-size="26" font-weight="900" fill="#ffffff" text-anchor="middle">SCI</text></svg>',
+      'Remo': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#001a35" stroke="#ffffff" stroke-width="4"/><text x="50" y="58" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle">CR</text></svg>',
+      'Chapecoense': '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#008040" stroke="#ffffff" stroke-width="4"/><text x="50" y="58" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle">ACF</text></svg>'
     };
 
     function getBadgeHtml(teamName) {
-      const src = teamBadges[teamName] || '';
-      return `<img src="${src}" alt="${teamName}" class="club-badge-img" onerror="this.style.display='none'">`;
+      return svgBadges[teamName] || '<svg class="club-badge-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#334155"/></svg>';
     }
 
     const initialTeams = [
@@ -385,111 +381,4 @@
 
     function switchTab(tab) {
       activeTab = tab;
-      document.getElementById('tab-agenda').className = tab === 'agenda' ? 'tab-btn active' : 'tab-btn';
-      document.getElementById('tab-sim').className = tab === 'simulador' ? 'tab-btn active' : 'tab-btn';
-      document.getElementById('sim-actions').style.display = tab === 'simulador' ? 'flex' : 'none';
-      document.getElementById('panel-title').textContent = tab === 'agenda' ? 'Próximos Jogos' : 'Simulador';
-      renderMatches();
-    }
-
-    function renderMatches() {
-      const selectedRound = document.getElementById('round-select').value;
-      const games = selectedRound === '29' ? round29 : round30;
-      const container = document.getElementById('matches-list');
-      container.innerHTML = '';
-
-      games.forEach(g => {
-        if (activeTab === 'agenda') {
-          container.innerHTML += `
-            <div class="match-item">
-              <div class="match-date">${g.date}</div>
-              <div class="match-teams">
-                <div class="team-col home">
-                  <span class="team-name">${g.home}</span>
-                  ${getBadgeHtml(g.home)}
-                </div>
-                <span style="color: var(--text-muted); font-size: 0.7rem; padding: 0 6px;">VS</span>
-                <div class="team-col away">
-                  ${getBadgeHtml(g.away)}
-                  <span class="team-name">${g.away}</span>
-                </div>
-              </div>
-            </div>`;
-        } else {
-          container.innerHTML += `
-            <div class="match-item">
-              <div class="match-date">${g.date}</div>
-              <div class="match-teams">
-                <div class="team-col home">
-                  <span class="team-name">${g.home}</span>
-                  ${getBadgeHtml(g.home)}
-                </div>
-                <div class="score-inputs">
-                  <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
-                  <span style="color: var(--text-muted); font-size: 0.7rem;">x</span>
-                  <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
-                </div>
-                <div class="team-col away">
-                  ${getBadgeHtml(g.away)}
-                  <span class="team-name">${g.away}</span>
-                </div>
-              </div>
-            </div>`;
-        }
-      });
-    }
-
-    function updateScore(id, side, val) {
-      const allGames = [...round29, ...round30];
-      const game = allGames.find(g => g.id === id);
-      if (game) {
-        if (side === 'h') game.hScore = val;
-        else game.aScore = val;
-      }
-    }
-
-    function confirmSimulation() {
-      activeTeams = JSON.parse(JSON.stringify(initialTeams));
-      const allGames = [...round29, ...round30];
-
-      allGames.forEach(g => {
-        if (g.hScore !== '' && g.aScore !== '') {
-          const h = parseInt(g.hScore);
-          const a = parseInt(g.aScore);
-          const home = activeTeams.find(t => t.name === g.home);
-          const away = activeTeams.find(t => t.name === g.away);
-
-          if (home && away) {
-            home.j++; away.j++; home.gp += h; home.gc += a; away.gp += a; away.gc += h;
-            if (h > a) { home.pts += 3; home.v++; away.d++; }
-            else if (a > h) { away.pts += 3; away.v++; home.d++; }
-            else { home.pts++; away.pts++; home.e++; away.e++; }
-          }
-        }
-      });
-
-      renderTable();
-    }
-
-    function resetSimulation() {
-      [...round29, ...round30].forEach(g => { g.hScore = ''; g.aScore = ''; });
-      activeTeams = JSON.parse(JSON.stringify(initialTeams));
-      renderMatches();
-      renderTable();
-    }
-
-    function filterTable() {
-      const query = document.getElementById('search-input').value.toLowerCase();
-      const rows = document.querySelectorAll('#table-body tr');
-
-      rows.forEach(row => {
-        const teamName = row.children[1].textContent.toLowerCase();
-        row.style.display = teamName.includes(query) ? '' : 'none';
-      });
-    }
-
-    renderTable();
-    renderMatches();
-  </script>
-</body>
-</html>
+      document.getElementById('tab-agenda
