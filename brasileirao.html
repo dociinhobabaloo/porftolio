@@ -89,7 +89,7 @@ button{
   transition:.18s transform,.18s box-shadow;
 }
 button:hover{transform:translateY(-1px);box-shadow:0 7px 14px rgba(0,107,60,.20)}
-button.secondary{background:#eaf1ec;color:#185638;box-shadow:none}
+button.secondary{background:#000;color:#fff;box-shadow:none}
 .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:13px}
 table{width:100%;border-collapse:separate;border-spacing:0;min-width:760px}
 th{
@@ -590,8 +590,22 @@ td{padding:6px 5px;font-size:12px}
 .live-status.error .live-dot{background:#d94a4a}
 .live-status button{
   margin-left:auto;width:25px;height:23px;padding:0;
-  border:0;border-radius:6px;background:#eaf1ec;color:#185638;
+  border:0;border-radius:6px;background:#000;color:#fff;
   cursor:pointer;font-size:13px;
+}
+
+/* Simulador confortável no celular: campos e botões maiores para toque. */
+@media(max-width:700px){
+  .simulator-card .score-row input{
+    min-width:44px !important;
+    min-height:44px !important;
+    padding:8px 5px !important;
+    font-size:16px !important;
+  }
+  .simulator-card .controls button{
+    min-height:44px !important;
+    font-size:12px !important;
+  }
 }
 
 /* ===== CELULAR COMPACTO ===== */
@@ -823,11 +837,15 @@ const clubs = [
 {name:"Remo",pts:23,j:28,v:5,e:8,d:15,gp:32,gc:47,logo:"Remo.png"},
 {name:"Chapecoense",pts:18,j:27,v:3,e:9,d:15,gp:29,gc:53,logo:"Chapecoense.png"}
 ];
-const initialClubs = clubs.map(club => ({...club}));
+let initialClubs = clubs.map(club => ({...club}));
+// Guarda a última tabela real recebida da fonte online.
+let liveClubsSnapshot = clubs.map(club => ({...club}));
+let simulationActive = false;
 
 function restoreOriginalTable(){
+  const snapshot = liveClubsSnapshot.length ? liveClubsSnapshot : initialClubs;
   clubs.forEach((club, index) => {
-    const original = initialClubs[index];
+    const original = snapshot[index];
     club.pts = original.pts;
     club.j = original.j;
     club.v = original.v;
@@ -903,18 +921,32 @@ function renderTable(){
 }
 
 function renderMatches(){
-  const round=document.getElementById("round-select").value;
+  // A agenda fica baseada nos jogos que já definimos para esta semana e
+  // para a próxima. A fonte ao vivo NÃO substitui esses jogos por uma
+  // lista parcial de "próximo jogo", evitando nomes/horários indefinidos.
+  const round=Number(document.getElementById("round-select").value);
   const box=document.getElementById("matches");
+  const sourceGames=games[round] || [];
+
   box.innerHTML=`<div class="match-day"><h3>${round}ª rodada</h3></div>`;
-  games[round].forEach((g,index)=>{
-    const h=findClub(g[0]), a=findClub(g[1]);
+  const day=box.querySelector(".match-day");
+
+  if(!sourceGames.length){
+    day.innerHTML += `<div class="match" style="display:block;text-align:center;color:#718078">
+      Nenhum jogo cadastrado para esta rodada.
+    </div>`;
+    return;
+  }
+
+  sourceGames.forEach(g=>{
+    const h=findClub(liveNormalize(g[0])), a=findClub(liveNormalize(g[1]));
     const div=document.createElement("div");
     div.className="match";
     div.innerHTML=`
       <div class="home match-team">${h.name} ${badge(h)}</div>
       <div class="time">${g[2]}<br><b>${g[3]}</b></div>
       <div class="away match-team">${badge(a)} ${a.name}</div>`;
-    box.querySelector(".match-day").appendChild(div);
+    day.appendChild(div);
   });
 }
 
@@ -938,9 +970,9 @@ function renderSimulator(){
 
 document.addEventListener("DOMContentLoaded",()=>{
   const liveRefresh=document.getElementById("refresh-live");
-  if(liveRefresh) liveRefresh.addEventListener("click",updateLiveTable);
-  updateLiveTable();
-  setInterval(updateLiveTable,LIVE_REFRESH_MS);
+  if(liveRefresh) liveRefresh.addEventListener("click",()=>updateLiveTable(false));
+  updateLiveTable(true);
+  setInterval(()=>updateLiveTable(false),LIVE_REFRESH_MS);
 
   renderTable();
   renderMatches();
@@ -951,8 +983,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     renderMatches();
     renderSimulator();
   });
-  document.getElementById("reset-btn").addEventListener("click",()=>{
-    // Volta a tabela inteira para os números originais e limpa todos os placares.
+  document.getElementById("reset-btn").addEventListener("click",async()=>{
+    // Sai do modo de simulação e volta imediatamente para a última tabela real.
+    simulationActive = false;
     restoreOriginalTable();
 
     const confirmButton = document.getElementById("confirm-btn");
@@ -960,8 +993,13 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     renderTable();
     renderSimulator();
+    setLiveStatus("Voltando para a tabela real...","loading");
 
-    alert("Simulador resetado! A tabela voltou aos números originais e os placares foram limpos.");
+    // Busca novamente a fonte online para garantir que o reset fique realmente
+    // sincronizado com a classificação atual, inclusive se saiu algum resultado.
+    await updateLiveTable(true);
+
+    alert("Simulador resetado! A tabela voltou ao normal e os placares foram limpos.");
   });
   document.getElementById("confirm-btn").addEventListener("click",()=>{
     const round=document.getElementById("round-select").value;
@@ -1002,9 +1040,13 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
     });
 
+    // Ativa o modo de simulação para que a atualização automática não apague
+    // o cenário enquanto o usuário estiver simulando pelo celular.
+    simulationActive = true;
     button.dataset.confirmedRound=round;
     renderTable();
-    alert("Placares confirmados! A tabela foi atualizada com os pontos, jogos, vitórias, empates, derrotas e gols.");
+    setLiveStatus("Simulação ativa • tabela atualizada","loading");
+    alert("Placares confirmados! A tabela foi atualizada com os pontos, jogos, vitórias, empates, derrotas e gols. Clique em Resetar para voltar ao normal.");
   });
 });
 
@@ -1040,7 +1082,14 @@ function setLiveStatus(text,state=""){
   label.textContent=text;
 }
 
-async function updateLiveTable(){
+// A classificação é atualizada pela fonte online quando os resultados entram.
+// A agenda, porém, permanece com os jogos cadastrados das rodadas 29 e 30
+// até que esses jogos aconteçam; ela não é substituída por uma lista parcial.
+async function updateLiveTable(forceLive=false){
+  // Durante uma simulação, o refresh automático não pode sobrescrever a tabela
+  // simulada. O Resetar chama esta função com forceLive=true para voltar ao real.
+  if(simulationActive && !forceLive)return;
+
   const btn=document.getElementById("refresh-live");
   if(btn)btn.disabled=true;
   setLiveStatus("Atualizando tabela...","loading");
@@ -1075,7 +1124,8 @@ async function updateLiveTable(){
       count++;
     });
 
-    // Reset do simulador passa a voltar para a última tabela real recebida.
+    // Guarda uma cópia da tabela real para o botão Resetar.
+    liveClubsSnapshot=clubs.map(c=>({...c}));
     initialClubs=clubs.map(c=>({...c}));
 
     renderTable();
