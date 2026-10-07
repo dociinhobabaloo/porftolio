@@ -21,6 +21,12 @@ tbody tr.g4 td:first-child{border-left:4px solid var(--green)}tbody tr.g6 td:fir
 .matches-list{display:flex;flex-direction:column;gap:8px;max-height:520px;overflow-y:auto;padding:0 18px 18px}.match-item{background:#fafbfc;border:1px solid var(--line);border-radius:10px;padding:11px}.match-date{font-size:.6rem;color:var(--green-dark);text-align:center;font-weight:850;margin-bottom:8px;text-transform:uppercase}.match-teams{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;font-weight:750;gap:7px}.team-col{flex:1;display:flex;align-items:center;gap:7px;overflow:hidden}.team-col.home{justify-content:flex-end}.team-col.away{justify-content:flex-start}.team-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.match-badge{width:25px;height:25px;object-fit:contain;flex-shrink:0}.score-inputs{display:flex;align-items:center;gap:4px}.score-inputs input{width:32px;height:30px;background:#fff;border:1px solid var(--line);border-radius:6px;color:var(--green-dark);text-align:center;font-weight:900;font-size:.8rem;outline:none}.vs{color:#98a2b3;font-size:.68rem}.btn-group{display:flex;gap:8px;margin:0 18px 18px;padding-top:12px;border-top:1px solid var(--line)}.btn{flex:1;padding:11px 8px;border:none;border-radius:8px;font-weight:800;cursor:pointer;font-size:.72rem}.btn-confirm{background:var(--green);color:#fff}.btn-reset{background:#f5f6f7;color:#667085;border:1px solid var(--line)}.status{font-size:.68rem;color:var(--muted);margin:0 18px 14px;text-align:center}.empty{padding:20px;text-align:center;color:var(--muted);font-size:.8rem}
 @media(max-width:959px){.container{grid-template-columns:1fr}}
 @media(max-width:639px){body{padding:0 8px 20px}header{margin:8px auto 12px;padding:14px;border-radius:11px}.brand-logo-img{width:48px;height:48px}.brand-title h1{font-size:1rem}.audio-player-box{display:none}.table-tools{align-items:stretch;flex-direction:column}.search-input{width:100%}.legend{justify-content:center}.card{border-radius:11px}}
+.club-badge{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;}
+.club-badge-img{width:28px;height:28px;object-fit:contain;display:block;}
+.club-fallback{display:none;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;background:#202833;color:#fff;font-size:.55rem;font-weight:900;}
+.club-cell{gap:9px;}
+.club-name{font-weight:750;}
+.position{width:42px;color:#98a2b3;}
 </style>
 </head>
 <body>
@@ -88,6 +94,50 @@ const matches={
   ]
 };
 function findClub(name){return clubs.find(c=>c.name===name)||{name,short:"?"};}
+
+function logoURL(club){
+  if(!club || !club.logo) return "";
+  return ASSET_BASE + encodeURIComponent(club.logo);
+}
+
+function badgeHTML(club, extraClass="") {
+  const safeName = String(club?.name || "").replace(/"/g,"&quot;");
+  const short = String(club?.short || "?").replace(/</g,"&lt;");
+  const src = logoURL(club);
+  return `<span class="club-badge ${extraClass}">
+    <img class="club-badge-img" src="${src}" alt="Escudo ${safeName}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+    <span class="club-fallback">${short}</span>
+  </span>`;
+}
+
+function renderTable(){
+  const tbody=document.getElementById("table-body");
+  const search=(document.getElementById("search-input")?.value || "").trim().toLowerCase();
+  const sorted=[...clubs].sort((a,b)=>b.pts-a.pts || (b.gp-b.gc)-(a.gp-a.gc) || b.v-a.v || a.name.localeCompare(b.name,"pt-BR"));
+  const visible=sorted.filter(c=>c.name.toLowerCase().includes(search));
+  tbody.innerHTML=visible.map((c,index)=>{
+    const pos=sorted.indexOf(c)+1;
+    const zone=pos<=4?"g4":pos<=6?"g6":pos>=17?"z4":"";
+    const sg=c.gp-c.gc;
+    return `<tr class="${zone}">
+      <td class="position"><strong>${pos}</strong></td>
+      <td class="left club-cell">${badgeHTML(c)}<span class="club-name">${c.name}</span></td>
+      <td class="pts"><strong>${c.pts}</strong></td>
+      <td>${c.j}</td><td>${c.v}</td><td>${c.e}</td><td>${c.d}</td>
+      <td>${c.gp}</td><td>${c.gc}</td><td>${sg>0?"+":""}${sg}</td>
+    </tr>`;
+  }).join("");
+  loadLogos();
+}
+
+function loadLogos(){
+  document.querySelectorAll(".club-badge-img").forEach(img=>{
+    img.addEventListener("load",()=>{
+      img.style.display="block";
+      if(img.nextElementSibling) img.nextElementSibling.style.display="none";
+    },{once:true});
+  });
+}
 let simulator=false;
 function matchHTML(home,away,i){
  const h=findClub(home),a=findClub(away);
