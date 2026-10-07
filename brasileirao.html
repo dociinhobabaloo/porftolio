@@ -24,7 +24,7 @@
     header h1 { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
     header p { color: var(--text-sub); font-size: 0.85rem; margin-top: 4px; }
 
-    .container { display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1200px; margin: 0 auto; }
+    .container { display: grid; grid-template-columns: 1fr 360px; gap: 20px; max-width: 1240px; margin: 0 auto; }
     @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
 
     .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
@@ -43,8 +43,8 @@
 
     .pts { font-weight: 800; color: var(--accent); }
 
-    /* Abas do Painel Lateral */
-    .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); pb: 12px; margin-bottom: 12px; padding-bottom: 10px; }
+    /* Painel Lateral */
+    .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; }
     .panel-header h2 { font-size: 0.95rem; font-weight: 700; }
     
     .tabs { display: flex; gap: 6px; background: #0d1117; padding: 4px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; }
@@ -52,7 +52,7 @@
     .tab-btn.active { background: var(--card-bg); color: #fff; }
 
     /* Lista de Jogos */
-    .matches-list { display: flex; flex-col; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; }
+    .matches-list { display: flex; flex-direction: column; gap: 10px; max-height: 520px; overflow-y: auto; padding-right: 4px; }
     .match-item { background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
     .match-date { font-size: 0.7rem; color: var(--accent); text-align: center; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
     .match-teams { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; font-weight: 600; }
@@ -109,9 +109,9 @@
     <div class="card">
       <div class="panel-header">
         <h2 id="panel-title">Próximos Jogos</h2>
-        <select id="round-select" onchange="renderMatches()" style="background: #0d1117; color: var(--accent); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; font-weight: bold;">
-          <option value="29">Rodada 29</option>
-          <option value="30">Rodada 30</option>
+        <select id="round-select" onchange="renderMatches()" style="background: #0d1117; color: var(--accent); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; font-weight: bold; outline: none; cursor: pointer;">
+          <option value="29">Rodada 29 (Esta Semana)</option>
+          <option value="30">Rodada 30 (Próxima Semana)</option>
         </select>
       </div>
 
@@ -159,19 +159,32 @@
       { name: 'Chapecoense', pts: 18, j: 27, v: 3, e: 9, d: 15, gp: 29, gc: 53 }
     ];
 
+    // JOGOS COMPLETOS DA RODADA 29
     const round29 = [
       { id: 1, home: 'Remo', away: 'Grêmio', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
       { id: 2, home: 'Red Bull Bragantino', away: 'Mirassol', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
       { id: 3, home: 'Internacional', away: 'Corinthians', date: 'Qua • 07/10 - 19:30', hScore: '', aScore: '' },
-      { id: 4, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
-      { id: 5, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
+      { id: 4, home: 'Vitória', away: 'Chapecoense', date: 'Qua • 07/10 - 20:00', hScore: '', aScore: '' },
+      { id: 5, home: 'Botafogo', away: 'Vasco da Gama', date: 'Qua • 07/10 - 20:30', hScore: '', aScore: '' },
+      { id: 6, home: 'Cruzeiro', away: 'São Paulo', date: 'Qua • 07/10 - 21:30', hScore: '', aScore: '' },
+      { id: 7, home: 'Santos', away: 'Flamengo', date: 'Qui • 08/10 - 19:30', hScore: '', aScore: '' },
+      { id: 8, home: 'Athletico-PR', away: 'Atlético-MG', date: 'Qui • 08/10 - 20:00', hScore: '', aScore: '' },
+      { id: 9, home: 'Fluminense', away: 'Coritiba', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' },
+      { id: 10, home: 'Palmeiras', away: 'Bahia', date: 'Qui • 08/10 - 21:30', hScore: '', aScore: '' }
     ];
 
+    // JOGOS COMPLETOS DA RODADA 30 (PRÓXIMA SEMANA)
     const round30 = [
-      { id: 6, home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10 - 18:00', hScore: '', aScore: '' },
-      { id: 7, home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 8, home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
-      { id: 9, home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' }
+      { id: 11, home: 'Vasco da Gama', away: 'Remo', date: 'Sáb • 10/10 - 18:00', hScore: '', aScore: '' },
+      { id: 12, home: 'São Paulo', away: 'Vitória', date: 'Sáb • 10/10 - 21:00', hScore: '', aScore: '' },
+      { id: 13, home: 'Atlético-MG', away: 'Santos', date: 'Dom • 11/10 - 16:00', hScore: '', aScore: '' },
+      { id: 14, home: 'Flamengo', away: 'Fluminense', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 15, home: 'Palmeiras', away: 'Corinthians', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 16, home: 'Grêmio', away: 'Internacional', date: 'Dom • 11/10 - 17:30', hScore: '', aScore: '' },
+      { id: 17, home: 'Bahia', away: 'Mirassol', date: 'Dom • 11/10 - 19:30', hScore: '', aScore: '' },
+      { id: 18, home: 'Coritiba', away: 'Botafogo', date: 'Seg • 12/10 - 16:00', hScore: '', aScore: '' },
+      { id: 19, home: 'Chapecoense', away: 'Athletico-PR', date: 'Seg • 12/10 - 19:30', hScore: '', aScore: '' },
+      { id: 20, home: 'Red Bull Bragantino', away: 'Cruzeiro', date: 'Seg • 12/10 - 21:00', hScore: '', aScore: '' }
     ];
 
     let activeTeams = JSON.parse(JSON.stringify(initialTeams));
