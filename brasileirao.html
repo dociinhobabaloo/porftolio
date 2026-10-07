@@ -10,70 +10,96 @@
       --card-bg: #1e293b;
       --border: #334155;
       --accent: #10b981;
+      --accent-hover: #059669;
       --text: #f8fafc;
       --text-muted: #94a3b8;
+      --g4: #10b981;
+      --g6: #06b6d4;
+      --z4: #ef4444;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 20px; }
+    body { background: var(--bg); color: var(--text); padding: 20px; min-height: 100vh; }
+    
     header { text-align: center; margin-bottom: 24px; }
-    header h1 { font-size: 1.8rem; color: #fff; }
-    header p { color: var(--text-muted); font-size: 0.9rem; }
+    header h1 { font-size: 1.8rem; color: #fff; font-weight: 800; }
+    header p { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+
     .layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; max-width: 1200px; margin: 0 auto; }
     @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
-    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
-    .tabs { display: flex; gap: 8px; margin-bottom: 16px; background: #0f172a; padding: 4px; border-radius: 8px; }
-    .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 6px; font-size: 0.8rem; }
+
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid var(--border); }
+    .tab-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 6px; font-size: 0.8rem; transition: 0.2s; }
     .tab-btn.active { background: var(--card-bg); color: #fff; }
+
+    .table-container { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th { color: var(--text-muted); padding: 10px 6px; text-align: center; border-bottom: 1px solid var(--border); }
+    th { color: var(--text-muted); padding: 10px 6px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.75rem; text-transform: uppercase; }
     th.left, td.left { text-align: left; }
     td { padding: 10px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .pts { font-weight: bold; color: var(--accent); }
+
+    tr.g4 td:first-child { border-left: 3px solid var(--g4); }
+    tr.g6 td:first-child { border-left: 3px solid var(--g6); }
+    tr.z4 td:first-child { border-left: 3px solid var(--z4); }
+
+    .pts { font-weight: 800; color: var(--accent); }
+
     .match { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
-    .match-header { font-size: 0.75rem; color: var(--accent); text-align: center; margin-bottom: 6px; font-weight: bold; }
+    .match-header { font-size: 0.75rem; color: var(--accent); text-align: center; margin-bottom: 6px; font-weight: 700; }
     .match-body { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; gap: 6px; }
+    .team-name { flex: 1; font-weight: 600; font-size: 0.8rem; }
+    .team-name.home { text-align: right; }
+    .team-name.away { text-align: left; }
+
     .score-box { display: flex; align-items: center; gap: 4px; }
-    .score-box input { width: 30px; height: 30px; background: #0f172a; border: 1px solid var(--border); border-radius: 4px; color: #fff; text-align: center; font-weight: bold; }
+    .score-box input { width: 32px; height: 32px; background: #0f172a; border: 1px solid var(--border); border-radius: 6px; color: #fff; text-align: center; font-weight: bold; font-size: 0.85rem; }
+    .score-box input:focus { outline: none; border-color: var(--accent); }
+
     .btn-group { display: flex; gap: 8px; margin-top: 12px; }
-    .btn { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+    .btn { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
     .btn-confirm { background: var(--accent); color: #fff; }
+    .btn-confirm:hover { background: var(--accent-hover); }
     .btn-reset { background: #334155; color: #fff; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Brasileirão Série A</h1>
+    <h1>BRASILEIRÃO SÉRIE A</h1>
     <p>Classificação Oficial & Agenda da Competição</p>
   </header>
 
   <div class="layout">
-    <!-- Tabela -->
+    <!-- Tabela Principal -->
     <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th class="left">Clube</th>
-            <th>P</th>
-            <th>J</th>
-            <th>V</th>
-            <th>E</th>
-            <th>D</th>
-            <th>GP</th>
-            <th>GC</th>
-            <th>SG</th>
-          </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th class="left">Clube</th>
+              <th>P</th>
+              <th>J</th>
+              <th>V</th>
+              <th>E</th>
+              <th>D</th>
+              <th>GP</th>
+              <th>GC</th>
+              <th>SG</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Painel Lateral -->
     <div class="card">
       <div class="tabs">
-        <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">Agenda</button>
-        <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">Simulador</button>
+        <button id="tab-agenda" class="tab-btn active" onclick="switchTab('agenda')">📅 Agenda</button>
+        <button id="tab-sim" class="tab-btn" onclick="switchTab('simulador')">⚡ Simulador</button>
       </div>
 
       <div id="matches-list"></div>
@@ -125,10 +151,13 @@
       const tbody = document.getElementById('table-body');
       tbody.innerHTML = '';
       currentTeams.forEach((t, i) => {
+        const pos = i + 1;
         const sg = t.gp - t.gc;
+        let zoneClass = pos <= 4 ? 'g4' : (pos <= 6 ? 'g6' : (pos >= 17 ? 'z4' : ''));
+        
         tbody.innerHTML += `
-          <tr>
-            <td><b>${i + 1}</b></td>
+          <tr class="${zoneClass}">
+            <td><b>${pos}</b></td>
             <td class="left"><b>${t.name}</b></td>
             <td class="pts">${t.pts}</td>
             <td>${t.j}</td>
@@ -151,9 +180,9 @@
             <div class="match">
               <div class="match-header">${g.date}</div>
               <div class="match-body">
-                <span><b>${g.home}</b></span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">VS</span>
-                <span><b>${g.away}</b></span>
+                <span class="team-name home">${g.home}</span>
+                <span style="color: var(--text-muted); font-size: 0.75rem; font-weight: bold;">VS</span>
+                <span class="team-name away">${g.away}</span>
               </div>
             </div>`;
         } else {
@@ -161,13 +190,13 @@
             <div class="match">
               <div class="match-header">${g.date}</div>
               <div class="match-body">
-                <span><b>${g.home}</b></span>
+                <span class="team-name home">${g.home}</span>
                 <div class="score-box">
                   <input type="number" min="0" value="${g.hScore}" onchange="updateScore(${g.id}, 'h', this.value)">
-                  <span>x</span>
+                  <span style="color: var(--text-muted);">x</span>
                   <input type="number" min="0" value="${g.aScore}" onchange="updateScore(${g.id}, 'a', this.value)">
                 </div>
-                <span><b>${g.away}</b></span>
+                <span class="team-name away">${g.away}</span>
               </div>
             </div>`;
         }
@@ -186,3 +215,38 @@
       const g = roundGames.find(item => item.id === id);
       if (g) {
         if (side === 'h') g.hScore = val;
+        else g.aScore = val;
+      }
+    }
+
+    function confirmSimulation() {
+      currentTeams = JSON.parse(JSON.stringify(initialTeams));
+      roundGames.forEach(g => {
+        if (g.hScore !== '' && g.aScore !== '') {
+          const h = parseInt(g.hScore);
+          const a = parseInt(g.aScore);
+          const home = currentTeams.find(t => t.name === g.home);
+          const away = currentTeams.find(t => t.name === g.away);
+          if (home && away) {
+            home.j++; away.j++; home.gp += h; home.gc += a; away.gp += a; away.gc += h;
+            if (h > a) { home.pts += 3; home.v++; away.d++; }
+            else if (a > h) { away.pts += 3; away.v++; home.d++; }
+            else { home.pts++; away.pts++; home.e++; away.e++; }
+          }
+        }
+      });
+      renderTable();
+    }
+
+    function resetSimulation() {
+      roundGames.forEach(g => { g.hScore = ''; g.aScore = ''; });
+      currentTeams = JSON.parse(JSON.stringify(initialTeams));
+      renderMatches();
+      renderTable();
+    }
+
+    renderTable();
+    renderMatches();
+  </script>
+</body>
+</html>
