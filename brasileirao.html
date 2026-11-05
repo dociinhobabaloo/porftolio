@@ -5,109 +5,756 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Brasileirão Série A - Dashboard & Simulador</title>
+
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-:root{--green:#006b3c;--green2:#004f2d;--green3:#008b4e;--light:#f3f7f4;--line:#e4ebe6;--text:#17231c;--muted:#718078;--gold:#d7b24a}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{margin:0;min-width:0;overflow-x:hidden;font-family:'Inter',Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(circle at 10% 0%,rgba(0,107,60,.08),transparent 28%),linear-gradient(180deg,#f7faf8 0%,#eef4f0 100%)}
-header{position:relative;overflow:hidden;color:#fff;text-align:center;padding:28px 16px 30px;background:radial-gradient(circle at 50% -20%,rgba(255,255,255,.18),transparent 34%),linear-gradient(135deg,#007c45 0%,#006338 48%,#003f24 100%);box-shadow:0 8px 28px rgba(0,70,40,.18)}
-header::before,header::after{content:"";position:absolute;border-radius:50%;pointer-events:none;border:1px solid rgba(255,255,255,.10)}
-header::before{width:330px;height:330px;left:-160px;top:-220px}
-header::after{width:280px;height:280px;right:-130px;bottom:-220px}
-header img{position:relative;width:105px;max-width:30vw;height:auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,.25))}
-header h1{position:relative;margin:10px 0 4px;font-size:28px;letter-spacing:.3px;font-weight:800}
-header p{position:relative;margin:0;color:rgba(255,255,255,.82);font-size:14px}
-.container{width:100%;max-width:1120px;margin:auto;padding:16px 14px 28px}
-.card{min-width:0;background:rgba(255,255,255,.96);border:1px solid rgba(218,229,222,.95);border-radius:14px;box-shadow:0 8px 28px rgba(20,55,35,.08);padding:15px;margin:0}
-.card h2{margin:0 0 5px;font-size:18px}
-.card>p{margin:0 0 10px;color:var(--muted);font-size:12px}
-.controls{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px}
-input,select,button{border:1px solid #d7e1db;border-radius:11px;padding:9px 11px;font-size:13px;font-family:inherit;outline:none}
-input:focus-visible,select:focus-visible,button:focus-visible{border-color:#48a477;outline:2px solid #48a477;outline-offset:2px}
-input{flex:1;min-width:0;background:#fbfdfc}
-button{cursor:pointer;color:#fff;border:0;font-weight:800;background:linear-gradient(135deg,var(--green3),var(--green));box-shadow:0 4px 10px rgba(0,107,60,.15);transition:transform .18s,box-shadow .18s}
-button:hover{transform:translateY(-1px);box-shadow:0 7px 14px rgba(0,107,60,.20)}
-button.secondary{background:#000;color:#fff;box-shadow:none}
-button:disabled{opacity:.6;cursor:wait}
-.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:start;width:100%}
-.classification-card{min-width:0;width:100%}
-.side-column{display:flex;flex-direction:column;gap:12px;width:310px;min-width:0;position:sticky;top:12px;align-self:start}
-.side-column .card{width:100%}
-.table-wrap{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;border:1px solid var(--line);border-radius:11px}
-table{width:100%;min-width:700px;border-collapse:separate;border-spacing:0}
-th{background:#edf5ef;color:#1b5a3a;text-align:center;padding:9px 6px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
-th:first-child{border-radius:10px 0 0 0}th:last-child{border-radius:0 10px 0 0}
-td{border-top:1px solid #edf1ee;padding:6px 5px;text-align:center;font-size:12px;background:#fff;white-space:nowrap}
-tr:hover td{background:#f8fbf9}
-td.team{text-align:left;font-weight:800;white-space:nowrap}
-.team img{width:29px;height:29px;object-fit:contain;vertical-align:middle;margin-right:7px}
-.pos{font-weight:900;color:#65736b}
-.g4 td:first-child{box-shadow:inset 4px 0 0 #1388d5}.g6 td:first-child{box-shadow:inset 4px 0 0 #8b58d8}.z4 td:first-child{box-shadow:inset 4px 0 0 #db3c3c}
-.badge{display:inline-block;padding:2px 5px;border-radius:20px;font-size:8px;font-weight:900;margin-left:4px}
-.badge.g4{background:#dceeff;color:#11629c}.badge.g6{background:#eee5ff;color:#6237a0}.badge.z4{background:#ffe1e1;color:#a72222}
-.agenda-card h2,.simulator-card h2{font-size:16px;margin-bottom:3px}
-.agenda-card .controls{margin-bottom:7px}.agenda-card select{width:100%}
-.agenda-card{max-height:calc(100vh - 30px);overflow:hidden}
-.agenda-card #matches{max-height:calc(100vh - 170px);overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
-.match-day{margin-top:6px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.match-day h3{margin:0;padding:8px 10px;color:#fff;background:linear-gradient(135deg,var(--green),var(--green2));font-size:11px}
-.match{display:grid;grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);align-items:center;gap:3px;padding:8px 6px;border-top:1px solid var(--line);background:#fff}
-.match:first-of-type{border-top:0}.match:hover{background:#f8fbf9}
-.match .home{text-align:right}.match .away{text-align:left}
-.match-team{min-width:0;font-weight:800;font-size:10px;line-height:1.2;overflow-wrap:anywhere}
-.match-team img{width:22px;height:22px;object-fit:contain;vertical-align:middle;margin:0 3px}
-.time{font-size:9px;color:#68766e;text-align:center;min-width:0;line-height:1.3;font-weight:600}.time b{color:var(--green);font-size:10px}
-.simulator-card{border-top:3px solid var(--green3);max-height:calc(100vh - 30px);overflow:hidden}
-.simulator-card>p{font-size:10px;line-height:1.35;margin-bottom:8px}
-.sim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:300px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
-.sim-card{min-width:0;border:1px solid var(--line);border-radius:10px;padding:8px;background:#fbfdfc}
-.sim-card strong{display:block;font-size:10px;line-height:1.2;margin-bottom:6px;overflow-wrap:anywhere}
-.score-row{display:flex;gap:4px;align-items:center;justify-content:center}
-.score-row input,.simulator-card .score-row input[type="number"]{width:34px;min-width:0;max-width:55px;flex:0 0 auto;text-align:center;padding:6px 2px;font-size:12px}
-.simulator-card .controls{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:6px;margin-top:9px!important}
-.simulator-card .controls button{padding:8px 5px;font-size:10px;white-space:normal}
-.sim-help{display:block;margin-top:7px;color:var(--muted);font-size:9px;line-height:1.3}
-.live-status{display:flex;align-items:center;gap:7px;margin:0 0 9px;padding:6px 8px;border:1px solid rgba(218,229,222,.95);border-radius:9px;background:#f7faf8;color:#718078;font-size:10px}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#20a05a;flex:none}.live-status.loading .live-dot{background:#e59b18}.live-status.error .live-dot{background:#d94a4a}
-.live-status button{margin-left:auto;width:25px;height:23px;padding:0;border:0;border-radius:6px;background:#000;color:#fff;cursor:pointer;font-size:13px}
-.music-player{width:max-content;max-width:calc(100% - 20px);margin:10px auto 0;padding:7px 9px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.16);display:flex;align-items:center;gap:7px;flex-wrap:nowrap;justify-content:center}
-.music-player button{border:0;border-radius:10px;min-width:76px;padding:7px 10px;cursor:pointer;font-size:11px;font-weight:800;background:#fff;color:#087a45}
-.music-player .music-title{display:none}.music-player .volume-label{font-size:12px;opacity:.9;flex:none}
-.music-player input[type=range]{accent-color:#fff;cursor:pointer;width:90px;min-width:90px;flex:none}
-footer{text-align:center;padding:22px;color:#758179;font-size:12px}
-@media(max-width:900px){.dashboard-grid{grid-template-columns:minmax(0,1fr) 285px;gap:10px}.side-column{width:285px;position:static}}
-@media(max-width:700px){
-  header{padding:17px 9px 18px}header img{width:70px}header h1{font-size:19px;margin:7px 0 3px}header p{font-size:10px}
-  .container{padding:10px 8px 22px}.dashboard-grid{grid-template-columns:minmax(0,1fr);gap:10px}
-  .classification-card{order:1}.side-column{order:2;width:100%;position:static;display:flex;flex-direction:column;gap:10px}
-  .card{padding:12px;border-radius:12px}.card h2{font-size:17px}.card>p{font-size:11px}
-  .controls{gap:8px}.classification-card .controls input,.agenda-card select{width:100%;min-width:0;font-size:16px;min-height:44px}
-  .table-wrap{overflow-x:auto}table{min-width:700px}th{font-size:10px;padding:8px 5px}td{font-size:11px;padding:7px 5px}.team img{width:26px;height:26px}
-  .agenda-card,.simulator-card{max-height:none;overflow:visible}.agenda-card #matches,.simulator-card .sim-grid{max-height:none;overflow:visible}
-  .match{grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr);gap:5px;padding:10px 7px}.match-team{font-size:11px}.match-team img{width:24px;height:24px}.time{font-size:10px}
-  .sim-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.sim-card{padding:10px}.sim-card strong{font-size:11px}
-  .simulator-card .score-row input[type="number"]{width:48px;min-width:44px;min-height:44px;padding:8px 5px;font-size:16px}
-  .simulator-card .controls{grid-template-columns:minmax(0,1fr) 90px}.simulator-card .controls button{min-height:44px;font-size:12px}
-  .music-player{max-width:280px;width:100%;margin:9px auto 0;padding:6px 7px;gap:6px}.music-player button{min-width:70px}.music-player input[type=range]{width:75px;min-width:75px}
-}
-@media(max-width:380px){header h1{font-size:17px}.container{padding:8px}.card{padding:10px}.sim-grid{grid-template-columns:1fr}.sim-card strong{font-size:12px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
+:root {
+  --green: #006b3c;
+  --green2: #004f2d;
+  --green3: #008b4e;
+  --light: #f3f7f4;
+  --line: #e4ebe6;
+  --text: #17231c;
+  --muted: #718078;
+  --gold: #d7b24a;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
+body {
+  margin: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(0,107,60,.08), transparent 28%),
+    linear-gradient(180deg, #f7faf8 0%, #eef4f0 100%);
+}
+
+/* BOTÃO VOLTAR */
+
+.btn-voltar {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: #006b3c;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  transition: background .2s, transform .2s;
+}
+
+.btn-voltar:hover {
+  background: #004f2d;
+  transform: translateY(-1px);
+}
+
+.btn-voltar:focus-visible {
+  outline: 3px solid #d7b24a;
+  outline-offset: 3px;
+}
+
+/* CABEÇALHO */
+
+header {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  text-align: center;
+  padding: 28px 16px 30px;
+  background:
+    radial-gradient(circle at 50% -20%, rgba(255,255,255,.18), transparent 34%),
+    linear-gradient(135deg, #007c45 0%, #006338 48%, #003f24 100%);
+  box-shadow: 0 8px 28px rgba(0,70,40,.18);
+}
+
+header::before,
+header::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+header::before {
+  width: 330px;
+  height: 330px;
+  left: -160px;
+  top: -220px;
+}
+
+header::after {
+  width: 280px;
+  height: 280px;
+  right: -130px;
+  bottom: -220px;
+}
+
+header img {
+  position: relative;
+  width: 105px;
+  max-width: 30vw;
+  height: auto;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.25));
+}
+
+header h1 {
+  position: relative;
+  margin: 10px 0 4px;
+  font-size: 28px;
+  letter-spacing: .3px;
+  font-weight: 800;
+}
+
+header p {
+  position: relative;
+  margin: 0;
+  color: rgba(255,255,255,.82);
+  font-size: 14px;
+}
+
+/* ESTRUTURA */
+
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: auto;
+  padding: 16px 14px 28px;
+}
+
+.card {
+  min-width: 0;
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(218,229,222,.95);
+  border-radius: 14px;
+  box-shadow: 0 8px 28px rgba(20,55,35,.08);
+  padding: 15px;
+  margin: 0;
+}
+
+.card h2 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+
+.card > p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.controls {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin: 0 0 10px;
+}
+
+input, select, button {
+  border: 1px solid #d7e1db;
+  border-radius: 11px;
+  padding: 9px 11px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  border-color: #48a477;
+  outline: 2px solid #48a477;
+  outline-offset: 2px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  background: #fbfdfc;
+}
+
+button {
+  cursor: pointer;
+  color: #fff;
+  border: 0;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--green3), var(--green));
+  box-shadow: 0 4px 10px rgba(0,107,60,.15);
+  transition: transform .18s, box-shadow .18s;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(0,107,60,.20);
+}
+
+button.secondary {
+  background: #000;
+  color: #fff;
+  box-shadow: none;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 310px;
+  gap: 14px;
+  align-items: start;
+  width: 100%;
+}
+
+.classification-card {
+  min-width: 0;
+  width: 100%;
+}
+
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 310px;
+  min-width: 0;
+  position: sticky;
+  top: 12px;
+  align-self: start;
+}
+
+.side-column .card {
+  width: 100%;
+}
+
+/* TABELA */
+
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+}
+
+table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th {
+  background: #edf5ef;
+  color: #1b5a3a;
+  text-align: center;
+  padding: 9px 6px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  white-space: nowrap;
+}
+
+th:first-child { border-radius: 10px 0 0 0; }
+th:last-child { border-radius: 0 10px 0 0; }
+
+td {
+  border-top: 1px solid #edf1ee;
+  padding: 6px 5px;
+  text-align: center;
+  font-size: 12px;
+  background: #fff;
+  white-space: nowrap;
+}
+
+tr:hover td { background: #f8fbf9; }
+
+td.team {
+  text-align: left;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.team img {
+  width: 29px;
+  height: 29px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 7px;
+}
+
+.pos {
+  font-weight: 900;
+  color: #65736b;
+}
+
+.g4 td:first-child { box-shadow: inset 4px 0 0 #1388d5; }
+.g6 td:first-child { box-shadow: inset 4px 0 0 #8b58d8; }
+.z4 td:first-child { box-shadow: inset 4px 0 0 #db3c3c; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 20px;
+  font-size: 8px;
+  font-weight: 900;
+  margin-left: 4px;
+}
+
+.badge.g4 { background: #dceeff; color: #11629c; }
+.badge.g6 { background: #eee5ff; color: #6237a0; }
+.badge.z4 { background: #ffe1e1; color: #a72222; }
+
+/* AGENDA */
+
+.agenda-card h2,
+.simulator-card h2 {
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.agenda-card .controls { margin-bottom: 7px; }
+.agenda-card select { width: 100%; }
+
+.agenda-card {
+  max-height: calc(100vh - 30px);
+  overflow: hidden;
+}
+
+.agenda-card #matches {
+  max-height: calc(100vh - 170px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.match-day {
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.match-day h3 {
+  margin: 0;
+  padding: 8px 10px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  font-size: 11px;
+}
+
+.match {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 58px minmax(0,1fr);
+  align-items: center;
+  gap: 3px;
+  padding: 8px 6px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+.match:first-of-type { border-top: 0; }
+.match:hover { background: #f8fbf9; }
+.match .home { text-align: right; }
+.match .away { text-align: left; }
+
+.match-team {
+  min-width: 0;
+  font-weight: 800;
+  font-size: 10px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.match-team img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin: 0 3px;
+}
+
+.time {
+  font-size: 9px;
+  color: #68766e;
+  text-align: center;
+  min-width: 0;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.time b {
+  color: var(--green);
+  font-size: 10px;
+}
+
+/* SIMULADOR */
+
+.simulator-card {
+  border-top: 3px solid var(--green3);
+  max-height: calc(100vh - 30px);
+  overflow: hidden;
+}
+
+.simulator-card > p {
+  font-size: 10px;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 7px;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.sim-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  background: #fbfdfc;
+}
+
+.sim-card strong {
+  display: block;
+  font-size: 10px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+
+.score-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-row input,
+.simulator-card .score-row input[type="number"] {
+  width: 34px;
+  min-width: 0;
+  max-width: 55px;
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 6px 2px;
+  font-size: 12px;
+}
+
+.simulator-card .controls {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 72px;
+  gap: 6px;
+  margin-top: 9px !important;
+}
+
+.simulator-card .controls button {
+  padding: 8px 5px;
+  font-size: 10px;
+  white-space: normal;
+}
+
+.sim-help {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+/* ATUALIZAÇÃO */
+
+.live-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 9px;
+  padding: 6px 8px;
+  border: 1px solid rgba(218,229,222,.95);
+  border-radius: 9px;
+  background: #f7faf8;
+  color: #718078;
+  font-size: 10px;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #20a05a;
+  flex: none;
+}
+
+.live-status.loading .live-dot { background: #e59b18; }
+.live-status.error .live-dot { background: #d94a4a; }
+
+.live-status button {
+  margin-left: auto;
+  width: 25px;
+  height: 23px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* MÚSICA */
+
+.music-player {
+  width: max-content;
+  max-width: calc(100% - 20px);
+  margin: 10px auto 0;
+  padding: 7px 9px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 14px;
+  background: rgba(0,0,0,.16);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.music-player button {
+  border: 0;
+  border-radius: 10px;
+  min-width: 76px;
+  padding: 7px 10px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+  color: #087a45;
+}
+
+.music-player .music-title { display: none; }
+
+.music-player .volume-label {
+  font-size: 12px;
+  opacity: .9;
+  flex: none;
+}
+
+.music-player input[type=range] {
+  accent-color: #fff;
+  cursor: pointer;
+  width: 90px;
+  min-width: 90px;
+  flex: none;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #758179;
+  font-size: 12px;
+}
+
+/* TABLETS */
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: minmax(0,1fr) 285px;
+    gap: 10px;
+  }
+
+  .side-column {
+    width: 285px;
+    position: static;
+  }
+}
+
+/* CELULARES */
+
+@media (max-width: 700px) {
+  .btn-voltar {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 10px 0 0 10px;
+    padding: 9px 12px;
+    font-size: 12px;
+    background: #006b3c;
+  }
+
+  header { padding: 17px 9px 18px; }
+  header img { width: 70px; }
+  header h1 { font-size: 19px; margin: 7px 0 3px; }
+  header p { font-size: 10px; }
+
+  .container { padding: 10px 8px 22px; }
+
+  .dashboard-grid {
+    grid-template-columns: minmax(0,1fr);
+    gap: 10px;
+  }
+
+  .classification-card { order: 1; }
+
+  .side-column {
+    order: 2;
+    width: 100%;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card { padding: 12px; border-radius: 12px; }
+  .card h2 { font-size: 17px; }
+  .card > p { font-size: 11px; }
+  .controls { gap: 8px; }
+
+  .classification-card .controls input,
+  .agenda-card select {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  .table-wrap { overflow-x: auto; }
+  table { min-width: 700px; }
+  th { font-size: 10px; padding: 8px 5px; }
+  td { font-size: 11px; padding: 7px 5px; }
+  .team img { width: 26px; height: 26px; }
+
+  .agenda-card,
+  .simulator-card {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .agenda-card #matches,
+  .simulator-card .sim-grid {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .match {
+    grid-template-columns: minmax(0,1fr) 65px minmax(0,1fr);
+    gap: 5px;
+    padding: 10px 7px;
+  }
+
+  .match-team { font-size: 11px; }
+  .match-team img { width: 24px; height: 24px; }
+  .time { font-size: 10px; }
+
+  .sim-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 8px;
+  }
+
+  .sim-card { padding: 10px; }
+  .sim-card strong { font-size: 11px; }
+
+  .simulator-card .score-row input[type="number"] {
+    width: 48px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 5px;
+    font-size: 16px;
+  }
+
+  .simulator-card .controls {
+    grid-template-columns: minmax(0,1fr) 90px;
+  }
+
+  .simulator-card .controls button {
+    min-height: 44px;
+    font-size: 12px;
+  }
+
+  .music-player {
+    max-width: 280px;
+    width: 100%;
+    margin: 9px auto 0;
+    padding: 6px 7px;
+    gap: 6px;
+  }
+
+  .music-player button { min-width: 70px; }
+
+  .music-player input[type=range] {
+    width: 75px;
+    min-width: 75px;
+  }
+}
+
+@media (max-width: 380px) {
+  header h1 { font-size: 17px; }
+  .container { padding: 8px; }
+  .card { padding: 10px; }
+  .sim-grid { grid-template-columns: 1fr; }
+  .sim-card strong { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
 </style>
 </head>
+
 <body>
 
+<a href="index.html" class="btn-voltar">
+  <span>←</span> Voltar ao Portfólio
+</a>
+
 <header>
-  <img id="league-logo" src="https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/Brasileir%C3%A3o%20S%C3%A9rie%20A%20HD.png" alt="Logo do Brasileirão">
+  <img
+    id="league-logo"
+    src="https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/Brasileir%C3%A3o%20S%C3%A9rie%20A%20HD.png"
+    alt="Logo do Brasileirão"
+  >
   <h1>BRASILEIRÃO SÉRIE A</h1>
   <p>Classificação, Agenda &amp; Simulador</p>
 
   <div class="music-player" aria-label="Player de música">
     <button id="music-toggle" type="button">▶️ Play</button>
     <span class="volume-label">🔊</span>
-    <input id="music-volume" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume">
+    <input
+      id="music-volume"
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      value="0.7"
+      aria-label="Volume"
+    >
     <audio id="site-music" preload="metadata">
       <source src="musica-brasileirao.mp3" type="audio/mpeg">
     </audio>
@@ -116,21 +763,29 @@ footer{text-align:center;padding:22px;color:#758179;font-size:12px}
 
 <main class="container">
   <div class="dashboard-grid">
+
     <section class="card classification-card">
       <div id="live-status" class="live-status" aria-live="polite">
         <span class="live-dot"></span>
         <span id="live-status-text">Atualizando...</span>
         <button id="refresh-live" type="button" title="Atualizar agora">↻</button>
       </div>
+
       <h2>Classificação</h2>
       <p>Brasileirão Série A · tabela de pontos</p>
+
       <div class="controls">
         <input id="search" type="text" placeholder="Buscar time...">
       </div>
+
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>#</th><th>Clube</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th></tr>
+            <tr>
+              <th>#</th><th>Clube</th><th>P</th><th>J</th>
+              <th>V</th><th>E</th><th>D</th>
+              <th>GP</th><th>GC</th><th>SG</th>
+            </tr>
           </thead>
           <tbody id="table-body"></tbody>
         </table>
@@ -138,6 +793,7 @@ footer{text-align:center;padding:22px;color:#758179;font-size:12px}
     </section>
 
     <aside class="side-column">
+
       <section class="card agenda-card">
         <h2>Próximos Jogos</h2>
         <div class="controls">
@@ -152,13 +808,19 @@ footer{text-align:center;padding:22px;color:#758179;font-size:12px}
       <section class="card simulator-card" id="simulator">
         <h2>⚡ Simulador</h2>
         <p>Digite os placares para atualizar a pontuação da tabela.</p>
+
         <div id="sim-grid" class="sim-grid"></div>
+
         <div class="controls" style="margin-top:14px">
           <button id="confirm-btn">✓ Confirmar Placares</button>
           <button id="reset-btn" class="secondary">Resetar</button>
         </div>
-        <small class="sim-help">Vitória = 3 pontos · Empate = 1 ponto · Derrota = 0.</small>
+
+        <small class="sim-help">
+          Vitória = 3 pontos · Empate = 1 ponto · Derrota = 0.
+        </small>
       </section>
+
     </aside>
   </div>
 </main>
@@ -166,11 +828,12 @@ footer{text-align:center;padding:22px;color:#758179;font-size:12px}
 <footer>Brasileirão Série A · Dashboard</footer>
 
 <script>
+/* MÚSICA */
 
-// Player de música — funciona também no celular após o toque do usuário.
 const music = document.getElementById("site-music");
 const musicToggle = document.getElementById("music-toggle");
 const musicVolume = document.getElementById("music-volume");
+
 music.volume = Number(musicVolume.value);
 
 musicToggle.addEventListener("click", async () => {
@@ -194,38 +857,212 @@ musicVolume.addEventListener("input", () => {
 music.addEventListener("ended", () => {
   musicToggle.textContent = "▶️ Play";
 });
+
+/* CLUBES */
+
 const BASE = "https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/";
 
 const clubs = [
-{name:"Flamengo",pts:60,j:28,v:18,e:6,d:4,gp:55,gc:23,logo:"Flamengo.png"},
-{name:"Palmeiras",pts:57,j:28,v:16,e:9,d:3,gp:47,gc:21,logo:"Palmeiras.png"},
-{name:"Athletico-PR",pts:49,j:28,v:14,e:7,d:7,gp:43,gc:32,logo:"Athletico Paranaense.png"},
-{name:"Fluminense",pts:48,j:28,v:13,e:9,d:6,gp:44,gc:36,logo:"Fluminense.png"},
-{name:"Bahia",pts:46,j:28,v:12,e:10,d:6,gp:43,gc:35,logo:"Bahia.png"},
-{name:"Cruzeiro",pts:45,j:28,v:13,e:6,d:9,gp:42,gc:40,logo:"Cruzeiro.png"},
-{name:"Atlético-MG",pts:40,j:27,v:11,e:7,d:9,gp:36,gc:32,logo:"Atlético Mineiro.png"},
-{name:"Santos",pts:38,j:27,v:10,e:8,d:9,gp:41,gc:40,logo:"Santos.png"},
-{name:"Coritiba",pts:38,j:28,v:10,e:8,d:10,gp:37,gc:43,logo:"Coritiba.png"},
-{name:"RB Bragantino",pts:36,j:27,v:10,e:6,d:11,gp:33,gc:31,logo:"Red Bull Bragantino.png"},
-{name:"São Paulo",pts:36,j:27,v:10,e:6,d:11,gp:32,gc:30,logo:"São Paulo.png"},
-{name:"Botafogo",pts:35,j:28,v:9,e:8,d:11,gp:41,gc:45,logo:"Botafogo.png"},
-{name:"Vitória",pts:33,j:28,v:9,e:6,d:13,gp:28,gc:42,logo:"Vitória.png"},
-{name:"Corinthians",pts:32,j:28,v:8,e:8,d:12,gp:29,gc:32,logo:"Corinthians.png"},
-{name:"Mirassol",pts:32,j:28,v:8,e:8,d:12,gp:33,gc:42,logo:"Mirassol.png"},
-{name:"Vasco da Gama",pts:31,j:27,v:8,e:7,d:12,gp:34,gc:41,logo:"Vasco da Gama.png"},
-{name:"Grêmio",pts:29,j:28,v:7,e:8,d:13,gp:30,gc:38,logo:"Grêmio.png"},
-{name:"Internacional",pts:28,j:28,v:6,e:10,d:12,gp:30,gc:36,logo:"Internacional.png"},
-{name:"Remo",pts:23,j:28,v:5,e:8,d:15,gp:32,gc:47,logo:"Remo.png"},
-{name:"Chapecoense",pts:18,j:27,v:3,e:9,d:15,gp:29,gc:53,logo:"Chapecoense.png"}
+  {name:"Flamengo",pts:60,j:28,v:18,e:6,d:4,gp:55,gc:23,logo:"Flamengo.png"},
+  {name:"Palmeiras",pts:57,j:28,v:16,e:9,d:3,gp:47,gc:21,logo:"Palmeiras.png"},
+  {name:"Athletico-PR",pts:49,j:28,v:14,e:7,d:7,gp:43,gc:32,logo:"Athletico Paranaense.png"},
+  {name:"Fluminense",pts:48,j:28,v:13,e:9,d:6,gp:44,gc:36,logo:"Fluminense.png"},
+  {name:"Bahia",pts:46,j:28,v:12,e:10,d:6,gp:43,gc:35,logo:"Bahia.png"},
+  {name:"Cruzeiro",pts:45,j:28,v:13,e:6,d:9,gp:42,gc:40,logo:"Cruzeiro.png"},
+  {name:"Atlético-MG",pts:40,j:27,v:11,e:7,d:9,gp:36,gc:32,logo:"Atlético Mineiro.png"},
+  {name:"Santos",pts:38,j:27,v:10,e:8,d:9,gp:41,gc:40,logo:"Santos.png"},
+  {name:"Coritiba",pts:38,j:28,v:10,e:8,d:10,gp:37,gc:43,logo:"Coritiba.png"},
+  {name:"RB Bragantino",pts:36,j:27,v:10,e:6,d:11,gp:33,gc:31,logo:"Red Bull Bragantino.png"},
+  {name:"São Paulo",pts:36,j:27,v:10,e:6,d:11,gp:32,gc:30,logo:"São Paulo.png"},
+  {name:"Botafogo",pts:35,j:28,v:9,e:8,d:11,gp:41,gc:45,logo:"Botafogo.png"},
+  {name:"Vitória",pts:33,j:28,v:9,e:6,d:13,gp:28,gc:42,logo:"Vitória.png"},
+  {name:"Corinthians",pts:32,j:28,v:8,e:8,d:12,gp:29,gc:32,logo:"Corinthians.png"},
+  {name:"Mirassol",pts:32,j:28,v:8,e:8,d:12,gp:33,gc:42,logo:"Mirassol.png"},
+  {name:"Vasco da Gama",pts:31,j:27,v:8,e:7,d:12,gp:34,gc:41,logo:"Vasco da Gama.png"},
+  {name:"Grêmio",pts:29,j:28,v:7,e:8,d:13,gp:30,gc:38,logo:"Grêmio.png"},
+  {name:"Internacional",pts:28,j:28,v:6,e:10,d:12,gp:30,gc:36,logo:"Internacional.png"},
+  {name:"Remo",pts:23,j:28,v:5,e:8,d:15,gp:32,gc:47,logo:"Remo.png"},
+  {name:"Chapecoense",pts:18,j:27,v:3,e:9,d:15,gp:29,gc:53,logo:"Chapecoense.png"}
 ];
+
 let initialClubs = clubs.map(club => ({...club}));
-// Guarda a última tabela real recebida da fonte online.
 let liveClubsSnapshot = clubs.map(club => ({...club}));
 let simulationActive = false;
 
-function restoreOriginalTable(){
+/* NORMALIZAÇÃO DOS NOMES */
+
+const liveAliases = {
+  "bragantino": "RB Bragantino",
+  "red bull bragantino": "RB Bragantino",
+  "vasco": "Vasco da Gama",
+  "vasco da gama": "Vasco da Gama",
+  "atletico-mg": "Atlético-MG",
+  "atletico mineiro": "Atlético-MG",
+  "athletico-pr": "Athletico-PR",
+  "atletico paranaense": "Athletico-PR"
+};
+
+function liveNormalize(name) {
+  const key = String(name || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+  return liveAliases[key] || name;
+}
+
+function findClub(name) {
+  const normalized = liveNormalize(name);
+  return clubs.find(c => c.name === normalized) || {name, logo:""};
+}
+
+function logoURL(club) {
+  return club.logo ? BASE + encodeURIComponent(club.logo) : "";
+}
+
+function badge(club) {
+  return club.logo
+    ? `<img src="${logoURL(club)}" alt="${club.name}" loading="lazy" onerror="this.style.display='none'">`
+    : "";
+}
+
+/* JOGOS CADASTRADOS */
+
+const games = {
+  29: [
+    ["Bragantino","Mirassol","07/10","19:30"],
+    ["Internacional","Corinthians","07/10","19:30"],
+    ["Remo","Grêmio","07/10","19:30"],
+    ["Vitória","Chapecoense","07/10","20:00"],
+    ["Botafogo","Vasco da Gama","07/10","20:30"],
+    ["Cruzeiro","São Paulo","07/10","21:30"],
+    ["Santos","Flamengo","08/10","19:30"],
+    ["Athletico-PR","Atlético-MG","08/10","20:00"],
+    ["Fluminense","Coritiba","08/10","21:30"],
+    ["Palmeiras","Bahia","08/10","21:30"]
+  ],
+  30: [
+    ["Vasco da Gama","Remo","10/10","17:00"],
+    ["São Paulo","Vitória","10/10","21:00"],
+    ["Atlético-MG","Santos","11/10","16:00"],
+    ["Flamengo","Fluminense","11/10","17:30"],
+    ["Palmeiras","Corinthians","11/10","17:30"],
+    ["Grêmio","Internacional","11/10","17:30"],
+    ["Coritiba","Botafogo","11/10","19:30"],
+    ["Bahia","Mirassol","11/10","19:30"],
+    ["Chapecoense","Athletico-PR","12/10","19:30"],
+    ["Bragantino","Cruzeiro","12/10","21:00"]
+  ]
+};
+
+/* CLASSIFICAÇÃO */
+
+function renderTable() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+
+  const sorted = [...clubs].sort((a,b) =>
+    b.pts-a.pts ||
+    (b.gp-b.gc)-(a.gp-a.gc) ||
+    b.v-a.v ||
+    a.name.localeCompare(b.name)
+  );
+
+  const body = document.getElementById("table-body");
+  body.innerHTML = "";
+
+  sorted.forEach((c,i) => {
+    if (!c.name.toLowerCase().includes(q)) return;
+
+    const pos = i + 1;
+    const zone = pos <= 4 ? "g4" : pos <= 6 ? "g6" : pos >= 17 ? "z4" : "";
+
+    const tr = document.createElement("tr");
+    if (zone) tr.className = zone;
+
+    tr.innerHTML = `
+      <td class="pos">${pos}</td>
+      <td class="team">
+        ${badge(c)}${c.name}
+        ${pos<=4 ? '<span class="badge g4">G4</span>' :
+          pos<=6 ? '<span class="badge g6">G6</span>' :
+          pos>=17 ? '<span class="badge z4">Z4</span>' : ''}
+      </td>
+      <td><b>${c.pts}</b></td>
+      <td>${c.j}</td>
+      <td>${c.v}</td>
+      <td>${c.e}</td>
+      <td>${c.d}</td>
+      <td>${c.gp}</td>
+      <td>${c.gc}</td>
+      <td>${c.gp-c.gc}</td>
+    `;
+
+    body.appendChild(tr);
+  });
+}
+
+/* AGENDA */
+
+function renderMatches() {
+  const round = Number(document.getElementById("round-select").value);
+  const box = document.getElementById("matches");
+  const sourceGames = games[round] || [];
+
+  box.innerHTML = `<div class="match-day"><h3>${round}ª rodada</h3></div>`;
+  const day = box.querySelector(".match-day");
+
+  if (!sourceGames.length) {
+    day.innerHTML += `<div class="match" style="display:block;text-align:center">
+      Nenhum jogo cadastrado para esta rodada.
+    </div>`;
+    return;
+  }
+
+  sourceGames.forEach(g => {
+    const home = findClub(g[0]);
+    const away = findClub(g[1]);
+    const div = document.createElement("div");
+
+    div.className = "match";
+    div.innerHTML = `
+      <div class="home match-team">${home.name} ${badge(home)}</div>
+      <div class="time">${g[2]}<br><b>${g[3]}</b></div>
+      <div class="away match-team">${badge(away)} ${away.name}</div>
+    `;
+
+    day.appendChild(div);
+  });
+}
+
+/* SIMULADOR */
+
+function renderSimulator() {
+  const round = document.getElementById("round-select").value;
+  const grid = document.getElementById("sim-grid");
+  grid.innerHTML = "";
+
+  games[round].forEach((g,i) => {
+    const div = document.createElement("div");
+    div.className = "sim-card";
+
+    div.innerHTML = `
+      <strong>${g[0]} × ${g[1]}</strong>
+      <div class="score-row">
+        <input type="number" min="0" value="0" id="home-${i}" aria-label="Gols ${g[0]}">
+        <span>x</span>
+        <input type="number" min="0" value="0" id="away-${i}" aria-label="Gols ${g[1]}">
+      </div>
+    `;
+
+    grid.appendChild(div);
+  });
+}
+
+function restoreOriginalTable() {
   const snapshot = liveClubsSnapshot.length ? liveClubsSnapshot : initialClubs;
-  clubs.forEach((club, index) => {
+
+  clubs.forEach((club,index) => {
     const original = snapshot[index];
     club.pts = original.pts;
     club.j = original.j;
@@ -237,185 +1074,167 @@ function restoreOriginalTable(){
   });
 }
 
+/* ATUALIZAÇÃO ONLINE */
 
-const games = {
-29:[
-["Bragantino","Mirassol","07/10","19:30"],
-["Internacional","Corinthians","07/10","19:30"],
-["Remo","Grêmio","07/10","19:30"],
-["Vitória","Chapecoense","07/10","20:00"],
-["Botafogo","Vasco da Gama","07/10","20:30"],
-["Cruzeiro","São Paulo","07/10","21:30"],
-["Santos","Flamengo","08/10","19:30"],
-["Athletico-PR","Atlético-MG","08/10","20:00"],
-["Fluminense","Coritiba","08/10","21:30"],
-["Palmeiras","Bahia","08/10","21:30"]
-],
-30:[
-["Vasco da Gama","Remo","10/10","17:00"],
-["São Paulo","Vitória","10/10","21:00"],
-["Atlético-MG","Santos","11/10","16:00"],
-["Flamengo","Fluminense","11/10","17:30"],
-["Palmeiras","Corinthians","11/10","17:30"],
-["Grêmio","Internacional","11/10","17:30"],
-["Coritiba","Botafogo","11/10","19:30"],
-["Bahia","Mirassol","11/10","19:30"],
-["Chapecoense","Athletico-PR","12/10","19:30"],
-["Bragantino","Cruzeiro","12/10","21:00"]
-]};
+const LIVE_DATA_URL = "https://valorfinal.com.br/brasileirao/dados.json";
+const LIVE_REFRESH_MS = 5 * 60 * 1000;
 
-function findClub(name){
-  const normalized=liveNormalize(name);
-  return clubs.find(c=>c.name===normalized) || {
-    name,logo:""
-  };
-}
-function logoURL(club){
-  return club.logo ? BASE + encodeURIComponent(club.logo) : "";
-}
-function badge(club){
-  return club.logo
-    ? `<img src="${logoURL(club)}" alt="${club.name}" loading="lazy" onerror="this.style.display='none'">`
-    : "";
+function setLiveStatus(text,state="") {
+  const box = document.getElementById("live-status");
+  const label = document.getElementById("live-status-text");
+
+  if (!box || !label) return;
+
+  box.className = "live-status" + (state ? " " + state : "");
+  label.textContent = text;
 }
 
-function renderTable(){
-  const q = document.getElementById("search").value.toLowerCase().trim();
-  const sorted=[...clubs].sort((a,b)=>
-    b.pts-a.pts || (b.gp-b.gc)-(a.gp-a.gc) || b.v-a.v || a.name.localeCompare(b.name)
-  );
-  const body=document.getElementById("table-body");
-  body.innerHTML="";
-  sorted.forEach((c,i)=>{
-    if(!c.name.toLowerCase().includes(q)) return;
-    const pos=i+1;
-    const zone=pos<=4?"g4":pos<=6?"g6":pos>=17?"z4":"";
-    const tr=document.createElement("tr");
-    if(zone) tr.className=zone;
-    tr.innerHTML=`
-      <td class="pos">${pos}</td>
-      <td class="team">${badge(c)}${c.name}
-        ${pos<=4?'<span class="badge g4">G4</span>':pos<=6?'<span class="badge g6">G6</span>':pos>=17?'<span class="badge z4">Z4</span>':''}
-      </td>
-      <td><b>${c.pts}</b></td><td>${c.j}</td><td>${c.v}</td><td>${c.e}</td><td>${c.d}</td>
-      <td>${c.gp}</td><td>${c.gc}</td><td>${c.gp-c.gc}</td>`;
-    body.appendChild(tr);
-  });
-}
+async function updateLiveTable(forceLive=false) {
+  if (simulationActive && !forceLive) return;
 
-function renderMatches(){
-  // A agenda fica baseada nos jogos que já definimos para esta semana e
-  // para a próxima. A fonte ao vivo NÃO substitui esses jogos por uma
-  // lista parcial de "próximo jogo", evitando nomes/horários indefinidos.
-  const round=Number(document.getElementById("round-select").value);
-  const box=document.getElementById("matches");
-  const sourceGames=games[round] || [];
+  const btn = document.getElementById("refresh-live");
+  if (btn) btn.disabled = true;
 
-  box.innerHTML=`<div class="match-day"><h3>${round}ª rodada</h3></div>`;
-  const day=box.querySelector(".match-day");
+  setLiveStatus("Atualizando tabela...","loading");
 
-  if(!sourceGames.length){
-    day.innerHTML += `<div class="match" style="display:block;text-align:center;color:#718078">
-      Nenhum jogo cadastrado para esta rodada.
-    </div>`;
-    return;
+  try {
+    const response = await fetch(LIVE_DATA_URL + "?t=" + Date.now(), {
+      cache: "no-store",
+      headers: {"Accept":"application/json"}
+    });
+
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+    const data = await response.json();
+
+    if (!Array.isArray(data.clubes)) {
+      throw new Error("Formato de dados inválido");
+    }
+
+    const map = new Map(
+      data.clubes.map(c => [liveNormalize(c.nome),c])
+    );
+
+    let count = 0;
+
+    clubs.forEach(club => {
+      const live = map.get(club.name);
+      if (!live) return;
+
+      club.pts = Number(live.pontos ?? club.pts);
+      club.j = Number(live.jogos ?? club.j);
+      club.v = Number(live.vitorias ?? club.v);
+      club.e = Number(live.empates ?? club.e);
+      club.d = Number(live.derrotas ?? club.d);
+      club.gp = Number(live.gols_pro ?? live.golsPro ?? club.gp);
+      club.gc = Number(live.gols_contra ?? live.golsContra ?? club.gc);
+      count++;
+    });
+
+    if (count === 0) {
+      throw new Error("Nenhum clube encontrado na fonte online");
+    }
+
+    liveClubsSnapshot = clubs.map(c => ({...c}));
+    initialClubs = clubs.map(c => ({...c}));
+
+    renderTable();
+    renderMatches();
+
+    const round = data.rodada_referencia ?? data.rodadaDeReferencia ?? "?";
+    let when = "agora";
+
+    if (data.atualizado_em || data.atualizadoEm) {
+      const raw = data.atualizado_em || data.atualizadoEm;
+      const d = new Date(raw);
+
+      if (!Number.isNaN(d.getTime())) {
+        when = d.toLocaleString("pt-BR", {
+          dateStyle:"short",
+          timeStyle:"short"
+        });
+      }
+    }
+
+    setLiveStatus(
+      "Atualizado • " + count + "/20 clubes • rodada " + round + " • " + when
+    );
+
+  } catch(error) {
+    console.error("Falha ao atualizar Brasileirão:",error);
+    setLiveStatus("Sem conexão • tabela anterior mantida","error");
+  } finally {
+    if (btn) btn.disabled = false;
   }
-
-  sourceGames.forEach(g=>{
-    const h=findClub(liveNormalize(g[0])), a=findClub(liveNormalize(g[1]));
-    const div=document.createElement("div");
-    div.className="match";
-    div.innerHTML=`
-      <div class="home match-team">${h.name} ${badge(h)}</div>
-      <div class="time">${g[2]}<br><b>${g[3]}</b></div>
-      <div class="away match-team">${badge(a)} ${a.name}</div>`;
-    day.appendChild(div);
-  });
 }
 
-function renderSimulator(){
-  const round=document.getElementById("round-select").value;
-  const grid=document.getElementById("sim-grid");
-  grid.innerHTML="";
-  games[round].forEach((g,i)=>{
-    const div=document.createElement("div");
-    div.className="sim-card";
-    div.innerHTML=`
-      <strong>${g[0]} × ${g[1]}</strong>
-      <div class="score-row">
-        <input type="number" min="0" value="0" id="home-${i}" aria-label="Gols ${g[0]}">
-        <span>x</span>
-        <input type="number" min="0" value="0" id="away-${i}" aria-label="Gols ${g[1]}">
-      </div>`;
-    grid.appendChild(div);
-  });
-}
+/* EVENTOS */
 
-document.addEventListener("DOMContentLoaded",()=>{
-  const liveRefresh=document.getElementById("refresh-live");
-  if(liveRefresh) liveRefresh.addEventListener("click",()=>updateLiveTable(false));
-  updateLiveTable(true);
-  setInterval(()=>updateLiveTable(false),LIVE_REFRESH_MS);
+document.addEventListener("DOMContentLoaded", () => {
+  const liveRefresh = document.getElementById("refresh-live");
+
+  if (liveRefresh) {
+    liveRefresh.addEventListener("click", () => updateLiveTable(false));
+  }
 
   renderTable();
   renderMatches();
   renderSimulator();
 
+  updateLiveTable(true);
+  setInterval(() => updateLiveTable(false),LIVE_REFRESH_MS);
+
   document.getElementById("search").addEventListener("input",renderTable);
-  document.getElementById("round-select").addEventListener("change",()=>{
+
+  document.getElementById("round-select").addEventListener("change", () => {
     renderMatches();
     renderSimulator();
   });
-  document.getElementById("reset-btn").addEventListener("click",async()=>{
-    // Sai do modo de simulação e volta imediatamente para a última tabela real.
+
+  document.getElementById("reset-btn").addEventListener("click", async () => {
     simulationActive = false;
     restoreOriginalTable();
-
-    const confirmButton = document.getElementById("confirm-btn");
-    confirmButton.dataset.confirmedRound = "";
 
     renderTable();
     renderSimulator();
     setLiveStatus("Voltando para a tabela real...","loading");
 
-    // Busca novamente a fonte online para garantir que o reset fique realmente
-    // sincronizado com a classificação atual, inclusive se saiu algum resultado.
     await updateLiveTable(true);
 
     alert("Simulador resetado! A tabela voltou ao normal e os placares foram limpos.");
   });
-  document.getElementById("confirm-btn").addEventListener("click",()=>{
-    const round=document.getElementById("round-select").value;
-    const button=document.getElementById("confirm-btn");
 
-    // Impede que o mesmo placar seja contabilizado duas vezes.
-    if(simulationActive){
+  document.getElementById("confirm-btn").addEventListener("click", () => {
+    if (simulationActive) {
       alert("Uma simulação já está ativa. Clique em Resetar antes de simular outra rodada.");
       return;
     }
 
-    games[round].forEach((g,i)=>{
-      const homeGoals=Math.max(0,parseInt(document.getElementById("home-"+i).value,10)||0);
-      const awayGoals=Math.max(0,parseInt(document.getElementById("away-"+i).value,10)||0);
-      const home=findClub(g[0]);
-      const away=findClub(g[1]);
+    const round = document.getElementById("round-select").value;
+
+    games[round].forEach((g,i) => {
+      const homeGoals = Math.max(0,parseInt(document.getElementById("home-"+i).value,10)||0);
+      const awayGoals = Math.max(0,parseInt(document.getElementById("away-"+i).value,10)||0);
+
+      const home = findClub(g[0]);
+      const away = findClub(g[1]);
 
       home.j++;
       away.j++;
-      home.gp+=homeGoals;
-      home.gc+=awayGoals;
-      away.gp+=awayGoals;
-      away.gc+=homeGoals;
+      home.gp += homeGoals;
+      home.gc += awayGoals;
+      away.gp += awayGoals;
+      away.gc += homeGoals;
 
-      if(homeGoals>awayGoals){
-        home.pts+=3;
+      if (homeGoals > awayGoals) {
+        home.pts += 3;
         home.v++;
         away.d++;
-      }else if(homeGoals<awayGoals){
-        away.pts+=3;
+      } else if (homeGoals < awayGoals) {
+        away.pts += 3;
         away.v++;
         home.d++;
-      }else{
+      } else {
         home.pts++;
         away.pts++;
         home.e++;
@@ -423,118 +1242,14 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
     });
 
-    // Ativa o modo de simulação para que a atualização automática não apague
-    // o cenário enquanto o usuário estiver simulando pelo celular.
     simulationActive = true;
-    button.dataset.confirmedRound=round;
     renderTable();
     setLiveStatus("Simulação ativa • tabela atualizada","loading");
-    alert("Placares confirmados! A tabela foi atualizada com os pontos, jogos, vitórias, empates, derrotas e gols. Clique em Resetar para voltar ao normal.");
+
+    alert("Placares confirmados! A tabela foi atualizada. Clique em Resetar para voltar ao normal.");
   });
 });
-
-/* ===== CLASSIFICAÇÃO AUTOMÁTICA =====
-   Fonte pública: ValorFinal.
-   O arquivo possui CORS aberto e é atualizado quando entram resultados novos.
-*/
-const LIVE_DATA_URL = "https://valorfinal.com.br/brasileirao/dados.json";
-const LIVE_REFRESH_MS = 5 * 60 * 1000;
-
-const liveAliases = {
-  "bragantino":"RB Bragantino",
-  "red bull bragantino":"RB Bragantino",
-  "vasco":"Vasco da Gama",
-  "vasco da gama":"Vasco da Gama",
-  "atletico-mg":"Atlético-MG",
-  "atletico mineiro":"Atlético-MG",
-  "athletico-pr":"Athletico-PR",
-  "atletico paranaense":"Athletico-PR"
-};
-
-function liveNormalize(name){
-  const key=String(name||"").toLowerCase()
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
-  return liveAliases[key] || name;
-}
-
-function setLiveStatus(text,state=""){
-  const box=document.getElementById("live-status");
-  const label=document.getElementById("live-status-text");
-  if(!box||!label)return;
-  box.className="live-status"+(state?" "+state:"");
-  label.textContent=text;
-}
-
-// A classificação é atualizada pela fonte online quando os resultados entram.
-// A agenda, porém, permanece com os jogos cadastrados das rodadas 29 e 30
-// até que esses jogos aconteçam; ela não é substituída por uma lista parcial.
-async function updateLiveTable(forceLive=false){
-  // Durante uma simulação, o refresh automático não pode sobrescrever a tabela
-  // simulada. O Resetar chama esta função com forceLive=true para voltar ao real.
-  if(simulationActive && !forceLive)return;
-
-  const btn=document.getElementById("refresh-live");
-  if(btn)btn.disabled=true;
-  setLiveStatus("Atualizando tabela...","loading");
-
-  try{
-    const response=await fetch(LIVE_DATA_URL+"?t="+Date.now(),{
-      cache:"no-store",
-      headers:{"Accept":"application/json"}
-    });
-    if(!response.ok)throw new Error("HTTP "+response.status);
-
-    const data=await response.json();
-    if(!Array.isArray(data.clubes))throw new Error("Formato de dados inválido");
-
-    const map=new Map(
-      data.clubes.map(c=>[liveNormalize(c.nome),c])
-    );
-
-    let count=0;
-
-    clubs.forEach(club=>{
-      const live=map.get(club.name);
-      if(!live)return;
-
-      club.pts=Number(live.pontos ?? club.pts);
-      club.j=Number(live.jogos ?? club.j);
-      club.v=Number(live.vitorias ?? club.v);
-      club.e=Number(live.empates ?? club.e);
-      club.d=Number(live.derrotas ?? club.d);
-      club.gp=Number(live.gols_pro ?? live.golsPro ?? club.gp);
-      club.gc=Number(live.gols_contra ?? live.golsContra ?? club.gc);
-      count++;
-    });
-
-    if(count===0)throw new Error("Nenhum clube encontrado na fonte online");
-
-    // Guarda uma cópia da tabela real para o botão Resetar.
-    liveClubsSnapshot=clubs.map(c=>({...c}));
-    initialClubs=clubs.map(c=>({...c}));
-
-    renderTable();
-    renderMatches();
-
-    const round=data.rodada_referencia ?? data.rodadaDeReferencia ?? "?";
-    let when="agora";
-    if(data.atualizado_em || data.atualizadoEm){
-      const raw=data.atualizado_em || data.atualizadoEm;
-      const d=new Date(raw);
-      if(!Number.isNaN(d.getTime())){
-        when=d.toLocaleString("pt-BR",{dateStyle:"short",timeStyle:"short"});
-      }
-    }
-
-    setLiveStatus("Atualizado • "+count+"/20 clubes • rodada "+round+" • "+when);
-  }catch(error){
-    console.error("Falha ao atualizar Brasileirão:",error);
-    setLiveStatus("Sem conexão • tabela anterior mantida","error");
-  }finally{
-    if(btn)btn.disabled=false;
-  }
-}
-
 </script>
+
 </body>
 </html>
