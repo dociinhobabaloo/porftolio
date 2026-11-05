@@ -21,7 +21,9 @@
   --suave:#5b6e75;
 }
 
-* {box-sizing:border-box}
+* {
+  box-sizing:border-box;
+}
 
 html {
   scroll-behavior:smooth;
@@ -381,7 +383,7 @@ h1,h2,h3 {
   opacity:1;
 }
 
-/* MOSAICO COM CINCO FOTOS */
+/* CINCO FOTOS */
 
 .m5 button:nth-child(1) {
   grid-column:span 4;
@@ -398,21 +400,21 @@ h1,h2,h3 {
   grid-column:span 3;
 }
 
-/* MOSAICO COM DUAS FOTOS */
+/* DUAS FOTOS */
 
 .m2 button {
   grid-column:span 3;
   grid-row:span 2;
 }
 
-/* MOSAICO COM UMA FOTO */
+/* UMA FOTO */
 
 .m1 button {
   grid-column:span 6;
   grid-row:span 3;
 }
 
-/* INFORMAÇÕES */
+/* CARTÕES DE HORÁRIOS */
 
 .dados {
   display:grid;
@@ -438,11 +440,18 @@ h1,h2,h3 {
   letter-spacing:.14em;
   text-transform:uppercase;
   color:var(--ouro);
-  margin-bottom:4px;
+  margin-bottom:8px;
 }
 
 .dado span {
   color:#eef5f6;
+}
+
+.dado small {
+  display:block;
+  margin-top:10px;
+  color:#aac1c7;
+  font-size:.82rem;
 }
 
 /* ROTEIRO */
@@ -593,7 +602,7 @@ footer b {
   transform:none;
 }
 
-/* ERRO DE IMAGEM */
+/* ERROS DE IMAGEM */
 
 .foto-erro {
   position:absolute;
@@ -711,9 +720,14 @@ footer b {
 
 <section class="capa" aria-label="Capa">
   <div class="miolo">
-    <span class="selo">Espírito Santo · Brasil</span>
 
-    <h1>Descubra <em>Vila Velha</em></h1>
+    <span class="selo">
+      Espírito Santo · Brasil
+    </span>
+
+    <h1>
+      Descubra <em>Vila Velha</em>
+    </h1>
 
     <p>
       Onde o Espírito Santo começou: história,
@@ -721,6 +735,7 @@ footer b {
     </p>
 
     <div class="botoes">
+
       <a class="botao p" href="#historico">
         Começar o passeio
       </a>
@@ -728,6 +743,7 @@ footer b {
       <a class="botao s" href="#roteiro">
         Ver o roteiro
       </a>
+
     </div>
   </div>
 </section>
@@ -735,19 +751,27 @@ footer b {
 <!-- INTRODUÇÃO -->
 
 <section class="intro">
+
   <div class="in rev">
-    <h2>Quatro lugares para conhecer a cidade</h2>
+
+    <h2>
+      Quatro lugares para conhecer a cidade
+    </h2>
 
     <p>
       Vila Velha reúne o centro histórico da colonização
       capixaba, uma área de lazer com vista para a baía,
       um dos mirantes mais conhecidos do estado e uma
-      praia para fechar o dia. Veja os horários, as dicas
-      de cada parada e um roteiro para fazer tudo em um dia.
+      praia para fechar o dia.
+
+      Veja os dias de funcionamento, horários de visitação,
+      dicas e um roteiro para aproveitar a cidade.
     </p>
+
   </div>
 
   <div class="destaques rev">
+
     <a href="#historico">
       Conjunto Histórico
       <span>História e Prainha</span>
@@ -767,57 +791,69 @@ footer b {
       Praia da Costa
       <span>Sol e orla</span>
     </a>
+
   </div>
+
 </section>
 
 <!-- 1. CONJUNTO HISTÓRICO -->
 
 <section class="lugar" id="historico">
+
   <div class="in rev">
 
     <div class="cab">
+
       <div class="n">1</div>
+
       <div>
         <h2>Conjunto Histórico</h2>
+
         <p>
           O berço da colonização do Espírito Santo,
           reunindo a Igreja do Rosário, a Casa da
           Memória e o Parque da Prainha.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m5">
 
-      <button type="button" data-leg="Parque da Prainha">
+      <button type="button"
+              data-leg="Parque da Prainha">
         <img
           src="img/Parque_da_Prainha_Vila_Velha_ES.JPG"
           alt="Parque da Prainha"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Igreja de Nossa Senhora do Rosário">
+      <button type="button"
+              data-leg="Igreja de Nossa Senhora do Rosário">
         <img
           src="img/Igreja_de_Nossa_Senhora_do_Rosário_2025.jpg"
           alt="Igreja de Nossa Senhora do Rosário"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Casa da Memória">
+      <button type="button"
+              data-leg="Casa da Memória">
         <img
           src="img/casa-da-memoria.jpg"
           alt="Casa da Memória"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Pesca na Prainha">
+      <button type="button"
+              data-leg="Pesca na Prainha">
         <img
           src="img/pesca-da-prainha.jpg"
           alt="Pesca na Prainha"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Bondinho da Casa da Memória">
+      <button type="button"
+              data-leg="Bondinho da Casa da Memória">
         <img
           src="img/bondinho-casa-da-memoria.jpg"
           alt="Bondinho da Casa da Memória"
@@ -826,68 +862,129 @@ footer b {
 
     </div>
 
+    <!-- HORÁRIOS DO CONJUNTO HISTÓRICO -->
+
     <div class="dados">
+
       <div class="dado">
         <b>Parque da Prainha</b>
-        <span>Livre 24h</span>
+        <span>
+          Segunda-feira a domingo.<br>
+          Acesso livre, 24 horas.<br>
+          Entrada gratuita.
+        </span>
       </div>
 
       <div class="dado">
         <b>Casa da Memória</b>
-        <span>Terça a domingo, 09h às 17h</span>
+        <span>
+          Terça-feira a domingo.<br>
+          Das 8h30 às 17h30.<br>
+          Segunda-feira: fechada.<br>
+          Entrada gratuita.
+        </span>
+        <small>
+          Horários sujeitos a alterações
+          em feriados e eventos.
+        </small>
       </div>
+
+      <div class="dado">
+        <b>Igreja de Nossa Senhora do Rosário</b>
+        <span>
+          Visitas monitoradas:<br>
+          Segunda a sexta-feira.<br>
+          Das 9h às 16h30.<br><br>
+          Missas:<br>
+          Terça-feira, às 19h.<br>
+          Domingo, às 9h.
+        </span>
+        <small>
+          Confirme a programação religiosa
+          antes da visita.
+        </small>
+      </div>
+
+      <div class="dado">
+        <b>Fonte Interativa da Prainha</b>
+        <span>
+          Segunda a sexta-feira:<br>
+          9h às 10h, 14h às 15h
+          e 19h às 20h.<br><br>
+
+          Sábados, domingos e feriados:<br>
+          10h às 12h, 15h às 17h
+          e 19h às 21h.
+        </span>
+        <small>
+          Funcionamento sujeito a manutenção
+          e programação municipal.
+        </small>
+      </div>
+
     </div>
 
   </div>
+
 </section>
 
 <!-- 2. MARINHA E BATALHÃO -->
 
 <section class="lugar" id="marinha">
+
   <div class="in rev">
 
     <div class="cab">
+
       <div class="n">2</div>
+
       <div>
         <h2>Complexo Marinha e Batalhão</h2>
+
         <p>
           Área militar e opções de lazer
           com vista para a baía.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m5">
 
-      <button type="button" data-leg="Complexo da Marinha">
+      <button type="button"
+              data-leg="Complexo da Marinha">
         <img
           src="img/marinha.jpg"
           alt="Complexo da Marinha"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Restaurante com vista para a baía">
+      <button type="button"
+              data-leg="Restaurante com vista para a baía">
         <img
           src="img/restaurante.jpg"
           alt="Restaurante com vista para a baía"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Vista da Marinha">
+      <button type="button"
+              data-leg="Vista da Marinha">
         <img
-          src="img/marinha2.jpg"
+          src="img/marinha2.jpg.jpg"
           alt="Vista da Marinha"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Batalhão">
+      <button type="button"
+              data-leg="Batalhão">
         <img
           src="img/batalhão1.jpg"
           alt="Batalhão"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Vista do Batalhão">
+      <button type="button"
+              data-leg="Vista do Batalhão">
         <img
           src="img/batalhao.jpg"
           alt="Vista do Batalhão"
@@ -896,46 +993,83 @@ footer b {
 
     </div>
 
+    <!-- HORÁRIOS DA MARINHA E BATALHÃO -->
+
     <div class="dados">
+
       <div class="dado">
-        <b>Funcionamento</b>
+        <b>Marinha e Batalhão</b>
         <span>
-          Área externa e restaurante, diariamente,
-          das 10h às 22h. Confirme antes da visita.
+          Dias e horários de visitação
+          conforme as regras de acesso
+          de cada instalação.
+        </span>
+        <small>
+          Confirme previamente a possibilidade
+          de entrada de visitantes.
+        </small>
+      </div>
+
+      <div class="dado">
+        <b>Restaurante</b>
+        <span>
+          Dias e horários sujeitos
+          ao funcionamento do estabelecimento.
+        </span>
+        <small>
+          Consulte o restaurante antes de ir.
+        </small>
+      </div>
+
+      <div class="dado">
+        <b>Dica de visita</b>
+        <span>
+          Aproveite a vista da baía
+          e confira se há atividades
+          abertas ao público no dia.
         </span>
       </div>
+
     </div>
 
   </div>
+
 </section>
 
 <!-- 3. MORRO DO MORENO -->
 
 <section class="lugar" id="morro">
+
   <div class="in rev">
 
     <div class="cab">
+
       <div class="n">3</div>
+
       <div>
         <h2>Morro do Moreno</h2>
+
         <p>
           Um dos pontos mais icônicos de Vila Velha,
           com vista panorâmica da Terceira Ponte,
           do Convento da Penha e de toda a orla.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m2">
 
-      <button type="button" data-leg="Vista do Morro do Moreno">
+      <button type="button"
+              data-leg="Vista do Morro do Moreno">
         <img
           src="img/morro-do-moreno.jpg"
           alt="Vista do Morro do Moreno"
           loading="lazy">
       </button>
 
-      <button type="button" data-leg="Morro do Moreno e a orla">
+      <button type="button"
+              data-leg="Morro do Moreno e a orla">
         <img
           src="img/morro-do-moreno2.jpg"
           alt="Morro do Moreno e a orla"
@@ -944,46 +1078,78 @@ footer b {
 
     </div>
 
+    <!-- HORÁRIOS DO MORRO DO MORENO -->
+
     <div class="dados">
+
       <div class="dado">
-        <b>Horário</b>
+        <b>Dias de funcionamento</b>
         <span>
-          Aberto 24h. Suba de dia ou para ver
-          o nascer e o pôr do sol.
+          Segunda-feira a domingo.<br>
+          Acesso indicado como 24 horas.
+        </span>
+        <small>
+          Sujeito a restrições temporárias.
+        </small>
+      </div>
+
+      <div class="dado">
+        <b>Melhor horário</b>
+        <span>
+          Pela manhã ou no fim da tarde.<br>
+          Prefira realizar a trilha
+          durante o dia.
+        </span>
+      </div>
+
+      <div class="dado">
+        <b>Entrada</b>
+        <span>
+          Gratuita.
         </span>
       </div>
 
       <div class="dado">
         <b>Como chegar</b>
         <span>
-          A pé pela trilha principal ou de carro.
+          A pé pela trilha principal
+          ou por acesso permitido a veículos,
+          conforme as condições locais.
         </span>
       </div>
+
     </div>
 
   </div>
+
 </section>
 
 <!-- 4. PRAIA DA COSTA -->
 
 <section class="lugar" id="praia">
+
   <div class="in rev">
 
     <div class="cab">
+
       <div class="n">4</div>
+
       <div>
         <h2>Praia da Costa</h2>
+
         <p>
           Uma das praias mais conhecidas de Vila Velha,
           boa para caminhar na orla, tomar sol
           e ver o fim de tarde.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m1">
 
-      <button type="button" data-leg="Praia da Costa">
+      <button type="button"
+              data-leg="Praia da Costa">
         <img
           src="img/praia-da-costa.jpg"
           alt="Praia da Costa, em Vila Velha"
@@ -992,26 +1158,52 @@ footer b {
 
     </div>
 
+    <!-- HORÁRIOS DA PRAIA DA COSTA -->
+
     <div class="dados">
+
       <div class="dado">
-        <b>Acesso</b>
-        <span>Livre</span>
+        <b>Dias de funcionamento</b>
+        <span>
+          Segunda-feira a domingo.<br>
+          Acesso livre, 24 horas.
+        </span>
+      </div>
+
+      <div class="dado">
+        <b>Melhor horário</b>
+        <span>
+          Pela manhã ou no fim da tarde,
+          quando o sol está mais ameno.
+        </span>
+      </div>
+
+      <div class="dado">
+        <b>Entrada</b>
+        <span>
+          Gratuita.
+        </span>
       </div>
 
       <div class="dado">
         <b>Dica</b>
         <span>
-          Vá no fim da tarde, com o sol mais ameno.
+          Confira as condições do mar
+          e a sinalização dos guarda-vidas
+          antes de entrar na água.
         </span>
       </div>
+
     </div>
 
   </div>
+
 </section>
 
 <!-- ROTEIRO DE UM DIA -->
 
 <section class="roteiro" id="roteiro">
+
   <div class="in rev">
 
     <h2>Roteiro de um dia</h2>
@@ -1025,74 +1217,94 @@ footer b {
 
       <div class="passo">
         <small>Manhã</small>
+
         <h3>Morro do Moreno</h3>
+
         <p>
           Suba cedo, com o sol mais ameno,
-          e aproveite a vista da orla e
-          do Convento da Penha.
+          e aproveite a vista da orla
+          e do Convento da Penha.
         </p>
       </div>
 
       <div class="passo">
         <small>Tarde</small>
+
         <h3>Conjunto Histórico</h3>
+
         <p>
-          Visite a Casa da Memória e termine
-          no Parque da Prainha.
+          Visite a Casa da Memória
+          e termine no Parque da Prainha.
+          Confira os dias de funcionamento.
         </p>
       </div>
 
       <div class="passo">
         <small>Fim de tarde</small>
+
         <h3>Praia da Costa</h3>
+
         <p>
-          Caminhe pela orla e veja o sol baixar.
+          Caminhe pela orla
+          e aproveite o fim de tarde.
         </p>
       </div>
 
       <div class="passo">
         <small>Noite</small>
+
         <h3>Marinha e Batalhão</h3>
+
         <p>
-          Jante no restaurante com vista para a baía,
-          confirmando o horário de funcionamento.
+          Consulte a possibilidade de visita
+          e o funcionamento do restaurante
+          com vista para a baía.
         </p>
       </div>
 
     </div>
 
   </div>
+
 </section>
 
 <!-- RODAPÉ -->
 
 <footer>
+
   <b>Guia Turístico de Vila Velha</b>
-  Espírito Santo, Brasil.
-  Confirme os horários antes de ir.
+
+  Espírito Santo, Brasil.<br>
+  Dias e horários podem sofrer alterações.
+  Confirme antes de visitar.
+
 </footer>
 
 <!-- MÚSICA -->
 
 <div class="audio">
+
   <span>♪</span>
 
   <audio controls loop>
     <source src="musica.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio.
   </audio>
+
 </div>
 
 <!-- ZOOM DAS FOTOS -->
 
-<div class="zoom" id="zoom"
+<div class="zoom"
+     id="zoom"
      role="dialog"
      aria-modal="true"
      aria-label="Visualizar fotografia">
 
-  <button type="button"
-          id="fecharZoom"
-          aria-label="Fechar imagem">
+  <button
+    type="button"
+    id="fecharZoom"
+    aria-label="Fechar imagem">
     ×
   </button>
 
@@ -1129,12 +1341,16 @@ if ('IntersectionObserver' in window) {
 
   const observador = new IntersectionObserver(
     entradas => {
+
       entradas.forEach(entrada => {
+
         if (entrada.isIntersecting) {
           entrada.target.classList.add('ok');
           observador.unobserve(entrada.target);
         }
+
       });
+
     },
     {threshold:0.08}
   );
@@ -1142,10 +1358,12 @@ if ('IntersectionObserver' in window) {
   elementos.forEach(el => observador.observe(el));
 
 } else {
+
   elementos.forEach(el => el.classList.add('ok'));
+
 }
 
-/* ZOOM */
+/* ZOOM DAS FOTOGRAFIAS */
 
 const zoom = document.getElementById('zoom');
 const zoomImg = document.getElementById('zoomImg');
@@ -1179,22 +1397,30 @@ function fecharImagem() {
 fecharZoom.addEventListener('click', fecharImagem);
 
 zoom.addEventListener('click', evento => {
+
   if (evento.target === zoom) {
     fecharImagem();
   }
+
 });
 
 document.addEventListener('keydown', evento => {
+
   if (evento.key === 'Escape') {
     fecharImagem();
   }
+
 });
 
-/* VERIFICAR SE AS FOTOS EXISTEM */
+/* AVISO DE IMAGEM NÃO ENCONTRADA */
 
 document.querySelectorAll('.mosaico img').forEach(img => {
 
-  img.addEventListener('error', () => {
+  function mostrarErro() {
+
+    if (img.parentElement.querySelector('.foto-erro')) {
+      return;
+    }
 
     const caminho = img.getAttribute('src');
 
@@ -1204,14 +1430,20 @@ document.querySelectorAll('.mosaico img').forEach(img => {
     );
 
     const aviso = document.createElement('span');
+
     aviso.className = 'foto-erro';
 
     aviso.textContent =
       'Foto não encontrada: ' + caminho;
 
     img.parentElement.appendChild(aviso);
+  }
 
-  });
+  img.addEventListener('error', mostrarErro);
+
+  if (img.complete && img.naturalWidth === 0) {
+    mostrarErro();
+  }
 
 });
 
