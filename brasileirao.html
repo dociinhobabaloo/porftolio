@@ -970,6 +970,39 @@ img {
 
 }
 
+/* CORREÇÕES FINAIS PARA CELULAR */
+
+@media (max-width: 700px) {
+
+  .simulator-card .score-row input[type="number"] {
+    width: 48px !important;
+    min-width: 44px !important;
+    max-width: 55px !important;
+    flex: 0 0 auto !important;
+    text-align: center;
+  }
+
+  .sim-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .sim-card {
+    min-width: 0;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+}
+
+@media (max-width: 380px) {
+  .sim-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 </style>
 </head>
 <body>
