@@ -4,16 +4,20 @@
 /*
 ==========================================
 CADÊ MEU PET
-SISTEMA DE NOTIFICAÇÕES AUTOMÁTICAS
+NOTIFICAÇÕES AUTOMÁTICAS - VERSÃO 4
 ==========================================
 
-- Notifica todos os celulares inscritos
-- Inclui o próprio anunciante
-- Aceita todos os municípios
-- Notifica cães e gatos
-- Trata erros por dispositivo
-- Evita duplicar envios aceitos
-- Funciona com GitHub Actions
+- Notifica todos os inscritos, incluindo
+  o próprio anunciante.
+- Respeita o município selecionado.
+- Registra envios aceitos e recusados.
+- Não repete envios já aceitos.
+- Remove inscrições expiradas (404/410).
+- Suspende inscrições após 2 erros
+  consecutivos de autorização (401/403).
+- Permite reativação pelo aplicativo.
+- Preserva o histórico administrativo.
+- Mantém a integração GitHub/Cloudflare.
 ==========================================
 */
 
@@ -30,28 +34,33 @@ const {
 
 const webpush = require("web-push");
 
+// CONFIGURAÇÕES
+
 const PROJETO = "cade-meu-pet-8966f";
 
-const SITE = "https://localizador-pet2.netlify.app";
+const SITE =
+  "https://localizador-pet2.netlify.app";
 
 const LIMITE_ANIMAIS = 100;
 const LIMITE_INSCRITOS = 2000;
 
-// SEGREDOS
+const LIMITE_ERROS_AUTORIZACAO = 2;
+
+// SEGREDOS DO GITHUB
 
 function obrigatorio(nome) {
   const valor = process.env[nome];
 
   if (!valor) {
     throw new Error(
-      `Configure o segredo ${nome} no GitHub.`
+      `Segredo ${nome} não configurado no GitHub.`
     );
   }
 
   return valor;
 }
 
-// FIREBASE
+// CONEXÃO COM FIREBASE
 
 const credenciais = JSON.parse(
   obrigatorio("FIREBASE_SERVICE_ACCOUNT")
@@ -59,7 +68,7 @@ const credenciais = JSON.parse(
 
 if (credenciais.project_id !== PROJETO) {
   throw new Error(
-    "Credencial Firebase incorreta."
+    "As credenciais pertencem a outro projeto Firebase."
   );
 }
 
@@ -69,24 +78,40 @@ initializeApp({
 
 const db = getFirestore();
 
-// NOTIFICAÇÕES PUSH
+// WEB PUSH
+
+const VAPID_PUBLIC_KEY =
+  obrigatorio("VAPID_PUBLIC_KEY");
+
+const VAPID_PRIVATE_KEY =
+  obrigatorio("VAPID_PRIVATE_KEY");
+
+const VAPID_CONTACT =
+  obrigatorio("VAPID_CONTACT");
 
 webpush.setVapidDetails(
-  obrigatorio("VAPID_CONTACT"),
-  obrigatorio("VAPID_PUBLIC_KEY"),
-  obrigatorio("VAPID_PRIVATE_KEY")
+  VAPID_CONTACT,
+  VAPID_PUBLIC_KEY,
+  VAPID_PRIVATE_KEY
 );
 
-// IDENTIFICAR O ANIMAL
+// NORMALIZAÇÃO
 
-function tipoAnimal(tipo) {
-  const valor = String(tipo || "")
+function normalizar(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
+}
+
+// TIPO DE ANIMAL
+
+function tipoAnimal(tipo) {
+  const valor = normalizar(tipo);
 
   if (
     valor === "cachorro" ||
-    valor === "cão" ||
     valor === "cao"
   ) {
     return {
@@ -111,12 +136,12 @@ function tipoAnimal(tipo) {
   };
 }
 
-// MONTAR MENSAGEM
+// PREPARAR NOTIFICAÇÃO
 
 function montarMensagem(animal, id) {
   const tipo = tipoAnimal(animal.tipo);
 
-  let titulo;
+  let titulo = "";
 
   switch (animal.status) {
     case "Perdido":
@@ -173,33 +198,25 @@ function montarMensagem(animal, id) {
   };
 }
 
-// MUNICÍPIOS
-
-function normalizar(valor) {
-  return String(valor || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim()
-    .toLowerCase();
-}
+// FILTRO DE MUNICÍPIO
 
 function recebeMunicipio(inscricao, animal) {
   const escolhido = normalizar(
     inscricao.municipio
   );
 
-  const cidadeAnimal = normalizar(
+  const municipio = normalizar(
     animal.municipio
   );
 
   return (
     escolhido === "todos" ||
     escolhido === "todos os municipios" ||
-    escolhido === cidadeAnimal
+    escolhido === municipio
   );
 }
 
-// REGISTRAR ENTREGA POR DISPOSITIVO
+// REFERÊNCIA DO ENVIO INDIVIDUAL
 
 function referenciaEntrega(animalId, inscricaoId) {
   return db
@@ -209,19 +226,239 @@ function referenciaEntrega(animalId, inscricaoId) {
     .doc(inscricaoId);
 }
 
-// ENVIAR NOTIFICAÇÕES
+// SAÚDE DA INSCRIÇÃO
+
+function referenciaSaude(inscricaoId) {
+  return db
+    .collection("pushSubscriptionHealth")
+    .doc(inscricaoId);
+}
+
+// IDENTIFICAR NOVA ATIVAÇÃO
+
+function ativacaoMaisRecente(
+  inscricao,
+  saude
+) {
+  const atualizacao =
+    inscricao.updatedAt?.toMillis?.() || 0;
+
+  const ultimaFalha =
+    saude.ultimaFalhaEm?.toMillis?.() || 0;
+
+  return atualizacao > ultimaFalha;
+}
+
+// LIMPAR CONTADOR APÓS ENVIO ACEITO
+
+async function registrarSucesso(inscricaoId) {
+  await referenciaSaude(inscricaoId).set(
+    {
+      errosConsecutivos: 0,
+      ultimoStatus: "aceito",
+      ultimoCodigo: null,
+      ultimoSucessoEm:
+        FieldValue.serverTimestamp()
+    },
+    {
+      merge: true
+    }
+  );
+}
+
+// REGISTRAR ERRO DE AUTORIZAÇÃO
+
+async function registrarErroAutorizacao(
+  documento,
+  codigo
+) {
+  const referencia =
+    referenciaSaude(documento.id);
+
+  const anterior = await referencia.get();
+
+  const saude = anterior.exists
+    ? anterior.data()
+    : {};
+
+  const inscricao = documento.data();
+
+  // Se houve nova ativação no aplicativo,
+  // reiniciar o contador.
+
+  const reiniciar =
+    ativacaoMaisRecente(inscricao, saude);
+
+  const errosAnteriores = reiniciar
+    ? 0
+    : Number(
+        saude.errosConsecutivos || 0
+      );
+
+  const errosConsecutivos =
+    errosAnteriores + 1;
+
+  const suspender =
+    errosConsecutivos >=
+    LIMITE_ERROS_AUTORIZACAO;
+
+  await referencia.set(
+    {
+      uid: inscricao.uid || null,
+
+      errosConsecutivos,
+
+      ultimoCodigo: codigo,
+
+      ultimoStatus: suspender
+        ? "suspenso"
+        : "recusado",
+
+      ultimaFalhaEm:
+        FieldValue.serverTimestamp(),
+
+      precisaRenovar: suspender
+    },
+    {
+      merge: true
+    }
+  );
+
+  if (suspender) {
+    // Não excluir a inscrição nem afetar
+    // outros aparelhos da mesma conta.
+
+    // Atualização condicional: não suspender
+    // se a inscrição foi reativada durante
+    // o processamento.
+
+    try {
+      const atual = await documento.ref.get();
+
+      const dadosAtuais = atual.data();
+
+      const versaoOriginal =
+        inscricao.updatedAt?.toMillis?.() || 0;
+
+      const versaoAtual =
+        dadosAtuais?.updatedAt?.toMillis?.() || 0;
+
+      if (
+        dadosAtuais?.enabled === true &&
+        versaoOriginal === versaoAtual
+      ) {
+        await documento.ref.update({
+          enabled: false
+        });
+
+        console.warn(
+          `Inscrição ${documento.id}: ` +
+          `suspensa após ${errosConsecutivos} ` +
+          `erros de autenticação.`
+        );
+
+      } else {
+        console.log(
+          `Inscrição ${documento.id}: ` +
+          "alterada recentemente; suspensão ignorada."
+        );
+      }
+
+    } catch (erro) {
+      console.error(
+        `Erro ao suspender inscrição ${documento.id}:`,
+        erro.message
+      );
+
+      throw erro;
+    }
+  }
+
+  return {
+    errosConsecutivos,
+    suspenso: suspender
+  };
+}
+
+// REMOVER INSCRIÇÃO EXPIRADA
+
+async function removerExpirada(
+  documento,
+  codigo
+) {
+  try {
+    await referenciaSaude(documento.id).set(
+      {
+        uid: documento.data().uid || null,
+        ultimoCodigo: codigo,
+        ultimoStatus: "expirado",
+        precisaRenovar: true,
+        ultimaFalhaEm:
+          FieldValue.serverTimestamp()
+      },
+      {
+        merge: true
+      }
+    );
+
+    await documento.ref.delete();
+
+    console.log(
+      `Inscrição ${documento.id}: ` +
+      `removida após HTTP ${codigo}.`
+    );
+
+  } catch (erro) {
+    console.error(
+      `Não foi possível remover ${documento.id}:`,
+      erro.message
+    );
+
+    throw erro;
+  }
+}
+
+// REGISTRAR RESULTADO DO ENVIO
+
+async function registrarEntrega(
+  referencia,
+  dados
+) {
+  await referencia.set(
+    {
+      ...dados,
+      registradoEm:
+        FieldValue.serverTimestamp()
+    },
+    {
+      merge: true
+    }
+  );
+}
+
+// ESTATÍSTICAS VAZIAS
+
+function estatisticasVazias() {
+  return {
+    tentados: 0,
+    enviados: 0,
+    expirados: 0,
+    recusados: 0,
+    temporarios: 0,
+    suspensos: 0,
+    repetidos: 0
+  };
+}
+
+// ENVIAR ALERTAS DE UM ANIMAL
 
 async function enviarNotificacao(animal, id) {
   const mensagem = montarMensagem(animal, id);
 
+  const stats = estatisticasVazias();
+
   if (!mensagem) {
-    return {
-      tentados: 0,
-      enviados: 0,
-      expirados: 0,
-      recusados: 0,
-      temporarios: 0
-    };
+    return stats;
   }
 
   const resultado = await db
@@ -230,33 +467,16 @@ async function enviarNotificacao(animal, id) {
     .limit(LIMITE_INSCRITOS)
     .get();
 
-  let tentados = 0;
-  let enviados = 0;
-  let expirados = 0;
-  let recusados = 0;
-  let temporarios = 0;
-  let repetidos = 0;
-
   for (const documento of resultado.docs) {
     const inscricao = documento.data();
 
-    // Respeitar a cidade escolhida pelo usuário.
+    // Todos podem receber, incluindo
+    // o responsável pelo anúncio.
+
     if (!recebeMunicipio(inscricao, animal)) {
       continue;
     }
 
-    /*
-    =========================================
-    NOVA REGRA
-
-    TODOS OS INSCRITOS RECEBEM O ALERTA,
-    INCLUSIVE QUEM CADASTROU O ANIMAL.
-
-    NÃO EXCLUÍMOS MAIS O PRÓPRIO ANUNCIANTE.
-    =========================================
-    */
-
-    // Ignorar inscrições incompletas.
     if (
       !inscricao.endpoint ||
       !inscricao.keys?.p256dh ||
@@ -276,17 +496,17 @@ async function enviarNotificacao(animal, id) {
 
     const anterior = await entrega.get();
 
-    // Não enviar novamente quando o
-    // serviço push já aceitou o aviso.
+    // Não duplicar envios aceitos.
+
     if (
       anterior.exists &&
       anterior.data().status === "aceito"
     ) {
-      repetidos++;
+      stats.repetidos++;
       continue;
     }
 
-    tentados++;
+    stats.tentados++;
 
     try {
       await webpush.sendNotification(
@@ -307,17 +527,37 @@ async function enviarNotificacao(animal, id) {
         }
       );
 
-      enviados++;
+      stats.enviados++;
 
-      await entrega.set({
-        status: "aceito",
-        inscricaoId: documento.id,
-        uid: inscricao.uid || null,
-        aceitoEm: FieldValue.serverTimestamp()
-      });
+      await registrarEntrega(
+        entrega,
+        {
+          status: "aceito",
+          inscricaoId: documento.id,
+          uid: inscricao.uid || null,
+          aceitoEm:
+            FieldValue.serverTimestamp()
+        }
+      );
+
+      // O aviso foi aceito.
+      // Zerar erros anteriores.
+
+      try {
+        await registrarSucesso(
+          documento.id
+        );
+      } catch (erroSaude) {
+        console.warn(
+          "Não foi possível atualizar o histórico " +
+          `da inscrição ${documento.id}: ` +
+          erroSaude.message
+        );
+      }
 
       console.log(
-        `Inscrição ${documento.id}: envio aceito.`
+        `Inscrição ${documento.id}: ` +
+        "envio aceito."
       );
 
     } catch (erro) {
@@ -325,48 +565,88 @@ async function enviarNotificacao(animal, id) {
         erro.statusCode || 0
       );
 
-      // Inscrição expirada.
-      if (codigo === 404 || codigo === 410) {
-        expirados++;
+      // 404 / 410: inscrição expirada.
 
-        console.warn(
-          `Inscrição ${documento.id}: ` +
-          `expirada (HTTP ${codigo}).`
+      if (
+        codigo === 404 ||
+        codigo === 410
+      ) {
+        stats.expirados++;
+
+        await registrarEntrega(
+          entrega,
+          {
+            status: "expirado",
+            codigo,
+            inscricaoId: documento.id,
+            uid: inscricao.uid || null
+          }
         );
 
-        try {
-          await documento.ref.delete();
-        } catch (erroExclusao) {
-          console.warn(
-            `Não foi possível limpar ${documento.id}.`
+        await removerExpirada(
+          documento,
+          codigo
+        );
+
+        continue;
+      }
+
+      // 401 / 403: autorização recusada.
+
+      if (
+        codigo === 401 ||
+        codigo === 403
+      ) {
+        stats.recusados++;
+
+        const estado =
+          await registrarErroAutorizacao(
+            documento,
+            codigo
           );
+
+        if (estado.suspenso) {
+          stats.suspensos++;
         }
 
-        continue;
-      }
-
-      // Erro de autorização ou VAPID.
-      if (codigo === 403 || codigo === 401) {
-        recusados++;
+        await registrarEntrega(
+          entrega,
+          {
+            status: "recusado",
+            codigo,
+            inscricaoId: documento.id,
+            uid: inscricao.uid || null,
+            errosConsecutivos:
+              estado.errosConsecutivos,
+            inscricaoSuspensa:
+              estado.suspenso
+          }
+        );
 
         console.warn(
           `Inscrição ${documento.id}: ` +
-          `Web Push recusado (HTTP ${codigo}).`
+          `HTTP ${codigo}, ` +
+          `${estado.errosConsecutivos} ` +
+          "erro(s) consecutivo(s)."
         );
-
-        await entrega.set({
-          status: "recusado",
-          codigo,
-          inscricaoId: documento.id,
-          registradoEm:
-            FieldValue.serverTimestamp()
-        });
 
         continue;
       }
 
-      // Problema temporário.
-      temporarios++;
+      // Outros erros: manter a inscrição
+      // para uma tentativa posterior.
+
+      stats.temporarios++;
+
+      await registrarEntrega(
+        entrega,
+        {
+          status: "temporario",
+          codigo: codigo || null,
+          inscricaoId: documento.id,
+          uid: inscricao.uid || null
+        }
+      );
 
       console.error(
         `Inscrição ${documento.id}: ` +
@@ -377,24 +657,19 @@ async function enviarNotificacao(animal, id) {
 
   console.log(
     `Animal ${id}: ` +
-    `${tentados} tentativas, ` +
-    `${enviados} envios aceitos, ` +
-    `${expirados} expiradas, ` +
-    `${recusados} recusadas, ` +
-    `${temporarios} erros temporários, ` +
-    `${repetidos} já atendidos.`
+    `${stats.tentados} tentativas, ` +
+    `${stats.enviados} aceitos, ` +
+    `${stats.recusados} recusados, ` +
+    `${stats.suspensos} suspensos, ` +
+    `${stats.expirados} expirados, ` +
+    `${stats.temporarios} temporários, ` +
+    `${stats.repetidos} já aceitos.`
   );
 
-  return {
-    tentados,
-    enviados,
-    expirados,
-    recusados,
-    temporarios
-  };
+  return stats;
 }
 
-// PROCESSAR UM ANÚNCIO
+// PROCESSAR ANÚNCIO
 
 async function processarAnimal(documento) {
   const animal = documento.data();
@@ -414,8 +689,11 @@ async function processarAnimal(documento) {
 
   if (
     !animal ||
-    !["Perdido", "Encontrado", "Reencontrado"]
-      .includes(animal.status)
+    ![
+      "Perdido",
+      "Encontrado",
+      "Reencontrado"
+    ].includes(animal.status)
   ) {
     return;
   }
@@ -436,29 +714,48 @@ async function processarAnimal(documento) {
     documento.id
   );
 
+  // Manter o comportamento de não finalizar
+  // o anúncio se ocorrer erro temporário.
+
   if (resultado.temporarios > 0) {
     console.warn(
-      `Anúncio ${documento.id} pendente: ` +
-      `${resultado.temporarios} falha(s) temporária(s).`
+      `Anúncio ${documento.id}: ` +
+      "existem envios temporários pendentes."
     );
 
     throw new Error(
-      "Há envios temporariamente pendentes."
+      "Existem envios temporariamente pendentes."
     );
   }
 
-  await controle.set({
-    animalId: documento.id,
-    municipio: animal.municipio,
-    situacao: animal.status,
-    tentativas: resultado.tentados,
-    enviosAceitos: resultado.enviados,
-    inscricoesExpiradas: resultado.expirados,
-    inscricoesRecusadas: resultado.recusados,
-    processadoEm: FieldValue.serverTimestamp()
-  }, {
-    merge: true
-  });
+  await controle.set(
+    {
+      animalId: documento.id,
+
+      municipio: animal.municipio,
+
+      situacao: animal.status,
+
+      tentativas: resultado.tentados,
+
+      enviosAceitos: resultado.enviados,
+
+      inscricoesExpiradas:
+        resultado.expirados,
+
+      inscricoesRecusadas:
+        resultado.recusados,
+
+      inscricoesSuspensas:
+        resultado.suspensos,
+
+      processadoEm:
+        FieldValue.serverTimestamp()
+    },
+    {
+      merge: true
+    }
+  );
 
   console.log(
     `Anúncio ${documento.id} processado.`
@@ -475,15 +772,21 @@ async function executar() {
   const estado = await controle.get();
 
   if (!estado.exists) {
-    await controle.create({
-      iniciadoEm: FieldValue.serverTimestamp(),
-      ultimaVerificacao: Timestamp.now(),
-      versao: 3
-    });
+    await controle.create(
+      {
+        iniciadoEm:
+          FieldValue.serverTimestamp(),
+
+        ultimaVerificacao:
+          Timestamp.now(),
+
+        versao: 4
+      }
+    );
 
     console.log(
-      "Sistema inicializado. " +
-      "Os próximos animais serão monitorados."
+      "Monitoramento inicializado. " +
+      "Próximos cadastros serão verificados."
     );
 
     return;
@@ -511,13 +814,21 @@ async function executar() {
     .get();
 
   if (novos.empty) {
-    await controle.update({
-      ultimaVerificacao: inicio,
-      ultimaExecucaoEm:
-        FieldValue.serverTimestamp()
-    });
+    await controle.update(
+      {
+        ultimaVerificacao: inicio,
 
-    console.log("Nenhum novo animal.");
+        ultimaExecucaoEm:
+          FieldValue.serverTimestamp(),
+
+        versao: 4
+      }
+    );
+
+    console.log(
+      "Nenhum novo animal."
+    );
+
     return;
   }
 
@@ -545,11 +856,16 @@ async function executar() {
           )
         );
 
-  await controle.update({
-    ultimaVerificacao: proximoMarco,
-    ultimaExecucaoEm:
-      FieldValue.serverTimestamp()
-  });
+  await controle.update(
+    {
+      ultimaVerificacao: proximoMarco,
+
+      ultimaExecucaoEm:
+        FieldValue.serverTimestamp(),
+
+      versao: 4
+    }
+  );
 
   console.log(
     "Verificação concluída com sucesso!"
