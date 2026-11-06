@@ -3,11 +3,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>Guia Turístico de Vila Velha</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-:root{
+:root {
   --noite:#051821;
   --mar:#0a2f40;
   --petroleo:#0f4c5c;
@@ -17,457 +20,681 @@
   --tinta:#10262f;
   --suave:#5b6e75;
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:85px}
-body{
+
+* {
+  box-sizing:border-box;
+}
+
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:70px;
+}
+
+body {
   margin:0;
+  font-family:'Manrope',sans-serif;
   background:var(--noite);
   color:#dfeaed;
-  font:400 16px/1.75 'Manrope',sans-serif;
-  overflow-x:hidden;
+  line-height:1.75;
+  font-size:1.05rem;
 }
-h1,h2,h3{
-  font-family:'Playfair Display',Georgia,serif;
-  line-height:1.15;
-  margin:0;
-}
-a,button{-webkit-tap-highlight-color:transparent}
-:focus-visible{outline:3px solid var(--ouro);outline-offset:3px}
 
-/* NAVEGAÇÃO */
-.topo{
+h1,h2,h3 {
+  font-family:'Playfair Display',Georgia,serif;
+  margin:0;
+  line-height:1.1;
+}
+
+:focus-visible {
+  outline:3px solid var(--ouro);
+  outline-offset:3px;
+}
+
+/* MENU */
+
+.topo {
   position:fixed;
-  inset:0 0 auto;
+  inset:0 0 auto 0;
   z-index:50;
   display:flex;
   align-items:center;
-  gap:20px;
-  padding:14px 30px;
-  background:rgba(5,24,33,.84);
+  gap:24px;
+  padding:14px 32px;
+  background:linear-gradient(
+    180deg,
+    rgba(5,24,33,.9),
+    rgba(5,24,33,0)
+  );
+  transition:background .3s;
+}
+
+.topo.solido {
+  background:rgba(5,24,33,.94);
   backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(217,169,76,.2);
+  box-shadow:0 1px 0 rgba(217,169,76,.3);
 }
-.voltar{
-  flex-shrink:0;
+
+.voltar {
+  color:#fff;
   text-decoration:none;
-  color:white;
+  font-weight:600;
+  font-size:.9rem;
+  padding:9px 20px;
+  border-radius:50px;
   border:1px solid var(--ouro);
-  border-radius:30px;
-  padding:8px 19px;
-  font-weight:700;
-  font-size:13px;
+  transition:.25s;
 }
-.voltar:hover{background:var(--ouro);color:var(--noite)}
-.topo nav{
+
+.voltar:hover {
+  background:var(--ouro);
+  color:var(--noite);
+}
+
+.topo nav {
   margin-left:auto;
   display:flex;
-  align-items:center;
-  gap:22px;
+  gap:26px;
 }
-.topo nav a{
+
+.topo nav a {
   color:#e8f1f3;
   text-decoration:none;
-  font-size:13px;
-  font-weight:700;
+  font-size:.92rem;
+  font-weight:600;
+  letter-spacing:.02em;
+  padding:4px 0;
+  border-bottom:2px solid transparent;
 }
-.topo nav a:hover{color:var(--ouro)}
-.menu-toggle{
-  display:none;
-  margin-left:auto;
-  border:1px solid var(--ouro);
-  background:transparent;
-  color:white;
-  border-radius:10px;
-  width:44px;
-  height:44px;
-  font-size:24px;
-  cursor:pointer;
+
+.topo nav a:hover {
+  border-color:var(--ouro);
 }
 
 /* CAPA */
-.capa{
+
+.capa {
+  position:relative;
   min-height:100vh;
-  min-height:100svh;
   display:flex;
   align-items:center;
-  padding:110px 32px 80px;
+  padding:120px 32px 90px;
+
   background:
-    linear-gradient(100deg,rgba(5,24,33,.92) 15%,rgba(5,24,33,.35) 70%),
-    linear-gradient(0deg,var(--noite),transparent 35%),
+    linear-gradient(
+      100deg,
+      rgba(5,24,33,.92) 15%,
+      rgba(5,24,33,.35) 70%
+    ),
+    linear-gradient(
+      0deg,
+      var(--noite) 0%,
+      rgba(5,24,33,0) 30%
+    ),
     url('img/morro-do-moreno.jpg') center/cover no-repeat;
 }
-.capa .miolo{width:100%;max-width:1180px;margin:auto}
-.selo{
+
+.capa .miolo {
+  max-width:1180px;
+  width:100%;
+  margin:0 auto;
+}
+
+.selo {
   display:inline-block;
-  border:1px solid var(--ouro);
-  border-radius:40px;
-  padding:7px 17px;
-  color:var(--ouro);
-  font-size:12px;
   font-weight:700;
-  letter-spacing:2px;
+  font-size:.85rem;
+  letter-spacing:.18em;
   text-transform:uppercase;
+  color:var(--ouro);
+  border:1px solid rgba(217,169,76,.6);
+  padding:8px 18px;
+  border-radius:50px;
+  margin-bottom:28px;
 }
-.capa h1{
-  margin-top:25px;
-  font-size:clamp(48px,8vw,105px);
-  max-width:800px;
-  color:white;
+
+.capa h1 {
+  font-size:clamp(3rem,8.5vw,7rem);
+  font-weight:800;
+  color:#fff;
+  max-width:11ch;
+  letter-spacing:-.01em;
 }
-.capa h1 em{color:var(--ouro);font-weight:500}
-.capa p{
-  max-width:550px;
-  font-size:20px;
+
+.capa h1 em {
+  font-style:italic;
+  font-weight:500;
+  color:var(--ouro);
+}
+
+.capa p {
+  max-width:50ch;
+  font-size:1.25rem;
   font-weight:300;
-  margin:25px 0 35px;
+  margin:26px 0 38px;
+  color:#d3e3e7;
 }
-.botoes{display:flex;gap:14px;flex-wrap:wrap}
-.botao{
-  display:inline-block;
-  text-align:center;
-  padding:14px 30px;
-  border-radius:40px;
-  font-weight:700;
+
+.botoes {
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.botao {
   text-decoration:none;
+  font-weight:700;
+  padding:15px 34px;
+  border-radius:50px;
+  transition:.25s;
 }
-.botao.p{background:var(--ouro);color:var(--noite)}
-.botao.s{border:1px solid #fff;color:#fff}
-.botao:hover{transform:translateY(-2px)}
+
+.botao.p {
+  background:linear-gradient(135deg,#e8bd63,#c8923a);
+  color:var(--noite);
+  box-shadow:0 10px 30px rgba(217,169,76,.3);
+}
+
+.botao.s {
+  border:1px solid rgba(255,255,255,.5);
+  color:#fff;
+}
+
+.botao:hover {
+  transform:translateY(-3px);
+}
 
 /* INTRODUÇÃO */
-.intro{
-  padding:85px 30px;
+
+.intro {
   background:var(--creme);
   color:var(--tinta);
+  padding:90px 32px;
 }
-.intro .in{
+
+.intro .in {
   max-width:1180px;
-  margin:auto;
+  margin:0 auto;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:50px;
+  grid-template-columns:1.1fr 1fr;
+  gap:60px;
   align-items:center;
 }
-.intro h2{
-  font-size:clamp(30px,4vw,50px);
+
+.intro h2 {
+  font-size:clamp(2rem,4.2vw,3.2rem);
   color:var(--mar);
 }
-.intro p{color:var(--suave)}
-.destaques{
-  max-width:1180px;
-  margin:50px auto 0;
+
+.intro p {
+  margin:0;
+  color:var(--suave);
+}
+
+.destaques {
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:15px;
+  gap:16px;
+  max-width:1180px;
+  margin:56px auto 0;
 }
-.destaques a{
-  background:white;
-  padding:20px;
-  border-radius:14px;
-  border-bottom:4px solid var(--ouro);
-  color:var(--mar);
-  text-decoration:none;
-  font:700 19px 'Playfair Display',serif;
-  box-shadow:0 10px 25px #0a2f4015;
-}
-.destaques a span{
-  display:block;
-  margin-top:8px;
-  font:600 12px 'Manrope',sans-serif;
-  color:var(--petroleo);
-}
-.destaques a:hover{background:var(--mar);color:white}
-.destaques a:hover span{color:var(--ouro)}
 
-/* ATRAÇÕES */
-.lugar{padding:95px 30px}
-.lugar:nth-of-type(odd){
-  background:linear-gradient(var(--noite),var(--mar));
+.destaques a {
+  text-decoration:none;
+  color:var(--mar);
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  border-bottom:4px solid var(--ouro);
+  box-shadow:0 10px 30px rgba(10,47,64,.1);
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1.15rem;
+  transition:.25s;
 }
-.lugar:nth-of-type(even){
-  background:linear-gradient(var(--mar),var(--noite));
+
+.destaques a span {
+  display:block;
+  font-family:'Manrope',sans-serif;
+  font-weight:600;
+  font-size:.85rem;
+  color:var(--petroleo);
+  margin-top:4px;
 }
-.lugar .in{max-width:1180px;margin:auto}
-.cab{
+
+.destaques a:hover {
+  transform:translateY(-5px);
+  background:var(--mar);
+  color:#fff;
+}
+
+.destaques a:hover span {
+  color:var(--ouro);
+}
+
+/* SEÇÕES TURÍSTICAS */
+
+.lugar {
+  padding:100px 32px;
+}
+
+.lugar:nth-of-type(odd) {
+  background:linear-gradient(
+    180deg,
+    var(--noite),
+    var(--mar)
+  );
+}
+
+.lugar:nth-of-type(even) {
+  background:linear-gradient(
+    180deg,
+    var(--mar),
+    var(--noite)
+  );
+}
+
+.lugar .in {
+  max-width:1180px;
+  margin:0 auto;
+}
+
+.cab {
   display:grid;
   grid-template-columns:auto 1fr;
+  gap:34px;
   align-items:end;
-  gap:32px;
-  margin-bottom:38px;
+  margin-bottom:44px;
 }
-.cab .n{
-  font:800 clamp(65px,10vw,120px)/.9 'Playfair Display',serif;
+
+.cab .n {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(4.5rem,10vw,8rem);
+  font-weight:800;
+  line-height:.8;
   color:transparent;
   -webkit-text-stroke:1.5px var(--ouro);
 }
-.cab h2{font-size:clamp(32px,5vw,55px);color:white}
-.cab p{color:#b9cfd5;max-width:750px}
 
-/* FOTOGRAFIAS */
-.mosaico{
-  display:grid;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  grid-auto-rows:180px;
-  gap:13px;
+.cab h2 {
+  font-size:clamp(2.1rem,5vw,3.6rem);
+  color:#fff;
 }
-.mosaico button{
+
+.cab p {
+  margin:14px 0 0;
+  max-width:60ch;
+  color:#b9cfd5;
+  font-size:1.1rem;
+}
+
+/* GALERIAS */
+
+.mosaico {
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:190px;
+  gap:14px;
+}
+
+.mosaico button {
   position:relative;
   padding:0;
   border:0;
-  background:var(--petroleo);
+  border-radius:18px;
   overflow:hidden;
-  border-radius:16px;
   cursor:zoom-in;
+  background:var(--petroleo);
+  box-shadow:0 14px 34px rgba(0,0,0,.4);
 }
-.mosaico img{
+
+.mosaico img {
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
   object-fit:cover;
-  display:block;
-  transition:transform .4s;
+  transition:transform .7s;
 }
-.mosaico button:hover img{transform:scale(1.06)}
-.mosaico button::after{
+
+.mosaico button::after {
   content:attr(data-leg);
   position:absolute;
-  inset:auto 0 0;
-  padding:30px 14px 12px;
-  background:linear-gradient(transparent,rgba(5,24,33,.9));
-  color:white;
-  font-size:13px;
-  font-weight:700;
+  inset:auto 0 0 0;
+  padding:34px 18px 14px;
+  text-align:left;
+  font-weight:600;
+  font-size:.9rem;
+  color:#fff;
+  background:linear-gradient(
+    0deg,
+    rgba(5,24,33,.85),
+    transparent
+  );
+  opacity:0;
+  transition:opacity .3s;
 }
-.m5 button:first-child{grid-column:span 4;grid-row:span 2}
-.m5 button:nth-child(2),
-.m5 button:nth-child(3){grid-column:span 2}
-.m5 button:nth-child(4),
-.m5 button:nth-child(5){grid-column:span 3}
-.m2 button{grid-column:span 3;grid-row:span 2}
-.m1 button{grid-column:span 6;grid-row:span 3}
 
-/* HORÁRIOS */
-.dados{
+.mosaico button:hover img {
+  transform:scale(1.07);
+}
+
+.mosaico button:hover::after,
+.mosaico button:focus-visible::after {
+  opacity:1;
+}
+
+/* CINCO FOTOS */
+
+.m5 button:nth-child(1) {
+  grid-column:span 4;
+  grid-row:span 2;
+}
+
+.m5 button:nth-child(2),
+.m5 button:nth-child(3) {
+  grid-column:span 2;
+}
+
+.m5 button:nth-child(4),
+.m5 button:nth-child(5) {
+  grid-column:span 3;
+}
+
+/* DUAS FOTOS */
+
+.m2 button {
+  grid-column:span 3;
+  grid-row:span 2;
+}
+
+/* UMA FOTO */
+
+.m1 button {
+  grid-column:span 6;
+  grid-row:span 3;
+}
+
+/* CARTÕES DE HORÁRIOS */
+
+.dados {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  grid-template-columns:repeat(
+    auto-fit,
+    minmax(240px,1fr)
+  );
   gap:16px;
   margin-top:30px;
 }
-.dado{
+
+.dado {
   background:rgba(255,255,255,.06);
   border:1px solid rgba(217,169,76,.35);
   border-radius:16px;
-  padding:22px;
+  padding:20px 24px;
+  backdrop-filter:blur(6px);
 }
-.dado b{
+
+.dado b {
   display:block;
-  color:var(--ouro);
-  font-size:12px;
+  font-size:.8rem;
+  letter-spacing:.14em;
   text-transform:uppercase;
-  letter-spacing:1.4px;
-  margin-bottom:10px;
+  color:var(--ouro);
+  margin-bottom:8px;
 }
-.dado span{color:#eef5f6;font-size:14px;line-height:1.85}
-.dado small{
+
+.dado span {
+  color:#eef5f6;
+}
+
+.dado small {
   display:block;
-  color:#aac1c7;
   margin-top:10px;
-  font-size:12px;
+  color:#aac1c7;
+  font-size:.82rem;
 }
 
 /* ROTEIRO */
-.roteiro{
+
+.roteiro {
   background:var(--creme);
   color:var(--tinta);
-  padding:95px 30px;
+  padding:100px 32px;
 }
-.roteiro .in{max-width:1180px;margin:auto}
-.roteiro h2{font-size:clamp(32px,5vw,50px);color:var(--mar)}
-.roteiro .sub{color:var(--suave);margin:15px 0 40px}
-.passos{
+
+.roteiro .in {
+  max-width:1180px;
+  margin:0 auto;
+}
+
+.roteiro h2 {
+  font-size:clamp(2.1rem,4.5vw,3.3rem);
+  color:var(--mar);
+}
+
+.roteiro .sub {
+  color:var(--suave);
+  max-width:55ch;
+  margin:12px 0 48px;
+}
+
+.passos {
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:18px;
+  gap:20px;
 }
-.passo{
-  background:white;
+
+.passo {
+  background:#fff;
+  border-radius:18px;
+  padding:28px 24px;
+  box-shadow:0 12px 34px rgba(10,47,64,.1);
   border-top:5px solid var(--ouro);
-  border-radius:15px;
-  padding:25px;
-  box-shadow:0 10px 25px #0a2f4015;
 }
-.passo small{
-  color:var(--petroleo);
+
+.passo small {
   font-weight:700;
+  letter-spacing:.14em;
   text-transform:uppercase;
+  font-size:.78rem;
+  color:var(--petroleo);
 }
-.passo h3{font-size:23px;color:var(--mar);margin:10px 0}
-.passo p{color:var(--suave);font-size:14px}
+
+.passo h3 {
+  font-size:1.4rem;
+  color:var(--mar);
+  margin:8px 0 10px;
+}
+
+.passo p {
+  margin:0;
+  color:var(--suave);
+  font-size:.98rem;
+}
 
 /* RODAPÉ */
-footer{
+
+footer {
   background:var(--noite);
-  border-top:1px solid #d9a94c44;
   text-align:center;
-  padding:45px 20px;
-  color:#9bb0b7;
-  font-size:13px;
-}
-footer b{
-  display:block;
-  color:white;
-  font:700 24px 'Playfair Display',serif;
-  margin-bottom:10px;
+  padding:48px 24px;
+  color:#8fa9b0;
+  font-size:.92rem;
+  border-top:1px solid rgba(217,169,76,.3);
 }
 
-/* MÚSICA */
-.audio{
+footer b {
+  display:block;
+  font-family:'Playfair Display',serif;
+  font-size:1.5rem;
+  color:#fff;
+  margin-bottom:6px;
+}
+
+/* PLAYER */
+
+.audio {
   position:fixed;
+  right:18px;
+  bottom:18px;
   z-index:60;
-  right:15px;
-  bottom:15px;
-  background:rgba(5,24,33,.95);
-  border:1px solid var(--ouro);
-  border-radius:35px;
-  padding:6px 12px;
+  background:rgba(5,24,33,.92);
+  border:1px solid rgba(217,169,76,.5);
+  border-radius:50px;
+  padding:7px 14px;
   display:flex;
   align-items:center;
   gap:8px;
   color:var(--ouro);
 }
-.audio audio{height:32px;max-width:200px}
+
+.audio audio {
+  height:32px;
+  max-width:200px;
+}
 
 /* ZOOM */
-.zoom{
-  display:none;
+
+.zoom {
   position:fixed;
   inset:0;
   z-index:100;
-  background:rgba(0,0,0,.95);
+  background:rgba(2,10,14,.95);
+  display:none;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:24px;
 }
-.zoom.aberto{display:flex}
-.zoom img{
+
+.zoom.aberto {
+  display:flex;
+}
+
+.zoom img {
   max-width:100%;
-  max-height:85vh;
+  max-height:88vh;
+  border-radius:14px;
   object-fit:contain;
-  border-radius:10px;
 }
-.zoom button{
+
+.zoom button {
   position:absolute;
-  top:15px;
-  right:20px;
-  border:0;
+  top:18px;
+  right:24px;
   background:none;
-  color:white;
-  font-size:40px;
+  border:0;
+  color:#fff;
+  font-size:2.6rem;
   cursor:pointer;
+  line-height:1;
 }
-.foto-erro{
+
+/* ANIMAÇÕES */
+
+.rev {
+  opacity:0;
+  transform:translateY(26px);
+  transition:opacity .8s,transform .8s;
+}
+
+.rev.ok {
+  opacity:1;
+  transform:none;
+}
+
+/* ERROS DE IMAGEM */
+
+.foto-erro {
   position:absolute;
   inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:var(--petroleo);
-  color:white;
   padding:15px;
+  background:#0f4c5c;
+  color:white;
   text-align:center;
+  font-size:.85rem;
   overflow-wrap:anywhere;
-  font-size:12px;
 }
 
-/* TABLETS */
-@media(max-width:950px){
-  .topo nav{gap:12px}
-  .topo nav a{font-size:11px}
-  .intro .in{grid-template-columns:1fr;gap:20px}
-  .destaques,.passos{grid-template-columns:repeat(2,1fr)}
-  .cab{grid-template-columns:1fr;gap:10px}
-}
+/* RESPONSIVIDADE */
 
-/* CELULARES */
-@media(max-width:700px){
-  html{scroll-padding-top:75px}
-  body{font-size:15px}
-  .topo{padding:11px 16px}
-  .menu-toggle{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .topo nav{
+@media(max-width:900px) {
+  .topo nav {
     display:none;
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-    margin:0;
-    padding:15px;
-    background:rgba(5,24,33,.98);
-    border-bottom:1px solid var(--ouro);
-    flex-direction:column;
-    align-items:stretch;
-    gap:5px;
   }
-  .topo nav.aberto{display:flex}
-  .topo nav a{
-    display:block;
-    padding:12px;
-    font-size:14px;
-    border-radius:8px;
+
+  .intro .in {
+    grid-template-columns:1fr;
+    gap:26px;
   }
-  .topo nav a:hover{background:var(--petroleo)}
-  .capa{
-    min-height:100svh;
-    padding:100px 20px 70px;
-    background-position:60% center;
+
+  .destaques,
+  .passos {
+    grid-template-columns:1fr 1fr;
   }
-  .capa h1{font-size:clamp(48px,13vw,75px)}
-  .capa p{font-size:16px;max-width:350px}
-  .selo{font-size:10px;letter-spacing:1px}
-  .botoes{flex-direction:column;max-width:330px}
-  .botao{width:100%}
-  .intro,.lugar,.roteiro{padding:65px 18px}
-  .intro h2{font-size:32px}
-  .destaques,.passos{grid-template-columns:1fr}
-  .destaques{margin-top:30px}
-  .cab h2{font-size:34px}
-  .cab .n{font-size:75px}
-  .cab p{font-size:15px}
-  .mosaico{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    grid-auto-rows:135px;
+
+  .cab {
+    grid-template-columns:1fr;
     gap:10px;
   }
+
+  .mosaico {
+    grid-template-columns:repeat(2,1fr);
+    grid-auto-rows:150px;
+  }
+
   .mosaico button,
   .m5 button:nth-child(n),
   .m2 button,
-  .m1 button{
+  .m1 button {
     grid-column:span 1;
     grid-row:span 1;
   }
-  .mosaico button:first-child{
+
+  .mosaico button:first-child {
     grid-column:span 2;
     grid-row:span 2;
   }
-  .m2 button:nth-child(2){
+
+  .m2 button:nth-child(2) {
     grid-column:span 2;
     grid-row:span 2;
   }
-  .dados{grid-template-columns:1fr;gap:12px}
-  .dado{padding:19px}
-  .roteiro h2{font-size:34px}
-  .passos{gap:14px}
-  .audio{right:8px;bottom:8px;padding:4px 8px}
-  .audio audio{max-width:150px}
-  footer{padding:40px 20px 90px}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    scroll-behavior:auto!important;
+
+@media(max-width:560px) {
+  .destaques,
+  .passos {
+    grid-template-columns:1fr;
+  }
+
+  .lugar,
+  .intro,
+  .roteiro {
+    padding:70px 20px;
+  }
+
+  .topo {
+    padding:12px 18px;
+  }
+
+  .capa {
+    padding-left:20px;
+    padding-right:20px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  * {
     transition:none!important;
+    scroll-behavior:auto!important;
+  }
+
+  .rev {
+    opacity:1;
+    transform:none;
   }
 }
 </style>
@@ -475,15 +702,12 @@ footer b{
 
 <body>
 
-<header class="topo">
+<!-- MENU -->
+
+<header class="topo" id="topo">
   <a href="index.html" class="voltar">← Voltar</a>
 
-  <button class="menu-toggle" id="menuToggle"
-          aria-label="Abrir menu"
-          aria-expanded="false"
-          aria-controls="menuPrincipal">☰</button>
-
-  <nav id="menuPrincipal" aria-label="Navegação do guia">
+  <nav aria-label="Seções">
     <a href="#historico">Conjunto Histórico</a>
     <a href="#marinha">Marinha e Batalhão</a>
     <a href="#morro">Morro do Moreno</a>
@@ -494,17 +718,32 @@ footer b{
 
 <!-- CAPA -->
 
-<section class="capa">
+<section class="capa" aria-label="Capa">
   <div class="miolo">
-    <span class="selo">Espírito Santo · Brasil</span>
-    <h1>Descubra <em>Vila Velha</em></h1>
+
+    <span class="selo">
+      Espírito Santo · Brasil
+    </span>
+
+    <h1>
+      Descubra <em>Vila Velha</em>
+    </h1>
+
     <p>
       Onde o Espírito Santo começou: história,
       baía e a melhor vista da orla, em quatro paradas.
     </p>
+
     <div class="botoes">
-      <a class="botao p" href="#historico">Começar o passeio</a>
-      <a class="botao s" href="#roteiro">Ver o roteiro</a>
+
+      <a class="botao p" href="#historico">
+        Começar o passeio
+      </a>
+
+      <a class="botao s" href="#roteiro">
+        Ver o roteiro
+      </a>
+
     </div>
   </div>
 </section>
@@ -512,81 +751,125 @@ footer b{
 <!-- INTRODUÇÃO -->
 
 <section class="intro">
-  <div class="in">
-    <h2>Quatro lugares para conhecer a cidade</h2>
+
+  <div class="in rev">
+
+    <h2>
+      Quatro lugares para conhecer a cidade
+    </h2>
+
     <p>
       Vila Velha reúne o centro histórico da colonização
       capixaba, uma área de lazer com vista para a baía,
       um dos mirantes mais conhecidos do estado e uma
-      praia para fechar o dia. Confira as fotos, os dias
-      de funcionamento, os horários e o roteiro turístico.
+      praia para fechar o dia.
+
+      Veja os dias de funcionamento, horários de visitação,
+      dicas e um roteiro para aproveitar a cidade.
     </p>
+
   </div>
 
-  <div class="destaques">
-    <a href="#historico">Conjunto Histórico
+  <div class="destaques rev">
+
+    <a href="#historico">
+      Conjunto Histórico
       <span>História e Prainha</span>
     </a>
-    <a href="#marinha">Marinha e Batalhão
+
+    <a href="#marinha">
+      Marinha e Batalhão
       <span>Lazer com vista</span>
     </a>
-    <a href="#morro">Morro do Moreno
+
+    <a href="#morro">
+      Morro do Moreno
       <span>Mirante da orla</span>
     </a>
-    <a href="#praia">Praia da Costa
+
+    <a href="#praia">
+      Praia da Costa
       <span>Sol e orla</span>
     </a>
+
   </div>
+
 </section>
 
-<!-- CONJUNTO HISTÓRICO -->
+<!-- 1. CONJUNTO HISTÓRICO -->
 
 <section class="lugar" id="historico">
-  <div class="in">
+
+  <div class="in rev">
+
     <div class="cab">
+
       <div class="n">1</div>
+
       <div>
         <h2>Conjunto Histórico</h2>
+
         <p>
           O berço da colonização do Espírito Santo,
           reunindo a Igreja do Rosário, a Casa da
           Memória e o Parque da Prainha.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m5">
-      <button type="button" data-leg="Parque da Prainha">
-        <img src="img/Parque_da_Prainha_Vila_Velha_ES.JPG"
-             alt="Parque da Prainha" loading="lazy">
+
+      <button type="button"
+              data-leg="Parque da Prainha">
+        <img
+          src="img/Parque_da_Prainha_Vila_Velha_ES.JPG"
+          alt="Parque da Prainha"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Igreja de Nossa Senhora do Rosário">
-        <img src="img/Igreja_de_Nossa_Senhora_do_Rosário_2025.jpg"
-             alt="Igreja de Nossa Senhora do Rosário" loading="lazy">
+      <button type="button"
+              data-leg="Igreja de Nossa Senhora do Rosário">
+        <img
+          src="img/Igreja_de_Nossa_Senhora_do_Rosário_2025.jpg"
+          alt="Igreja de Nossa Senhora do Rosário"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Casa da Memória">
-        <img src="img/casa-da-memoria.jpg"
-             alt="Casa da Memória" loading="lazy">
+      <button type="button"
+              data-leg="Casa da Memória">
+        <img
+          src="img/casa-da-memoria.jpg"
+          alt="Casa da Memória"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Pesca na Prainha">
-        <img src="img/pesca-da-prainha.jpg"
-             alt="Pesca na Prainha" loading="lazy">
+      <button type="button"
+              data-leg="Pesca na Prainha">
+        <img
+          src="img/pesca-da-prainha.jpg"
+          alt="Pesca na Prainha"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Bondinho da Casa da Memória">
-        <img src="img/bondinho-casa-da-memoria.jpg"
-             alt="Bondinho da Casa da Memória" loading="lazy">
+      <button type="button"
+              data-leg="Bondinho da Casa da Memória">
+        <img
+          src="img/bondinho-casa-da-memoria.jpg"
+          alt="Bondinho da Casa da Memória"
+          loading="lazy">
       </button>
+
     </div>
 
+    <!-- HORÁRIOS DO CONJUNTO HISTÓRICO -->
+
     <div class="dados">
+
       <div class="dado">
         <b>Parque da Prainha</b>
         <span>
-          Segunda a domingo.<br>
+          Segunda-feira a domingo.<br>
           Acesso livre, 24 horas.<br>
           Entrada gratuita.
         </span>
@@ -595,12 +878,15 @@ footer b{
       <div class="dado">
         <b>Casa da Memória</b>
         <span>
-          Terça a domingo.<br>
+          Terça-feira a domingo.<br>
           Das 8h30 às 17h30.<br>
           Segunda-feira: fechada.<br>
           Entrada gratuita.
         </span>
-        <small>Confirme alterações em feriados.</small>
+        <small>
+          Horários sujeitos a alterações
+          em feriados e eventos.
+        </small>
       </div>
 
       <div class="dado">
@@ -609,187 +895,277 @@ footer b{
           Visitas monitoradas:<br>
           Segunda a sexta-feira.<br>
           Das 9h às 16h30.<br><br>
-          Missas: terça às 19h e domingo às 9h.
+          Missas:<br>
+          Terça-feira, às 19h.<br>
+          Domingo, às 9h.
         </span>
-        <small>Confirme a programação religiosa.</small>
+        <small>
+          Confirme a programação religiosa
+          antes da visita.
+        </small>
       </div>
 
       <div class="dado">
         <b>Fonte Interativa da Prainha</b>
         <span>
-          Segunda a sexta:<br>
-          9h às 10h, 14h às 15h e 19h às 20h.<br><br>
+          Segunda a sexta-feira:<br>
+          9h às 10h, 14h às 15h
+          e 19h às 20h.<br><br>
+
           Sábados, domingos e feriados:<br>
-          10h às 12h, 15h às 17h e 19h às 21h.
+          10h às 12h, 15h às 17h
+          e 19h às 21h.
         </span>
-        <small>Sujeito a manutenção e eventos.</small>
+        <small>
+          Funcionamento sujeito a manutenção
+          e programação municipal.
+        </small>
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- MARINHA E BATALHÃO -->
+<!-- 2. MARINHA E BATALHÃO -->
 
 <section class="lugar" id="marinha">
-  <div class="in">
+
+  <div class="in rev">
+
     <div class="cab">
+
       <div class="n">2</div>
+
       <div>
         <h2>Complexo Marinha e Batalhão</h2>
+
         <p>
           Área militar e opções de lazer
           com vista para a baía.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m5">
-      <button type="button" data-leg="Complexo da Marinha">
-        <img src="img/marinha.jpg"
-             alt="Complexo da Marinha" loading="lazy">
+
+      <button type="button"
+              data-leg="Complexo da Marinha">
+        <img
+          src="img/marinha.jpg"
+          alt="Complexo da Marinha"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Restaurante com vista para a baía">
-        <img src="img/restaurante.jpg"
-             alt="Restaurante" loading="lazy">
+      <button type="button"
+              data-leg="Restaurante com vista para a baía">
+        <img
+          src="img/restaurante.jpg"
+          alt="Restaurante com vista para a baía"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Vista da Marinha">
-        <img src="img/marinha2.jpg"
-             alt="Vista da Marinha" loading="lazy">
+      <button type="button"
+              data-leg="Vista da Marinha">
+        <img
+          src="img/marinha2.jpg"
+          alt="Vista da Marinha"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Batalhão">
-        <img src="img/batalhão1.jpg"
-             alt="Batalhão" loading="lazy">
+      <button type="button"
+              data-leg="Batalhão">
+        <img
+          src="img/batalhão1.jpg"
+          alt="Batalhão"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Vista do Batalhão">
-        <img src="img/batalhao.jpg"
-             alt="Vista do Batalhão" loading="lazy">
+      <button type="button"
+              data-leg="Vista do Batalhão">
+        <img
+          src="img/batalhao.jpg"
+          alt="Vista do Batalhão"
+          loading="lazy">
       </button>
+
     </div>
 
+    <!-- HORÁRIOS DA MARINHA E BATALHÃO -->
+
     <div class="dados">
+
       <div class="dado">
         <b>Marinha e Batalhão</b>
         <span>
-          Visitação conforme as regras de acesso
+          Dias e horários de visitação
+          conforme as regras de acesso
           de cada instalação.
         </span>
-        <small>Confirme antes de visitar.</small>
+        <small>
+          Confirme previamente a possibilidade
+          de entrada de visitantes.
+        </small>
       </div>
 
       <div class="dado">
         <b>Restaurante</b>
         <span>
-          Dias e horários sujeitos ao funcionamento
-          do estabelecimento.
+          Dias e horários sujeitos
+          ao funcionamento do estabelecimento.
         </span>
-        <small>Consulte o restaurante antes de ir.</small>
+        <small>
+          Consulte o restaurante antes de ir.
+        </small>
       </div>
 
       <div class="dado">
         <b>Dica de visita</b>
         <span>
-          Aproveite a vista da baía e confira
-          as atividades abertas ao público.
+          Aproveite a vista da baía
+          e confira se há atividades
+          abertas ao público no dia.
         </span>
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- MORRO DO MORENO -->
+<!-- 3. MORRO DO MORENO -->
 
 <section class="lugar" id="morro">
-  <div class="in">
+
+  <div class="in rev">
+
     <div class="cab">
+
       <div class="n">3</div>
+
       <div>
         <h2>Morro do Moreno</h2>
+
         <p>
           Um dos pontos mais icônicos de Vila Velha,
           com vista panorâmica da Terceira Ponte,
           do Convento da Penha e de toda a orla.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m2">
-      <button type="button" data-leg="Vista do Morro do Moreno">
-        <img src="img/morro-do-moreno.jpg"
-             alt="Vista do Morro do Moreno" loading="lazy">
+
+      <button type="button"
+              data-leg="Vista do Morro do Moreno">
+        <img
+          src="img/morro-do-moreno.jpg"
+          alt="Vista do Morro do Moreno"
+          loading="lazy">
       </button>
 
-      <button type="button" data-leg="Morro do Moreno e a orla">
-        <img src="img/morro-do-moreno2.jpg"
-             alt="Morro do Moreno e a orla" loading="lazy">
+      <button type="button"
+              data-leg="Morro do Moreno e a orla">
+        <img
+          src="img/morro-do-moreno2.jpg"
+          alt="Morro do Moreno e a orla"
+          loading="lazy">
       </button>
+
     </div>
 
+    <!-- HORÁRIOS DO MORRO DO MORENO -->
+
     <div class="dados">
+
       <div class="dado">
         <b>Dias de funcionamento</b>
         <span>
-          Segunda a domingo.<br>
+          Segunda-feira a domingo.<br>
           Acesso indicado como 24 horas.
         </span>
-        <small>Sujeito a restrições temporárias.</small>
+        <small>
+          Sujeito a restrições temporárias.
+        </small>
       </div>
 
       <div class="dado">
         <b>Melhor horário</b>
         <span>
           Pela manhã ou no fim da tarde.<br>
-          Prefira fazer a trilha durante o dia.
+          Prefira realizar a trilha
+          durante o dia.
         </span>
       </div>
 
       <div class="dado">
         <b>Entrada</b>
-        <span>Gratuita.</span>
+        <span>
+          Gratuita.
+        </span>
       </div>
 
       <div class="dado">
         <b>Como chegar</b>
         <span>
-          Pela trilha principal ou por acesso
-          permitido a veículos, conforme as condições locais.
+          A pé pela trilha principal
+          ou por acesso permitido a veículos,
+          conforme as condições locais.
         </span>
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- PRAIA DA COSTA -->
+<!-- 4. PRAIA DA COSTA -->
 
 <section class="lugar" id="praia">
-  <div class="in">
+
+  <div class="in rev">
+
     <div class="cab">
+
       <div class="n">4</div>
+
       <div>
         <h2>Praia da Costa</h2>
+
         <p>
           Uma das praias mais conhecidas de Vila Velha,
           boa para caminhar na orla, tomar sol
-          e aproveitar o fim de tarde.
+          e ver o fim de tarde.
         </p>
       </div>
+
     </div>
 
     <div class="mosaico m1">
-      <button type="button" data-leg="Praia da Costa">
-        <img src="img/praia-da-costa.jpg"
-             alt="Praia da Costa" loading="lazy">
+
+      <button type="button"
+              data-leg="Praia da Costa">
+        <img
+          src="img/praia-da-costa.jpg"
+          alt="Praia da Costa, em Vila Velha"
+          loading="lazy">
       </button>
+
     </div>
 
+    <!-- HORÁRIOS DA PRAIA DA COSTA -->
+
     <div class="dados">
+
       <div class="dado">
         <b>Dias de funcionamento</b>
         <span>
-          Segunda a domingo.<br>
+          Segunda-feira a domingo.<br>
           Acesso livre, 24 horas.
         </span>
       </div>
@@ -804,179 +1180,273 @@ footer b{
 
       <div class="dado">
         <b>Entrada</b>
-        <span>Gratuita.</span>
+        <span>
+          Gratuita.
+        </span>
       </div>
 
       <div class="dado">
         <b>Dica</b>
         <span>
-          Confira as condições do mar e a
-          sinalização dos guarda-vidas.
+          Confira as condições do mar
+          e a sinalização dos guarda-vidas
+          antes de entrar na água.
         </span>
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- ROTEIRO -->
+<!-- ROTEIRO DE UM DIA -->
 
 <section class="roteiro" id="roteiro">
-  <div class="in">
+
+  <div class="in rev">
+
     <h2>Roteiro de um dia</h2>
+
     <p class="sub">
-      Uma sugestão de ordem para aproveitar
-      a luz e os horários de cada lugar.
+      Uma sugestão de ordem para aproveitar a luz
+      e os horários de cada lugar.
     </p>
 
     <div class="passos">
+
       <div class="passo">
         <small>Manhã</small>
+
         <h3>Morro do Moreno</h3>
+
         <p>
-          Suba cedo e aproveite a vista da orla
+          Suba cedo, com o sol mais ameno,
+          e aproveite a vista da orla
           e do Convento da Penha.
         </p>
       </div>
 
       <div class="passo">
         <small>Tarde</small>
+
         <h3>Conjunto Histórico</h3>
+
         <p>
-          Visite a Casa da Memória e o Parque
-          da Prainha, conferindo os horários.
+          Visite a Casa da Memória
+          e termine no Parque da Prainha.
+          Confira os dias de funcionamento.
         </p>
       </div>
 
       <div class="passo">
         <small>Fim de tarde</small>
+
         <h3>Praia da Costa</h3>
+
         <p>
-          Caminhe pela orla e aproveite
-          o fim de tarde.
+          Caminhe pela orla
+          e aproveite o fim de tarde.
         </p>
       </div>
 
       <div class="passo">
         <small>Noite</small>
+
         <h3>Marinha e Batalhão</h3>
+
         <p>
           Consulte a possibilidade de visita
-          e o funcionamento do restaurante.
+          e o funcionamento do restaurante
+          com vista para a baía.
         </p>
       </div>
+
     </div>
+
   </div>
+
 </section>
 
 <!-- RODAPÉ -->
 
 <footer>
+
   <b>Guia Turístico de Vila Velha</b>
+
   Espírito Santo, Brasil.<br>
   Dias e horários podem sofrer alterações.
   Confirme antes de visitar.
+
 </footer>
 
 <!-- MÚSICA -->
 
 <div class="audio">
+
   <span>♪</span>
+
   <audio controls loop>
     <source src="musica.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio.
   </audio>
+
 </div>
 
-<!-- AMPLIAÇÃO DAS FOTOS -->
+<!-- ZOOM DAS FOTOS -->
 
-<div class="zoom" id="zoom"
-     role="dialog" aria-modal="true"
+<div class="zoom"
+     id="zoom"
+     role="dialog"
+     aria-modal="true"
      aria-label="Visualizar fotografia">
-  <button type="button" id="fecharZoom"
-          aria-label="Fechar imagem">×</button>
+
+  <button
+    type="button"
+    id="fecharZoom"
+    aria-label="Fechar imagem">
+    ×
+  </button>
+
   <img id="zoomImg" alt="">
+
 </div>
 
 <script>
-/* MENU RESPONSIVO */
-const menuToggle = document.getElementById('menuToggle');
-const menuPrincipal = document.getElementById('menuPrincipal');
 
-function fecharMenu(){
-  menuPrincipal.classList.remove('aberto');
-  menuToggle.setAttribute('aria-expanded','false');
-  menuToggle.textContent = '☰';
+/* MENU */
+
+const topo = document.getElementById('topo');
+
+function atualizarTopo() {
+  topo.classList.toggle(
+    'solido',
+    window.scrollY > 40
+  );
 }
 
-menuToggle.addEventListener('click',()=>{
-  const aberto = menuPrincipal.classList.toggle('aberto');
-  menuToggle.setAttribute('aria-expanded',String(aberto));
-  menuToggle.textContent = aberto ? '×' : '☰';
-});
+window.addEventListener(
+  'scroll',
+  atualizarTopo,
+  {passive:true}
+);
 
-menuPrincipal.querySelectorAll('a').forEach(link=>{
-  link.addEventListener('click',fecharMenu);
-});
+atualizarTopo();
 
-document.addEventListener('click',evento=>{
-  if(!evento.target.closest('.topo')) fecharMenu();
-});
+/* ANIMAÇÕES */
+
+const elementos = document.querySelectorAll('.rev');
+
+if ('IntersectionObserver' in window) {
+
+  const observador = new IntersectionObserver(
+    entradas => {
+
+      entradas.forEach(entrada => {
+
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add('ok');
+          observador.unobserve(entrada.target);
+        }
+
+      });
+
+    },
+    {threshold:0.08}
+  );
+
+  elementos.forEach(el => observador.observe(el));
+
+} else {
+
+  elementos.forEach(el => el.classList.add('ok'));
+
+}
 
 /* ZOOM DAS FOTOGRAFIAS */
+
 const zoom = document.getElementById('zoom');
 const zoomImg = document.getElementById('zoomImg');
 const fecharZoom = document.getElementById('fecharZoom');
 
-document.querySelectorAll('.mosaico button').forEach(botao=>{
+document.querySelectorAll('.mosaico button').forEach(botao => {
+
   const foto = botao.querySelector('img');
 
-  botao.addEventListener('click',()=>{
-    if(!foto.complete || !foto.naturalWidth) return;
+  botao.addEventListener('click', () => {
+
+    if (!foto.complete || !foto.naturalWidth) {
+      return;
+    }
 
     zoomImg.src = foto.currentSrc || foto.src;
     zoomImg.alt = foto.alt;
+
     zoom.classList.add('aberto');
     fecharZoom.focus();
+
   });
+
 });
 
-function fecharImagem(){
+function fecharImagem() {
   zoom.classList.remove('aberto');
   zoomImg.removeAttribute('src');
 }
 
-fecharZoom.addEventListener('click',fecharImagem);
+fecharZoom.addEventListener('click', fecharImagem);
 
-zoom.addEventListener('click',evento=>{
-  if(evento.target === zoom) fecharImagem();
-});
+zoom.addEventListener('click', evento => {
 
-document.addEventListener('keydown',evento=>{
-  if(evento.key === 'Escape'){
+  if (evento.target === zoom) {
     fecharImagem();
-    fecharMenu();
   }
+
 });
 
-/* VERIFICAÇÃO DAS FOTOS */
-document.querySelectorAll('.mosaico img').forEach(img=>{
-  function mostrarErro(){
-    if(img.parentElement.querySelector('.foto-erro')) return;
+document.addEventListener('keydown', evento => {
+
+  if (evento.key === 'Escape') {
+    fecharImagem();
+  }
+
+});
+
+/* AVISO DE IMAGEM NÃO ENCONTRADA */
+
+document.querySelectorAll('.mosaico img').forEach(img => {
+
+  function mostrarErro() {
+
+    if (img.parentElement.querySelector('.foto-erro')) {
+      return;
+    }
+
+    const caminho = img.getAttribute('src');
+
+    console.error(
+      'Imagem não encontrada:',
+      caminho
+    );
 
     const aviso = document.createElement('span');
+
     aviso.className = 'foto-erro';
+
     aviso.textContent =
-      'Foto não encontrada: ' + img.getAttribute('src');
+      'Foto não encontrada: ' + caminho;
 
     img.parentElement.appendChild(aviso);
   }
 
-  img.addEventListener('error',mostrarErro);
+  img.addEventListener('error', mostrarErro);
 
-  if(img.complete && img.naturalWidth === 0){
+  if (img.complete && img.naturalWidth === 0) {
     mostrarErro();
   }
+
 });
+
 </script>
 
 </body>
