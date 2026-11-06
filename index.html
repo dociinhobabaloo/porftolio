@@ -1,0 +1,839 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#091b29">
+
+  <meta
+    name="description"
+    content="Portfólio de Amanda Souza, desenvolvedora Front-End formada em Ciência da Computação. Projetos web, interfaces responsivas e tecnologia."
+  >
+
+  <title>DevStar | Portfólio de Amanda Souza</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+</head>
+
+<body>
+
+  <!-- NAVEGAÇÃO -->
+
+  <header class="cabecalho-site">
+
+    <nav class="navegacao container" aria-label="Menu principal">
+
+      <a class="logo" href="#inicio" aria-label="DevStar - Início">
+        <span class="logo-icone">✦</span>
+        <span>dev<span class="logo-destaque">star</span><span class="logo-ponto">.</span></span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menu-toggle"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="menu" id="menu">
+        <li><a href="#inicio" class="menu-link ativo">Início</a></li>
+        <li><a href="#sobre" class="menu-link">Sobre mim</a></li>
+        <li><a href="#habilidades" class="menu-link">Habilidades</a></li>
+        <li><a href="#projetos" class="menu-link">Projetos</a></li>
+        <li>
+          <a href="#contatos" class="menu-contato">
+            Vamos conversar
+            <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ul>
+
+    </nav>
+
+  </header>
+
+  <main>
+
+    <!-- ENTRADA PRINCIPAL -->
+
+    <section id="inicio" class="hero">
+
+      <div class="hero-glow hero-glow-um"></div>
+      <div class="hero-glow hero-glow-dois"></div>
+
+      <div class="container hero-grid">
+
+        <!-- TEXTO À ESQUERDA -->
+
+        <div class="hero-conteudo">
+
+          <div class="disponibilidade">
+            <span class="disponibilidade-ponto"></span>
+            Desenvolvimento web • Front-End
+          </div>
+
+          <p class="hero-apresentacao">
+            Olá, seja bem-vindo(a) ao meu portfólio!
+            <span aria-hidden="true">✳</span>
+          </p>
+
+          <h1>
+            Transformando
+            <span class="texto-gradiente">ideias</span>
+            em experiências digitais.
+          </h1>
+
+          <p class="hero-descricao">
+            Sou <strong>Amanda Souza</strong>, desenvolvedora
+            Front-End e formada em Ciência da Computação.
+            Crio interfaces modernas, intuitivas e responsivas,
+            unindo tecnologia, criatividade e atenção aos detalhes.
+          </p>
+
+          <div class="hero-botoes">
+
+            <a href="#projetos" class="botao botao-principal">
+              Explorar projetos
+              <span aria-hidden="true">↗</span>
+            </a>
+
+            <a href="#sobre" class="botao botao-secundario">
+              Conheça meu trabalho
+              <span aria-hidden="true">↓</span>
+            </a>
+
+          </div>
+
+          <div class="hero-tecnologias">
+
+            <span class="tecnologias-legenda">
+              Tecnologias que utilizo
+            </span>
+
+            <div class="tecnologias-lista">
+              <span>HTML5</span>
+              <span>CSS3</span>
+              <span>JavaScript</span>
+              <span>Firebase</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- FOTOGRAFIA À DIREITA -->
+
+        <div class="hero-visual">
+
+          <div class="visual-circulo visual-circulo-um"></div>
+          <div class="visual-circulo visual-circulo-dois"></div>
+
+          <div class="foto-composicao">
+
+            <div class="foto-contorno">
+
+              <img
+                src="img/euu.jpg"
+                alt="Fotografia de Amanda Souza"
+                class="foto-perfil"
+                fetchpriority="high"
+              >
+
+            </div>
+
+            <div class="foto-decoracao">
+              <span>✧</span>
+            </div>
+
+          </div>
+
+          <div class="cartao-flutuante cartao-codigo">
+            <span class="cartao-simbolo">{ }</span>
+            <div>
+              <strong>Front-End</strong>
+              <small>Design + Código</small>
+            </div>
+          </div>
+
+          <div class="cartao-flutuante cartao-formacao">
+            <span class="cartao-formacao-icone">✦</span>
+            <div>
+              <strong>Ciência da Computação</strong>
+              <small>Formação acadêmica</small>
+            </div>
+          </div>
+
+          <div class="visual-brilho">✳</div>
+
+        </div>
+
+      </div>
+
+      <a href="#sobre" class="indicador-rolagem">
+        Role para descobrir
+        <span aria-hidden="true">↓</span>
+      </a>
+
+    </section>
+
+    <!-- FAIXA DE COMPETÊNCIAS -->
+
+    <div class="faixa-competencias" aria-label="Áreas de atuação">
+
+      <div class="faixa-conteudo container">
+        <span>Desenvolvimento Web</span>
+        <b>✳</b>
+        <span>Interfaces Responsivas</span>
+        <b>✳</b>
+        <span>Experiência do Usuário</span>
+        <b>✳</b>
+        <span>Criatividade & Tecnologia</span>
+      </div>
+
+    </div>
+
+    <!-- SOBRE MIM -->
+
+    <section id="sobre" class="secao secao-sobre">
+
+      <div class="container sobre-grid">
+
+        <div class="sobre-intro">
+
+          <span class="etiqueta-secao">
+            01 / QUEM SOU
+          </span>
+
+          <h2 class="titulo-secao">
+            Muito além de
+            <span>linhas de código.</span>
+          </h2>
+
+          <div class="sobre-decoracao">
+
+            <span class="decoracao-asterisco">✳</span>
+
+            <div>
+              <strong>Criatividade</strong>
+              <small>que encontra a tecnologia.</small>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="sobre-texto">
+
+          <p>
+            Sou uma profissional formada em
+            <strong>Ciência da Computação</strong>, com
+            interesse especial em desenvolvimento Front-End,
+            design de interfaces e soluções digitais.
+          </p>
+
+          <p>
+            Gosto de transformar ideias em projetos
+            funcionais, organizados e visualmente
+            interessantes. Meu objetivo é construir
+            experiências que sejam agradáveis para quem
+            utiliza e que também resolvam problemas reais.
+          </p>
+
+          <p>
+            Estou sempre aprimorando meus conhecimentos
+            em HTML, CSS, JavaScript e outras ferramentas
+            do desenvolvimento web, buscando evoluir
+            profissionalmente a cada projeto.
+          </p>
+
+          <div class="sobre-destaques">
+
+            <div>
+              <span class="sobre-destaque-numero">01</span>
+              <strong>Design responsivo</strong>
+              <small>Experiências adaptadas a diferentes telas.</small>
+            </div>
+
+            <div>
+              <span class="sobre-destaque-numero">02</span>
+              <strong>Desenvolvimento criativo</strong>
+              <small>Funcionalidade com atenção aos detalhes.</small>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- HABILIDADES -->
+
+    <section id="habilidades" class="secao secao-habilidades">
+
+      <div class="container">
+
+        <div class="secao-cabecalho">
+
+          <div>
+            <span class="etiqueta-secao">
+              02 / CONHECIMENTOS
+            </span>
+
+            <h2 class="titulo-secao">
+              Ferramentas que
+              <span>fazem acontecer.</span>
+            </h2>
+          </div>
+
+          <p class="secao-apresentacao">
+            Tecnologias e práticas que utilizo
+            para desenvolver experiências
+            digitais funcionais e modernas.
+          </p>
+
+        </div>
+
+        <div class="habilidades-grid">
+
+          <article class="habilidade-card">
+            <div class="habilidade-icone html-icone">
+              &lt;/&gt;
+            </div>
+
+            <h3>HTML5</h3>
+
+            <p>
+              Estruturação semântica de páginas
+              e aplicações web.
+            </p>
+          </article>
+
+          <article class="habilidade-card">
+            <div class="habilidade-icone css-icone">
+              #
+            </div>
+
+            <h3>CSS3</h3>
+
+            <p>
+              Estilização, animações e
+              interfaces responsivas.
+            </p>
+          </article>
+
+          <article class="habilidade-card">
+            <div class="habilidade-icone js-icone">
+              JS
+            </div>
+
+            <h3>JavaScript</h3>
+
+            <p>
+              Interatividade, lógica e
+              funcionalidades dinâmicas.
+            </p>
+          </article>
+
+          <article class="habilidade-card">
+            <div class="habilidade-icone firebase-icone">
+              ✦
+            </div>
+
+            <h3>Firebase</h3>
+
+            <p>
+              Autenticação de usuários,
+              banco de dados e integração web.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PROJETOS -->
+
+    <section id="projetos" class="secao secao-projetos">
+
+      <div class="container">
+
+        <div class="secao-cabecalho">
+
+          <div>
+            <span class="etiqueta-secao">
+              03 / PORTFÓLIO
+            </span>
+
+            <h2 class="titulo-secao">
+              Projetos que
+              <span>ganharam vida.</span>
+            </h2>
+          </div>
+
+          <p class="secao-apresentacao">
+            Uma seleção de trabalhos desenvolvidos
+            para explorar tecnologia, criatividade
+            e novas possibilidades.
+          </p>
+
+        </div>
+
+        <div class="projetos-caixa">
+
+          <!-- PROJETO GUIA CULTURAL -->
+
+          <article class="projetos-card">
+
+            <div class="projeto-imagem-wrapper">
+
+              <img
+                src="img/morro-do-moreno.jpg"
+                alt="Guia Cultural Vila Velha"
+                class="projetos-imagem"
+                loading="lazy"
+              >
+
+              <span class="projeto-categoria">
+                Turismo & Cultura
+              </span>
+
+            </div>
+
+            <div class="projeto-conteudo">
+
+              <span class="projeto-numero">
+                PROJETO 01
+              </span>
+
+              <h3 class="info-projetos">
+                Guia Cultural Vila Velha
+              </h3>
+
+              <p class="paragrafo-projetos">
+                Um guia interativo para explorar
+                pontos turísticos, história e
+                paisagens de Vila Velha, no
+                Espírito Santo.
+              </p>
+
+              <div class="projeto-tags">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+              </div>
+
+              <a
+                href="guia.html"
+                class="btn-projeto"
+              >
+                Ver projeto
+                <span aria-hidden="true">↗</span>
+              </a>
+
+            </div>
+
+          </article>
+
+          <!-- PROJETO BRASILEIRÃO -->
+
+          <article class="projetos-card">
+
+            <div class="projeto-imagem-wrapper">
+
+              <img
+                src="img/banner-brasileirao.jpg"
+                alt="Brasileirão 2026"
+                class="projetos-imagem"
+                loading="lazy"
+              >
+
+              <span class="projeto-categoria">
+                Esporte & Dados
+              </span>
+
+            </div>
+
+            <div class="projeto-conteudo">
+
+              <span class="projeto-numero">
+                PROJETO 02
+              </span>
+
+              <h3 class="info-projetos">
+                Brasileirão 2026
+              </h3>
+
+              <p class="paragrafo-projetos">
+                Projeto para acompanhar
+                informações do Campeonato Brasileiro,
+                com foco na apresentação
+                de dados esportivos.
+              </p>
+
+              <div class="projeto-tags">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+              </div>
+
+              <a
+                href="brasileirao.html"
+                class="btn-projeto"
+              >
+                Ver projeto
+                <span aria-hidden="true">↗</span>
+              </a>
+
+            </div>
+
+          </article>
+
+          <!-- PROJETO CADÊ MEU PET -->
+
+          <article class="projetos-card projeto-destaque">
+
+            <div class="projeto-imagem-wrapper">
+
+              <img
+                src="img/cade-meu-pet-banner-original.png"
+                alt="Cachorro e gato do projeto Cadê Meu Pet"
+                class="projetos-imagem"
+                loading="lazy"
+              >
+
+              <span class="projeto-categoria">
+                Plataforma Web
+              </span>
+
+            </div>
+
+            <div class="projeto-conteudo">
+
+              <span class="projeto-numero">
+                PROJETO 03
+              </span>
+
+              <h3 class="info-projetos">
+                Cadê Meu Pet
+              </h3>
+
+              <p class="paragrafo-projetos">
+                Plataforma para divulgar animais
+                perdidos e encontrados, com
+                cadastro de fotos, login pelo Google,
+                busca por localização e histórias
+                de reencontros.
+              </p>
+
+              <div class="projeto-tags">
+                <span>Firebase</span>
+                <span>JavaScript</span>
+                <span>Cloudinary</span>
+              </div>
+
+              <a
+                href="cade-meu-pet/index.html"
+                class="btn-projeto"
+              >
+                Ver projeto
+                <span aria-hidden="true">↗</span>
+              </a>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CONTATO -->
+
+    <section id="contatos" class="secao secao-contato">
+
+      <div class="container contato-grid">
+
+        <div class="contato-conteudo">
+
+          <span class="etiqueta-secao">
+            04 / CONTATO
+          </span>
+
+          <h2 class="titulo-secao">
+            Tem uma ideia?
+            <span>Vamos conversar.</span>
+          </h2>
+
+          <p>
+            Estou aberta a conexões profissionais,
+            novas experiências e oportunidades
+            na área de tecnologia.
+          </p>
+
+          <div class="contato-disponibilidade">
+            <span class="disponibilidade-ponto"></span>
+            Aberta a oportunidades profissionais
+          </div>
+
+        </div>
+
+        <div class="contato-formulario-caixa">
+
+          <form id="formulario" class="formulario-contato">
+
+            <h3>Entre em contato</h3>
+
+            <p>
+              Preencha os campos abaixo para preparar
+              sua mensagem.
+            </p>
+
+            <div class="grupo-form">
+
+              <label for="nome-contato">
+                Seu nome
+              </label>
+
+              <input
+                id="nome-contato"
+                type="text"
+                name="nome"
+                class="campo-form"
+                placeholder="Como posso te chamar?"
+                required
+              >
+
+            </div>
+
+            <div class="grupo-form">
+
+              <label for="email-contato">
+                Seu e-mail
+              </label>
+
+              <input
+                id="email-contato"
+                type="email"
+                name="email"
+                class="campo-form"
+                placeholder="voce@exemplo.com"
+                required
+              >
+
+            </div>
+
+            <div class="grupo-form">
+
+              <label for="mensagem-contato-campo">
+                Sua mensagem
+              </label>
+
+              <textarea
+                id="mensagem-contato-campo"
+                name="mensagem"
+                class="text-form"
+                placeholder="Conte um pouco sobre sua ideia ou oportunidade..."
+                required
+              ></textarea>
+
+            </div>
+
+            <button type="submit" class="btn-enviar">
+              Preparar mensagem
+              <span aria-hidden="true">↗</span>
+            </button>
+
+            <p
+              id="mensagem-contato"
+              class="aviso-formulario"
+              role="status"
+            ></p>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ -->
+
+  <footer class="rodape">
+
+    <div class="container rodape-conteudo">
+
+      <a href="#inicio" class="logo">
+        <span class="logo-icone">✦</span>
+        <span>dev<span class="logo-destaque">star</span><span class="logo-ponto">.</span></span>
+      </a>
+
+      <p>
+        Desenvolvido com criatividade, dedicação e tecnologia.
+      </p>
+
+      <a href="#inicio" class="voltar-topo">
+        Voltar ao topo ↑
+      </a>
+
+    </div>
+
+    <div class="container rodape-direitos">
+      <span id="ano-atual"></span>
+      <span>Portfólio • Desenvolvimento Front-End</span>
+    </div>
+
+  </footer>
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+    "use strict";
+
+    // Ano automático no rodapé
+    document.getElementById("ano-atual").textContent =
+      "© " + new Date().getFullYear() + " DevStar.";
+
+    // Menu responsivo
+    const botaoMenu =
+      document.getElementById("menu-toggle");
+
+    const menu =
+      document.getElementById("menu");
+
+    botaoMenu.addEventListener("click", () => {
+      const aberto = menu.classList.toggle("menu-aberto");
+
+      botaoMenu.setAttribute(
+        "aria-expanded",
+        String(aberto)
+      );
+
+      botaoMenu.setAttribute(
+        "aria-label",
+        aberto ? "Fechar menu" : "Abrir menu"
+      );
+    });
+
+    document.querySelectorAll(".menu-link, .menu-contato")
+      .forEach(link => {
+        link.addEventListener("click", () => {
+          menu.classList.remove("menu-aberto");
+
+          botaoMenu.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+          botaoMenu.setAttribute(
+            "aria-label",
+            "Abrir menu"
+          );
+        });
+      });
+
+    // Realça seção na navegação
+    const linksMenu = [
+      ...document.querySelectorAll(".menu-link")
+    ];
+
+    const observador = new IntersectionObserver(
+      entradas => {
+        entradas.forEach(entrada => {
+          if (!entrada.isIntersecting) return;
+
+          linksMenu.forEach(link => {
+            link.classList.toggle(
+              "ativo",
+              link.getAttribute("href") ===
+                "#" + entrada.target.id
+            );
+          });
+        });
+      },
+      {
+        rootMargin:"-20% 0px -65% 0px",
+        threshold:0
+      }
+    );
+
+    document.querySelectorAll("main section[id]")
+      .forEach(secao => observador.observe(secao));
+
+    // Formulário de contato
+    const formulario =
+      document.getElementById("formulario");
+
+    const aviso =
+      document.getElementById("mensagem-contato");
+
+    formulario.addEventListener("submit", evento => {
+      evento.preventDefault();
+
+      const nome =
+        document.getElementById("nome-contato")
+          .value.trim();
+
+      const email =
+        document.getElementById("email-contato")
+          .value.trim();
+
+      const mensagem =
+        document.getElementById("mensagem-contato-campo")
+          .value.trim();
+
+      if (!nome || !email || !mensagem) {
+        aviso.textContent =
+          "Preencha todos os campos.";
+        return;
+      }
+
+      const conteudo =
+        `Nome: ${nome}\n` +
+        `E-mail: ${email}\n\n` +
+        `Mensagem:\n${mensagem}`;
+
+      if (navigator.clipboard &&
+          window.isSecureContext) {
+        navigator.clipboard.writeText(conteudo)
+          .then(() => {
+            aviso.textContent =
+              "Mensagem copiada! Você pode colá-la no seu aplicativo de e-mail ou WhatsApp.";
+          })
+          .catch(() => {
+            aviso.textContent =
+              "Não foi possível copiar. Selecione o texto da mensagem para enviar manualmente.";
+          });
+      } else {
+        aviso.textContent =
+          "O envio automático ainda não está configurado. Copie sua mensagem e envie pelo canal de contato disponível.";
+      }
+    });
+  </script>
+
+</body>
+</html>
