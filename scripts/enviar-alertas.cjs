@@ -2,26 +2,19 @@
 "use strict";
 
 /*
-================================================
+==========================================
 CADÊ MEU PET
-NOTIFICAÇÕES AUTOMÁTICAS — GITHUB ACTIONS
-================================================
+SISTEMA DE NOTIFICAÇÕES AUTOMÁTICAS
+==========================================
 
-Firebase: cade-meu-pet-8966f
-
-- Cachorros e gatos perdidos ou encontrados
-- Notificações para vários celulares
-- Filtro por município
-- Opção Todos os municípios
-- Não notifica o anunciante
+- Notifica todos os celulares inscritos
+- Inclui o próprio anunciante
+- Aceita todos os municípios
+- Notifica cães e gatos
 - Trata erros por dispositivo
-- Evita reenviar para inscrições já atendidas
-- Não interrompe todos os envios por erro 403
-
-O Cloudflare inicia este script pelo GitHub Actions.
-
-NUNCA coloque chaves privadas neste arquivo.
-================================================
+- Evita duplicar envios aceitos
+- Funciona com GitHub Actions
+==========================================
 */
 
 const {
@@ -37,8 +30,6 @@ const {
 
 const webpush = require("web-push");
 
-// CONFIGURAÇÕES
-
 const PROJETO = "cade-meu-pet-8966f";
 
 const SITE = "https://localizador-pet2.netlify.app";
@@ -46,7 +37,7 @@ const SITE = "https://localizador-pet2.netlify.app";
 const LIMITE_ANIMAIS = 100;
 const LIMITE_INSCRITOS = 2000;
 
-// SEGREDOS DO GITHUB
+// SEGREDOS
 
 function obrigatorio(nome) {
   const valor = process.env[nome];
@@ -60,7 +51,7 @@ function obrigatorio(nome) {
   return valor;
 }
 
-// FIREBASE ADMIN
+// FIREBASE
 
 const credenciais = JSON.parse(
   obrigatorio("FIREBASE_SERVICE_ACCOUNT")
@@ -68,7 +59,7 @@ const credenciais = JSON.parse(
 
 if (credenciais.project_id !== PROJETO) {
   throw new Error(
-    "A credencial não corresponde ao Cadê Meu Pet."
+    "Credencial Firebase incorreta."
   );
 }
 
@@ -78,7 +69,7 @@ initializeApp({
 
 const db = getFirestore();
 
-// WEB PUSH
+// NOTIFICAÇÕES PUSH
 
 webpush.setVapidDetails(
   obrigatorio("VAPID_CONTACT"),
@@ -86,7 +77,7 @@ webpush.setVapidDetails(
   obrigatorio("VAPID_PRIVATE_KEY")
 );
 
-// IDENTIFICAR ANIMAL
+// IDENTIFICAR O ANIMAL
 
 function tipoAnimal(tipo) {
   const valor = String(tipo || "")
@@ -120,7 +111,7 @@ function tipoAnimal(tipo) {
   };
 }
 
-// MONTAR NOTIFICAÇÃO
+// MONTAR MENSAGEM
 
 function montarMensagem(animal, id) {
   const tipo = tipoAnimal(animal.tipo);
@@ -182,7 +173,7 @@ function montarMensagem(animal, id) {
   };
 }
 
-// NORMALIZAR MUNICÍPIOS
+// MUNICÍPIOS
 
 function normalizar(valor) {
   return String(valor || "")
@@ -208,8 +199,7 @@ function recebeMunicipio(inscricao, animal) {
   );
 }
 
-// REGISTRO INDIVIDUAL DE ENTREGA
-// Guarda uma confirmação por anúncio/dispositivo.
+// REGISTRAR ENTREGA POR DISPOSITIVO
 
 function referenciaEntrega(animalId, inscricaoId) {
   return db
@@ -219,7 +209,7 @@ function referenciaEntrega(animalId, inscricaoId) {
     .doc(inscricaoId);
 }
 
-// ENVIAR PARA TODOS OS DISPOSITIVOS
+// ENVIAR NOTIFICAÇÕES
 
 async function enviarNotificacao(animal, id) {
   const mensagem = montarMensagem(animal, id);
@@ -250,19 +240,21 @@ async function enviarNotificacao(animal, id) {
   for (const documento of resultado.docs) {
     const inscricao = documento.data();
 
-    // Respeitar o município selecionado.
+    // Respeitar a cidade escolhida pelo usuário.
     if (!recebeMunicipio(inscricao, animal)) {
       continue;
     }
 
-    // Não avisar o próprio anunciante.
-    if (
-      inscricao.uid &&
-      animal.ownerId &&
-      inscricao.uid === animal.ownerId
-    ) {
-      continue;
-    }
+    /*
+    =========================================
+    NOVA REGRA
+
+    TODOS OS INSCRITOS RECEBEM O ALERTA,
+    INCLUSIVE QUEM CADASTROU O ANIMAL.
+
+    NÃO EXCLUÍMOS MAIS O PRÓPRIO ANUNCIANTE.
+    =========================================
+    */
 
     // Ignorar inscrições incompletas.
     if (
@@ -282,9 +274,10 @@ async function enviarNotificacao(animal, id) {
       documento.id
     );
 
-    // Não repetir aviso já aceito pelo Push.
     const anterior = await entrega.get();
 
+    // Não enviar novamente quando o
+    // serviço push já aceitou o aviso.
     if (
       anterior.exists &&
       anterior.data().status === "aceito"
@@ -314,9 +307,6 @@ async function enviarNotificacao(animal, id) {
         }
       );
 
-      // O servidor Push aceitou o envio.
-      // Isso não garante exibição pelo celular.
-
       enviados++;
 
       await entrega.set({
@@ -335,7 +325,7 @@ async function enviarNotificacao(animal, id) {
         erro.statusCode || 0
       );
 
-      // Inscrição removida ou expirada.
+      // Inscrição expirada.
       if (codigo === 404 || codigo === 410) {
         expirados++;
 
@@ -355,20 +345,15 @@ async function enviarNotificacao(animal, id) {
         continue;
       }
 
-      // Inscrição recusada, frequentemente por
-      // incompatibilidade de VAPID/permissão.
-      // Não bloquear os outros dispositivos.
+      // Erro de autorização ou VAPID.
       if (codigo === 403 || codigo === 401) {
         recusados++;
 
         console.warn(
           `Inscrição ${documento.id}: ` +
-          `Web Push recusado (HTTP ${codigo}). ` +
-          "Verifique a chave VAPID e a inscrição."
+          `Web Push recusado (HTTP ${codigo}).`
         );
 
-        // Registramos a falha, mas não apagamos
-        // o dispositivo automaticamente.
         await entrega.set({
           status: "recusado",
           codigo,
@@ -380,8 +365,7 @@ async function enviarNotificacao(animal, id) {
         continue;
       }
 
-      // Erros temporários podem ser tentados
-      // novamente na próxima execução.
+      // Problema temporário.
       temporarios++;
 
       console.error(
@@ -410,7 +394,7 @@ async function enviarNotificacao(animal, id) {
   };
 }
 
-// PROCESSAR CADA ANÚNCIO
+// PROCESSAR UM ANÚNCIO
 
 async function processarAnimal(documento) {
   const animal = documento.data();
@@ -421,12 +405,11 @@ async function processarAnimal(documento) {
 
   const anterior = await controle.get();
 
-  if (anterior.exists) {
-    const dados = anterior.data();
-
-    if (dados.processadoEm) {
-      return;
-    }
+  if (
+    anterior.exists &&
+    anterior.data().processadoEm
+  ) {
+    return;
   }
 
   if (
@@ -437,9 +420,6 @@ async function processarAnimal(documento) {
     return;
   }
 
-  // Aceitar municípios cadastrados no ES.
-  // Não limitar apenas às quatro cidades
-  // usadas no primeiro protótipo.
   if (
     !animal.municipio ||
     !String(animal.municipio).trim()
@@ -447,6 +427,7 @@ async function processarAnimal(documento) {
     console.warn(
       `Anúncio ${documento.id} sem município.`
     );
+
     return;
   }
 
@@ -454,11 +435,6 @@ async function processarAnimal(documento) {
     animal,
     documento.id
   );
-
-  // Se houver erro temporário, não concluir
-  // o anúncio. Na próxima execução, o
-  // sistema tenta somente os destinatários
-  // que ainda não tiveram envio aceito.
 
   if (resultado.temporarios > 0) {
     console.warn(
@@ -498,13 +474,11 @@ async function executar() {
 
   const estado = await controle.get();
 
-  // Primeira execução inicializa o sistema
-  // sem avisar sobre anúncios antigos.
   if (!estado.exists) {
     await controle.create({
       iniciadoEm: FieldValue.serverTimestamp(),
       ultimaVerificacao: Timestamp.now(),
-      versao: 2
+      versao: 3
     });
 
     console.log(
