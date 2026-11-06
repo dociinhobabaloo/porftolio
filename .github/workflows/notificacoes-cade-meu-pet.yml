@@ -1,12 +1,12 @@
 
 name: Notificacoes Cade Meu Pet
 
+
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
 
-  # Ativaremos o agendamento depois do teste.
-  # schedule:
-  #   - cron: "2-59/5 * * * *"
 
 permissions:
   contents: read
