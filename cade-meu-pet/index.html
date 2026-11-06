@@ -1,0 +1,3054 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#006b75">
+<meta name="description" content="Cadê Meu Pet: encontre, divulgue e reencontre animais perdidos na Grande Vitória.">
+<meta name="application-name" content="Cadê Meu Pet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cadê Meu Pet">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<title>Cadê Meu Pet | Encontre • Divulgue • Reencontre</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+<style>
+:root {
+  --teal: #006b75;
+  --teal-dark: #063e49;
+  --pink: #e74769;
+  --pink-light: #ff8999;
+  --green: #15916c;
+  --mint: #d9f5f5;
+  --background: #f9fbfc;
+  --text: #0a293d;
+  --muted: #566c7a;
+  --border: #dce6eb;
+  --shadow: 0 14px 36px rgba(13,51,65,.10);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Nunito, Arial, sans-serif;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.container {
+  width: min(1450px,94%);
+  margin: auto;
+}
+
+h1, h2, h3 {
+  font-family: Outfit, Nunito, sans-serif;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--pink-light);
+  outline-offset: 3px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--teal);
+  color: white;
+  font-weight: 900;
+  text-align: center;
+  transition: .2s;
+}
+
+.btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: .55;
+  cursor: wait;
+  transform: none;
+}
+
+.btn-pink {
+  background: var(--pink);
+}
+
+.btn-green {
+  background: var(--green);
+}
+
+.btn-white {
+  background: white;
+  color: var(--teal);
+  border: 1px solid #cfe1e5;
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+/* CABEÇALHO */
+
+.header {
+  position: relative;
+  z-index: 20;
+  background: white;
+  box-shadow: 0 3px 18px #073c4910;
+}
+
+/* NOVO BOTÃO VOLTAR AO PORTFÓLIO */
+
+.portfolio-bar {
+  background: #eaf7f7;
+  border-bottom: 1px solid #d5eaed;
+}
+
+.portfolio-bar-inner {
+  min-height: 39px;
+  display: flex;
+  align-items: center;
+}
+
+.voltar-portfolio {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 7px 0;
+  transition: .2s;
+}
+
+.voltar-portfolio:hover {
+  color: var(--pink);
+}
+
+.voltar-portfolio .seta {
+  display: inline-grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  background: white;
+  border: 1px solid #cbe7e9;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.header-inner {
+  min-height: 83px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  width: 65px;
+  height: 65px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg,#e94e70,#d9365b);
+  border-radius: 23px;
+  color: white;
+  font-size: 37px;
+}
+
+.brand strong {
+  display: block;
+  font-family: Outfit, sans-serif;
+  font-size: clamp(23px,2.8vw,40px);
+  letter-spacing: -1.6px;
+  line-height: 1;
+  color: var(--teal);
+}
+
+.brand strong span {
+  color: var(--pink);
+}
+
+.brand small {
+  color: #0e5b67;
+  font-size: 14px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nav a {
+  padding: 9px 11px;
+  border-radius: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.nav a:hover,
+.nav a:first-child {
+  background: #e1eff1;
+  color: var(--teal);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bell {
+  background: transparent;
+  border: 0;
+  font-size: 25px;
+}
+
+#nome-usuario {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--teal);
+}
+
+/* BANNER */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  height: 510px;
+  overflow: hidden;
+  color: white;
+  background:
+    radial-gradient(circle at 78% 45%,#138b86,transparent 55%),
+    linear-gradient(110deg,#007b82,#00606b);
+}
+
+.hero-photo {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  width: 58%;
+  height: 100%;
+  background-image: url("../img/cade-meu-pet-banner-original.png");
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+}
+
+.hero-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #007781 0%,
+    rgba(0,119,129,.45) 12%,
+    transparent 35%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.hero-text {
+  width: 49%;
+  padding: 36px 0 80px 24px;
+}
+
+.hero h1 {
+  font-size: clamp(40px,4.35vw,65px);
+  line-height: 1.02;
+  letter-spacing: -1.9px;
+  font-weight: 900;
+  margin: 0 0 19px;
+}
+
+.hero h1 span {
+  color: var(--pink-light);
+}
+
+.hero p {
+  font-size: clamp(16px,1.5vw,22px);
+  line-height: 1.36;
+  max-width: 590px;
+  margin: 0 0 20px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 17px;
+  flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+  font-size: 19px;
+  border-radius: 23px;
+  padding: 14px 26px;
+}
+
+.hero .btn-pink {
+  border: 2px solid #ffb5c1;
+}
+
+/* PESQUISA */
+
+.search-section {
+  position: relative;
+  z-index: 5;
+  margin-top: -102px;
+}
+
+.search-panel {
+  background: rgba(255,255,255,.98);
+  border-radius: 33px;
+  padding: 19px 35px 32px;
+  box-shadow: 0 18px 38px rgba(12,56,72,.13);
+}
+
+.search-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 14px;
+}
+
+.search-icon {
+  font-size: 37px;
+  color: var(--pink);
+}
+
+.search-heading h2 {
+  font-size: 29px;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.search-heading p {
+  font-size: 15px;
+  margin: 2px 0;
+  color: #334d60;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 132px;
+  gap: 13px;
+}
+
+.filters input,
+.filters select {
+  width: 100%;
+  min-width: 0;
+  height: 49px;
+  background: #fbfcfd;
+  border: 1px solid #cbd8df;
+  border-radius: 13px;
+  padding: 0 14px;
+  color: var(--text);
+  box-shadow: 0 3px 7px #0c2f4010;
+}
+
+.filters select:disabled {
+  opacity: .55;
+}
+
+.filters .btn {
+  height: 49px;
+}
+
+.filter-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+/* BENEFÍCIOS */
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 18px;
+  padding: 29px 0 38px;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.benefit:not(:last-child) {
+  border-right: 1px solid #d7e1e6;
+}
+
+.benefit-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #d7f5f5;
+  color: var(--teal);
+  font-size: 30px;
+}
+
+.benefit h3 {
+  font-size: 18px;
+  margin: 0 0 3px;
+}
+
+.benefit p {
+  font-size: 14px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* SEÇÕES E CARDS */
+
+.section {
+  padding: 34px 0 55px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.section-heading h2 {
+  font-size: clamp(26px,2.7vw,34px);
+  letter-spacing: -.7px;
+  margin: 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  margin: 7px 0 0;
+}
+
+.section-heading a {
+  color: var(--teal);
+  font-weight: 900;
+}
+
+.animal-layout {
+  display: grid;
+  grid-template-columns: minmax(0,3fr) minmax(290px,1.35fr);
+  gap: 25px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 13px;
+  align-content: start;
+}
+
+.pet-card {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #d9e7e9;
+  border-radius: 20px;
+  background: #edf5f5;
+  overflow: hidden;
+  transition: .2s;
+}
+
+.pet-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.pet-photo {
+  height: 165px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #d2ecea;
+  overflow: hidden;
+  font-size: 65px;
+}
+
+.pet-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 30px;
+  background: var(--pink);
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.pet-photo .status {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+}
+
+.status.encontrado {
+  background: #078c92;
+}
+
+.status.reencontrado {
+  background: var(--green);
+}
+
+.pet-card h3 {
+  font-size: 20px;
+  margin: 12px 0 5px;
+}
+
+.pet-card p {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #4d6571;
+  margin: 5px 0;
+  overflow-wrap: anywhere;
+}
+
+.pet-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.pet-card-actions .btn {
+  padding: 9px 11px;
+  font-size: 12px;
+}
+
+.pet-card.finalizado {
+  border-color: #9dd9bd;
+  background: #f1fbf5;
+}
+
+.final-mensagem {
+  color: #147b59 !important;
+  font-weight: 900;
+}
+
+.message {
+  font-size: 14px;
+  color: var(--teal);
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+/* INSTALAÇÃO NO CELULAR */
+
+.install-panel {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 290px;
+  padding: 23px;
+  border-radius: 30px;
+  background: linear-gradient(130deg,#dff7f7,#f5fafb);
+}
+
+.phone {
+  flex-shrink: 0;
+  width: 135px;
+  height: 240px;
+  border: 7px solid #0b2e3d;
+  border-radius: 26px;
+  transform: rotate(-7deg);
+  background: linear-gradient(160deg,#05a1a4,#005864);
+  color: white;
+  box-shadow: 10px 13px 22px #0d44552c;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.phone span {
+  background: white;
+  color: var(--pink);
+  font-size: 40px;
+  padding: 10px;
+  border-radius: 18px;
+}
+
+.phone strong {
+  font: 900 23px/1 Outfit,sans-serif;
+}
+
+.install-panel h3 {
+  font-size: 25px;
+  line-height: 1.05;
+  margin: 0 0 12px;
+}
+
+.install-panel p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* FINAIS FELIZES */
+
+.happy-section {
+  background: linear-gradient(180deg,#e5f7ee,#f8fcfa);
+}
+
+.happy-intro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.happy-icon {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: #d0f2dc;
+  font-size: 30px;
+}
+
+.happy-section .cards {
+  grid-template-columns: repeat(4,minmax(0,1fr));
+}
+
+.happy-empty {
+  padding: 25px;
+  border: 1px dashed #a0d5b7;
+  border-radius: 17px;
+  background: white;
+  color: #376c53;
+  text-align: center;
+}
+
+/* FORMULÁRIO */
+
+.register-section {
+  background: #eaf8f7;
+}
+
+.form-card {
+  padding: 32px;
+  border-radius: 26px;
+  border: 1px solid var(--border);
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #cfdde3;
+  border-radius: 12px;
+  padding: 13px 15px;
+  background: white;
+  color: var(--text);
+}
+
+.field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.field small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.photo-preview {
+  display: none;
+  width: 190px;
+  max-width: 100%;
+  margin-top: 10px;
+  border: 2px solid var(--mint);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.photo-preview.visible {
+  display: block;
+}
+
+.photo-preview img {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+/* COMO FUNCIONA */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+
+.step {
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: white;
+}
+
+.step-icon {
+  font-size: 35px;
+}
+
+.step h3 {
+  font-size: 23px;
+  margin: 12px 0 8px;
+}
+
+.step p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* SOBRE E RODAPÉ */
+
+.about {
+  background: #eaf8f7;
+  text-align: center;
+}
+
+.about-box {
+  background: white;
+  padding: 35px;
+  border-radius: 25px;
+}
+
+footer {
+  background: #063d49;
+  color: white;
+  padding: 35px 0;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+footer p {
+  color: #c9e0e4;
+}
+
+.footer-back {
+  display: inline-flex;
+  gap: 8px;
+  color: #a2e5e7;
+  font-weight: 900;
+  margin-top: 12px;
+}
+
+/* LOGIN */
+
+dialog {
+  width: min(460px,94vw);
+  padding: 28px;
+  border: 0;
+  border-radius: 23px;
+  box-shadow: 0 25px 80px #0005;
+}
+
+dialog::backdrop {
+  background: #0b293ba8;
+}
+
+dialog .field {
+  margin: 13px 0;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width:1250px) {
+  .nav {
+    gap: 5px;
+  }
+
+  .brand strong {
+    font-size: 28px;
+  }
+
+  .brand-icon {
+    width: 51px;
+    height: 51px;
+  }
+
+  .filters {
+    grid-template-columns: repeat(3,1fr);
+  }
+
+  .animal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .install-panel {
+    min-height: 220px;
+    justify-content: center;
+  }
+}
+
+@media (max-width:950px) {
+  .header-inner {
+    flex-wrap: wrap;
+    padding: 12px 0;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero {
+    height: 490px;
+  }
+
+  .hero-photo {
+    width: 65%;
+  }
+
+  .hero-text {
+    width: 60%;
+    padding-left: 0;
+  }
+
+  .hero h1 {
+    font-size: 45px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .benefits {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .benefit:nth-child(2) {
+    border-right: 0;
+  }
+
+  .cards,
+  .happy-section .cards {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (max-width:650px) {
+  .portfolio-bar-inner {
+    justify-content: center;
+  }
+
+  .header-inner,
+  .header-actions {
+    justify-content: center;
+  }
+
+  .nav {
+    gap: 3px;
+  }
+
+  .nav a {
+    font-size: 12px;
+    padding: 7px;
+  }
+
+  .brand strong {
+    font-size: 27px;
+  }
+
+  .brand small {
+    font-size: 11px;
+  }
+
+  .hero {
+    height: 565px;
+  }
+
+  .hero-photo {
+    right: -17%;
+    width: 105%;
+    height: 100%;
+    background-position: 50% center;
+    opacity: .78;
+  }
+
+  .hero-photo::before {
+    background:
+      linear-gradient(
+        90deg,
+        #007781 0%,
+        #007781ad 48%,
+        transparent 100%
+      ),
+      linear-gradient(
+        0deg,
+        transparent 45%,
+        #007781c9 100%
+      );
+  }
+
+  .hero-text {
+    width: 100%;
+    max-width: 480px;
+    padding: 35px 8px 115px;
+  }
+
+  .hero h1 {
+    font-size: clamp(38px,9vw,51px);
+  }
+
+  .hero p {
+    font-size: 15px;
+    max-width: 310px;
+  }
+
+  .hero-buttons {
+    gap: 9px;
+  }
+
+  .hero-buttons .btn {
+    font-size: 13px;
+    padding: 11px 13px;
+  }
+
+  .search-section {
+    margin-top: -77px;
+  }
+
+  .search-panel {
+    padding: 20px;
+    border-radius: 25px;
+  }
+
+  .search-heading h2 {
+    font-size: 23px;
+  }
+
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filters input:first-child,
+  .filters .btn {
+    grid-column: 1 / -1;
+  }
+
+  .benefits {
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+  }
+
+  .benefit {
+    flex-direction: column;
+    text-align: center;
+    border: 0 !important;
+  }
+
+  .benefit-icon {
+    width: 55px;
+    height: 55px;
+  }
+
+  .benefit h3 {
+    font-size: 14px;
+  }
+
+  .benefit p {
+    font-size: 12px;
+  }
+
+  .cards,
+  .happy-section .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pet-photo {
+    height: 140px;
+  }
+
+  .install-panel {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .form-grid,
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width:390px) {
+  .cards,
+  .happy-section .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+  <!-- NOVO BOTÃO DE VOLTAR AO PORTFÓLIO -->
+
+  <div class="portfolio-bar">
+    <div class="container portfolio-bar-inner">
+      <a
+        href="../index.html"
+        class="voltar-portfolio"
+        aria-label="Voltar ao portfólio DevStar"
+      >
+        <span class="seta">←</span>
+        Voltar ao Portfólio DevStar
+      </a>
+    </div>
+  </div>
+
+  <div class="container header-inner">
+
+    <a href="#inicio" class="brand">
+
+      <span class="brand-icon">🐾</span>
+
+      <span>
+        <strong>Cadê Meu <span>Pet</span></strong>
+        <small>Encontre • Divulgue • Reencontre</small>
+      </span>
+
+    </a>
+
+    <nav class="nav" aria-label="Navegação principal">
+      <a href="#inicio">Início</a>
+      <a href="#animais">Animais</a>
+      <a href="#cadastro">Cadastrar</a>
+      <a href="#finais-felizes">Finais felizes</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
+
+    <div class="header-actions">
+
+      <button
+        id="btn-alertas"
+        class="bell"
+        type="button"
+        aria-label="Notificações"
+      >🔔</button>
+
+      <span id="nome-usuario"></span>
+
+      <button id="btn-login" class="btn" type="button">
+        Entrar / Cadastrar
+      </button>
+
+      <button
+        id="btn-sair"
+        class="btn btn-white"
+        type="button"
+        hidden
+      >Sair</button>
+
+    </div>
+
+  </div>
+
+</header>
+
+<main>
+
+<section class="hero" id="inicio">
+
+  <div
+    class="hero-photo"
+    role="img"
+    aria-label="Cachorro dourado e gatinho juntos"
+  ></div>
+
+  <div class="container hero-content">
+
+    <div class="hero-text">
+
+      <h1>
+        Vamos juntos
+        trazer seu melhor
+        <span>amigo de volta! ♥</span>
+      </h1>
+
+      <p>
+        A plataforma que conecta pessoas para encontrar
+        animais perdidos e ajudar tutores a reencontrarem
+        seus companheiros.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a href="#cadastro" class="btn btn-pink">
+          ✚ Cadastrar animal
+        </a>
+
+        <a href="#busca" class="btn btn-outline">
+          🔎 Procurar animais
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PESQUISA -->
+
+<div class="container search-section" id="busca">
+
+  <div class="search-panel">
+
+    <div class="search-heading">
+
+      <span class="search-icon">⌕</span>
+
+      <div>
+        <h2>Encontre um animal</h2>
+        <p>Pesquise por nome, município, bairro ou situação.</p>
+      </div>
+
+    </div>
+
+    <div class="filters">
+
+      <input
+        id="filtro-busca"
+        type="search"
+        placeholder="🔎 Nome do animal"
+        aria-label="Nome do animal"
+      >
+
+      <select id="filtro-municipio" aria-label="Município">
+        <option value="">Município</option>
+      </select>
+
+      <select id="filtro-bairro" aria-label="Bairro" disabled>
+        <option value="">Todos os bairros</option>
+      </select>
+
+      <select id="filtro-tipo" aria-label="Tipo de animal">
+        <option value="">Tipo de animal</option>
+        <option value="Cachorro">Cachorro</option>
+        <option value="Gato">Gato</option>
+        <option value="Outro">Outro</option>
+      </select>
+
+      <select id="filtro-status" aria-label="Situação">
+        <option value="">Todas as situações</option>
+        <option value="Perdido">Perdido</option>
+        <option value="Encontrado">Encontrado</option>
+        <option value="Reencontrado">Reencontrado 💚</option>
+      </select>
+
+      <button id="btn-buscar" class="btn" type="button">
+        Buscar
+      </button>
+
+    </div>
+
+    <p id="aviso-filtro-bairros" class="filter-hint">
+      Selecione um município para consultar os bairros.
+    </p>
+
+  </div>
+
+</div>
+
+<!-- BENEFÍCIOS -->
+
+<section class="container benefits">
+
+  <article class="benefit">
+    <span class="benefit-icon">🔔</span>
+    <div>
+      <h3>Receba alertas</h3>
+      <p>Em breve, avisos sobre animais perdidos na região.</p>
+    </div>
+  </article>
+
+  <article class="benefit">
+    <span class="benefit-icon">👥</span>
+    <div>
+      <h3>Ajude a comunidade</h3>
+      <p>Divulgue, compartilhe e ajude a salvar vidas.</p>
+    </div>
+  </article>
+
+  <article class="benefit">
+    <span class="benefit-icon">📱</span>
+    <div>
+      <h3>No seu celular</h3>
+      <p>Instale o Cadê Meu Pet na tela inicial.</p>
+    </div>
+  </article>
+
+  <article class="benefit">
+    <span class="benefit-icon">💚</span>
+    <div>
+      <h3>Finais felizes</h3>
+      <p>Veja os animais que voltaram para suas famílias.</p>
+    </div>
+  </article>
+
+</section>
+
+<!-- ANIMAIS -->
+
+<section class="container section" id="animais">
+
+  <div class="animal-layout">
+
+    <div>
+
+      <div class="section-heading">
+        <h2>🐾 Animais recentemente cadastrados</h2>
+        <a href="#busca">Pesquisar animais →</a>
+      </div>
+
+      <div id="lista-animais" class="cards"></div>
+
+      <p id="mensagem-animais" class="message" role="status">
+        Carregando anúncios...
+      </p>
+
+    </div>
+
+    <aside class="install-panel">
+
+      <div class="phone">
+        <span>🐶</span>
+        <strong>Cadê<br>Meu Pet</strong>
+      </div>
+
+      <div>
+
+        <h3>Instale o Cadê Meu Pet no seu celular</h3>
+
+        <p>
+          Adicione o site à tela inicial para acompanhar
+          os anúncios com mais facilidade.
+        </p>
+
+        <button id="btn-instalar" class="btn" type="button">
+          📱 Como instalar
+        </button>
+
+        <p id="mensagem-instalar" class="message" role="status"></p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</section>
+
+<!-- FINAIS FELIZES -->
+
+<section class="section happy-section" id="finais-felizes">
+
+  <div class="container">
+
+    <div class="section-heading">
+
+      <div class="happy-intro">
+
+        <span class="happy-icon">💚</span>
+
+        <div>
+          <h2>Finais felizes</h2>
+          <p>
+            Animais que voltaram para casa.
+            Cada reencontro merece ser celebrado!
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="lista-reencontrados" class="cards"></div>
+
+    <p id="mensagem-reencontrados" class="happy-empty" role="status">
+      Carregando histórias...
+    </p>
+
+  </div>
+
+</section>
+
+<!-- CADASTRO -->
+
+<section class="section register-section" id="cadastro">
+
+  <div class="container">
+
+    <div class="section-heading">
+
+      <div>
+        <h2>Cadastre um animal 🐾</h2>
+        <p>
+          Divulgue um animal perdido, encontrado
+          ou informe um reencontro.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="form-card">
+
+      <form id="form-pet">
+
+        <input type="hidden" id="pet-id">
+
+        <div class="form-grid">
+
+          <div class="field">
+
+            <label for="pet-nome">Nome do animal *</label>
+
+            <input
+              id="pet-nome"
+              required
+              maxlength="80"
+              placeholder="Ex.: Thor"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-tipo">Tipo de animal *</label>
+
+            <select id="pet-tipo" required>
+              <option value="">Selecione</option>
+              <option value="Cachorro">Cachorro</option>
+              <option value="Gato">Gato</option>
+              <option value="Outro">Outro</option>
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-status">Situação do animal *</label>
+
+            <select id="pet-status" required>
+              <option value="Perdido">Perdido</option>
+              <option value="Encontrado">Encontrado (procurando tutor)</option>
+              <option value="Reencontrado">Reencontrado 💚</option>
+            </select>
+
+            <small id="explicacao-status"></small>
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-cor">Características</label>
+
+            <input
+              id="pet-cor"
+              maxlength="120"
+              placeholder="Cor, coleira e detalhes"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-municipio">Município *</label>
+
+            <select id="pet-municipio" required>
+              <option value="">Selecione o município</option>
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-bairro">Bairro ou localidade *</label>
+
+            <input
+              id="pet-bairro"
+              list="sugestoes-bairros"
+              required
+              maxlength="100"
+              autocomplete="off"
+              placeholder="Escolha o município primeiro"
+            >
+
+            <datalist id="sugestoes-bairros"></datalist>
+
+            <small id="aviso-cadastro-bairros">
+              Selecione um município para ver os bairros.
+            </small>
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-data">Data do ocorrido</label>
+
+            <input id="pet-data" type="date">
+
+          </div>
+
+          <div class="field">
+
+            <label for="pet-foto">Fotografia do animal 📸</label>
+
+            <input
+              id="pet-foto"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+            >
+
+            <small>
+              JPG, PNG ou WebP, até 5 MB.
+              Na edição, você pode manter a foto anterior.
+            </small>
+
+            <div id="foto-preview" class="photo-preview">
+              <img
+                id="foto-preview-img"
+                alt="Prévia da fotografia do animal"
+              >
+            </div>
+
+          </div>
+
+          <div class="field full">
+
+            <label for="pet-descricao">Descrição</label>
+
+            <textarea
+              id="pet-descricao"
+              maxlength="1500"
+              placeholder="Conte onde o animal foi visto, como identificá-lo ou como aconteceu o reencontro."
+            ></textarea>
+
+          </div>
+
+          <div class="full">
+
+            <div class="form-actions">
+
+              <button
+                id="btn-salvar"
+                class="btn btn-pink"
+                type="submit"
+              >
+                Publicar animal
+              </button>
+
+              <button
+                id="btn-cancelar"
+                class="btn btn-white"
+                type="button"
+                hidden
+              >
+                Cancelar edição
+              </button>
+
+            </div>
+
+            <p id="mensagem-cadastro" class="message" role="status"></p>
+
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- COMO FUNCIONA -->
+
+<section class="section container" id="como-funciona">
+
+  <div class="section-heading">
+
+    <div>
+      <h2>Como funciona?</h2>
+      <p>Três passos para ajudar um animal.</p>
+    </div>
+
+  </div>
+
+  <div class="steps">
+
+    <article class="step">
+
+      <span class="step-icon">📝</span>
+
+      <h3>1. Cadastre</h3>
+
+      <p>
+        Informe os dados do animal, o município,
+        o bairro e uma fotografia.
+      </p>
+
+    </article>
+
+    <article class="step">
+
+      <span class="step-icon">📢</span>
+
+      <h3>2. Compartilhe</h3>
+
+      <p>
+        Divulgue o anúncio para amigos e grupos
+        da comunidade.
+      </p>
+
+    </article>
+
+    <article class="step">
+
+      <span class="step-icon">💚</span>
+
+      <h3>3. Celebre o reencontro</h3>
+
+      <p>
+        Quando o animal voltar para casa, atualize
+        para Reencontrado. O anúncio continuará no site.
+      </p>
+
+    </article>
+
+  </div>
+
+</section>
+
+<!-- SOBRE -->
+
+<section class="section about" id="sobre">
+
+  <div class="container about-box">
+
+    <h2>Uma comunidade unida pelos animais 💗</h2>
+
+    <p>
+      O Cadê Meu Pet facilita a divulgação
+      de animais perdidos e encontrados.
+    </p>
+
+    <p>
+      Inicialmente, atendemos Vila Velha, Vitória,
+      Serra e Cariacica.
+    </p>
+
+    <a href="#cadastro" class="btn btn-pink">
+      Cadastrar animal
+    </a>
+
+  </div>
+
+</section>
+
+</main>
+
+<!-- RODAPÉ -->
+
+<footer>
+
+  <div class="container footer-inner">
+
+    <div>
+
+      <h2>🐾 Cadê Meu Pet</h2>
+      <p>Encontre • Divulgue • Reencontre</p>
+
+      <a href="../index.html" class="footer-back">
+        ← Voltar ao Portfólio DevStar
+      </a>
+
+    </div>
+
+    <div>
+      <p>Grande Vitória • Espírito Santo</p>
+      <a href="#inicio">Voltar ao início ↑</a>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- LOGIN -->
+
+<dialog id="modal-login">
+
+  <h2>Bem-vindo! 🐾</h2>
+
+  <p>Entre na sua conta para cadastrar animais.</p>
+
+  <button
+    id="login-google"
+    class="btn"
+    type="button"
+    style="width:100%"
+  >
+    Entrar com Google
+  </button>
+
+  <p style="text-align:center">ou use seu e-mail</p>
+
+  <form id="form-login">
+
+    <div class="field">
+
+      <label for="login-email">E-mail</label>
+
+      <input id="login-email" type="email" required>
+
+    </div>
+
+    <div class="field">
+
+      <label for="login-senha">Senha</label>
+
+      <input
+        id="login-senha"
+        type="password"
+        minlength="6"
+        required
+      >
+
+    </div>
+
+    <div class="form-actions">
+
+      <button class="btn" type="submit">
+        Entrar
+      </button>
+
+      <button
+        id="criar-conta"
+        class="btn btn-white"
+        type="button"
+      >
+        Criar conta
+      </button>
+
+    </div>
+
+  </form>
+
+  <p id="mensagem-login" class="message" role="status"></p>
+
+  <button
+    id="fechar-login"
+    class="btn btn-white"
+    type="button"
+  >
+    Fechar
+  </button>
+
+</dialog>
+
+<!-- SCRIPT PRINCIPAL -->
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const cidades = [
+  "Cariacica",
+  "Serra",
+  "Vila Velha",
+  "Vitória"
+];
+
+const bairrosBase = {
+
+  "Vila Velha": `
+Araçás|Aribiri|Ataide|Barra do Jucu|Barramares|
+Boa Vista I|Boa Vista II|Cavalieri|Centro|
+Chácara do Conde|Cidade da Barra|Cocal|
+Coqueiral de Itaparica|Cristóvão Colombo|
+Divino Espírito Santo|Glória|Guaranhuns|
+Ilha das Flores|Ilha dos Ayres|Ilha dos Bentos|
+Interlagos|Itapuã|Jaburuna|Jardim Asteca|
+Jardim Colorado|Jardim Guadalajara|
+Jardim Marilândia|Jockey de Itaparica|
+Morada da Barra|Nossa Senhora da Penha|
+Novo México|Olaria|Paul|Pedra dos Búzios|
+Ponta da Fruta|Praia da Costa|Praia das Gaivotas|
+Praia de Itaparica|Praia dos Recifes|
+Primeiro de Maio|Riviera da Barra|Santa Inês|
+Santa Mônica|Santa Paula I|Santa Paula II|
+Santos Dumont|São Torquato|Soteco|Terra Vermelha|
+Vale Encantado|Vila Batista|Vila Garrido|
+Vila Nova|Vista da Penha|Zumbi dos Palmares
+`,
+
+  "Vitória": `
+Andorinhas|Antônio Honório|Bairro da Penha|
+Bairro de Lourdes|Bairro do Quadro|Barro Vermelho|
+Bela Vista|Bento Ferreira|Bonfim|Caratoíra|
+Centro|Conquista|Consolação|Cruzamento|
+Da Penha|De Fátima|Do Moscoso|Enseada do Suá|
+Forte São João|Fradinhos|Goiabeiras|Grande Vitória|
+Ilha de Santa Maria|Ilha do Boi|Ilha do Frade|
+Inhanguetá|Itararé|Jabour|Jardim Camburi|
+Jardim da Penha|Jesus de Nazareth|Joana D'Arc|
+Jucutuquara|Maria Ortiz|Maruípe|Mata da Praia|
+Monte Belo|Nova Palestina|Parque Moscoso|
+Piedade|Praia do Canto|Praia do Suá|Redenção|
+República|Resistência|Romão|Santa Cecília|
+Santa Clara|Santa Helena|Santa Lúcia|
+Santa Luíza|Santa Martha|Santa Tereza|
+Santo André|Santo Antônio|Santos Dumont|
+São Benedito|São Cristóvão|São José|São Pedro|
+Segurança do Lar|Solon Borges|Tabuazeiro|
+Universitário
+`,
+
+  "Serra": `
+Barcelona|Bairro das Laranjeiras|Bicanga|
+Boa Vista|Carapina Grande|Central Carapina|
+Chácara Parreiral|Cidade Continental|
+Colina de Laranjeiras|Costa Bela|Das Laranjeiras|
+Eldorado|Feu Rosa|Hélio Ferraz|Jacaraípe|
+Jardim Carapina|Jardim Limoeiro|
+José de Anchieta|Laranjeiras Velha|Manguinhos|
+Manoel Plaza|Morada de Laranjeiras|Nova Almeida|
+Novo Horizonte|Parque Residencial Laranjeiras|
+Planalto Serrano|Porto Canoa|Praia de Carapebus|
+Serra Dourada I|Serra Dourada II|Serra Dourada III|
+Serra Sede|Taquara I|Taquara II|Valparaíso
+`,
+
+  "Cariacica": `
+Alto Lage|Bandeirantes|Bela Aurora|Campo Grande|
+Cariacica Sede|Castelo Branco|Cruzeiro do Sul|
+Dom Bosco|Flexal I|Flexal II|Itacibá|
+Jardim América|Jardim Botânico|
+Jardim Campo Grande|Maracanã|Morrinhos|
+Nova Brasília|Nova Campo Grande|Nova Rosa da Penha|
+Novo Brasil|Oriente|Padre Gabriel|Porto de Santana|
+Porto Novo|Rio Marinho|Santana|São Conrado|
+São Francisco|São Geraldo|São João Batista|
+Sotelândia|Tabajara|Tucum|Vale Esperança|
+Vila Capixaba
+`
+};
+
+for (const cidade of Object.keys(bairrosBase)) {
+  bairrosBase[cidade] = bairrosBase[cidade]
+    .split("|")
+    .map(nome => nome.trim())
+    .filter(Boolean);
+}
+
+const norm = valor => String(valor || "")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"")
+  .toLowerCase()
+  .trim();
+
+let animais = [];
+let usuario = null;
+let firebaseDisponivel = false;
+let urlPreview = null;
+
+/* MUNICÍPIOS E BAIRROS */
+
+function bairrosDaCidade(cidade) {
+
+  if (!cidades.includes(cidade)) {
+    return [];
+  }
+
+  const lista = [
+    ...bairrosBase[cidade],
+    ...animais
+      .filter(animal =>
+        norm(animal.municipio) === norm(cidade)
+      )
+      .map(animal => animal.bairro)
+  ];
+
+  const mapa = new Map();
+
+  for (const nome of lista) {
+    if (typeof nome !== "string") continue;
+
+    const chave = norm(nome);
+
+    if (chave && !mapa.has(chave)) {
+      mapa.set(chave,nome.trim());
+    }
+  }
+
+  return [...mapa.values()].sort(
+    (a,b) => a.localeCompare(b,"pt-BR")
+  );
+}
+
+function montarMunicipios() {
+
+  for (const id of [
+    "filtro-municipio",
+    "pet-municipio"
+  ]) {
+    const campo = $(id);
+
+    for (const cidade of cidades) {
+      campo.add(new Option(cidade,cidade));
+    }
+  }
+}
+
+function atualizarBairrosFiltro() {
+
+  const cidade = $("filtro-municipio").value;
+  const campo = $("filtro-bairro");
+  const anterior = campo.value;
+
+  campo.replaceChildren(
+    new Option("Todos os bairros","")
+  );
+
+  for (const bairro of bairrosDaCidade(cidade)) {
+    campo.add(new Option(bairro,bairro));
+  }
+
+  campo.disabled = !cidade;
+
+  if (
+    [...campo.options].some(
+      opcao => opcao.value === anterior
+    )
+  ) {
+    campo.value = anterior;
+  }
+
+  $("aviso-filtro-bairros").textContent = cidade
+    ? `${bairrosDaCidade(cidade).length} bairros ou localidades disponíveis em ${cidade}.`
+    : "Selecione um município para consultar os bairros.";
+
+  mostrarAnimais();
+}
+
+function atualizarBairrosCadastro() {
+
+  const cidade = $("pet-municipio").value;
+  const lista = $("sugestoes-bairros");
+
+  lista.replaceChildren();
+
+  for (const bairro of bairrosDaCidade(cidade)) {
+    lista.appendChild(new Option(bairro));
+  }
+
+  $("pet-bairro").placeholder = cidade
+    ? "Selecione ou digite o bairro"
+    : "Escolha o município primeiro";
+
+  $("aviso-cadastro-bairros").textContent = cidade
+    ? "Escolha uma sugestão ou digite seu bairro."
+    : "Selecione um município para ver os bairros.";
+}
+
+function atualizarExplicacaoStatus() {
+
+  const mensagens = {
+    Perdido:
+      "Perdido: o tutor está procurando o animal.",
+
+    Encontrado:
+      "Encontrado: você encontrou um animal e procura o tutor.",
+
+    Reencontrado:
+      "Reencontrado: o animal voltou para a família. A foto e o anúncio continuarão no site."
+  };
+
+  $("explicacao-status").textContent =
+    mensagens[$("pet-status").value] || "";
+}
+
+/* CRIAR ELEMENTOS */
+
+function el(tag,texto,classe) {
+
+  const elemento = document.createElement(tag);
+
+  if (texto !== undefined) {
+    elemento.textContent = texto;
+  }
+
+  if (classe) {
+    elemento.className = classe;
+  }
+
+  return elemento;
+}
+
+/* CARTÕES */
+
+function criarCard(animal) {
+
+  const reencontrado =
+    animal.status === "Reencontrado";
+
+  const card = el(
+    "article",
+    undefined,
+    "pet-card" + (reencontrado ? " finalizado" : "")
+  );
+
+  const foto = el("div",undefined,"pet-photo");
+
+  if (
+    animal.fotoUrl &&
+    /^https:\/\//.test(animal.fotoUrl)
+  ) {
+
+    const imagem = el("img");
+
+    imagem.src = animal.fotoUrl;
+    imagem.alt = `Fotografia de ${animal.nome || "animal"}`;
+    imagem.loading = "lazy";
+
+    imagem.onerror = () => {
+      imagem.remove();
+
+      foto.insertAdjacentText(
+        "afterbegin",
+        animal.tipo === "Gato" ? "🐱" :
+        animal.tipo === "Cachorro" ? "🐶" :
+        "🐾"
+      );
+    };
+
+    foto.appendChild(imagem);
+
+  } else {
+
+    foto.textContent =
+      animal.tipo === "Gato" ? "🐱" :
+      animal.tipo === "Cachorro" ? "🐶" :
+      "🐾";
+  }
+
+  let classeStatus = "status";
+
+  if (animal.status === "Encontrado") {
+    classeStatus += " encontrado";
+  }
+
+  if (reencontrado) {
+    classeStatus += " reencontrado";
+  }
+
+  foto.appendChild(
+    el(
+      "span",
+      reencontrado
+        ? "Reencontrado 💚"
+        : animal.status || "Perdido",
+      classeStatus
+    )
+  );
+
+  card.appendChild(foto);
+
+  card.appendChild(
+    el("h3",animal.nome || "Sem nome")
+  );
+
+  card.appendChild(
+    el(
+      "p",
+      `📍 ${animal.bairro || "Bairro não informado"} — ${animal.municipio || ""}`
+    )
+  );
+
+  card.appendChild(
+    el("p",`🐾 ${animal.tipo || "Animal"}`)
+  );
+
+  if (animal.descricao) {
+    card.appendChild(
+      el("p",animal.descricao)
+    );
+  }
+
+  if (reencontrado) {
+
+    card.appendChild(
+      el(
+        "p",
+        "💚 Final feliz! Este animal foi reencontrado.",
+        "final-mensagem"
+      )
+    );
+
+  }
+
+  const acoes = el("div",undefined,"pet-card-actions");
+
+  const compartilhar = el("button","Compartilhar","btn");
+  compartilhar.type = "button";
+
+  compartilhar.onclick = async () => {
+
+    const texto = reencontrado
+      ? `💚 Final feliz! ${animal.nome} foi reencontrado em ${animal.municipio}.`
+      : `${animal.nome} — ${animal.status}. ${animal.bairro}, ${animal.municipio}. ${animal.descricao || ""}`;
+
+    const urlAnuncio = new URL(window.location.href);
+    urlAnuncio.hash = "animais";
+
+    try {
+
+      if (navigator.share) {
+
+        await navigator.share({
+          title: "Cadê Meu Pet",
+          text: texto,
+          url: urlAnuncio.toString()
+        });
+
+      } else {
+
+        await navigator.clipboard.writeText(
+          texto + "\n" + urlAnuncio.toString()
+        );
+
+        alert("Informações copiadas!");
+      }
+
+    } catch (erro) {
+
+      if (erro.name !== "AbortError") {
+        alert("Não foi possível compartilhar.");
+      }
+    }
+  };
+
+  acoes.appendChild(compartilhar);
+
+  if (
+    usuario &&
+    animal.ownerId === usuario.uid
+  ) {
+
+    const editar = el("button","Editar","btn btn-white");
+    editar.type = "button";
+    editar.onclick = () => editarAnimal(animal);
+
+    acoes.appendChild(editar);
+
+    if (!reencontrado) {
+
+      const finalizar = el(
+        "button",
+        "💚 Reencontrado",
+        "btn btn-green"
+      );
+
+      finalizar.type = "button";
+
+      finalizar.onclick = async () => {
+
+        if (!confirm(
+          "O animal voltou para sua família? A fotografia e o anúncio continuarão no site."
+        )) {
+          return;
+        }
+
+        if (window.CadeMeuPet.marcarReencontrado) {
+
+          finalizar.disabled = true;
+
+          try {
+            await window.CadeMeuPet.marcarReencontrado(
+              animal.id
+            );
+          } finally {
+            finalizar.disabled = false;
+          }
+        }
+      };
+
+      acoes.appendChild(finalizar);
+    }
+  }
+
+  card.appendChild(acoes);
+
+  return card;
+}
+
+/* PESQUISA */
+
+function ordenarAnimais(lista) {
+
+  return [...lista].sort((a,b) => {
+
+    const dataA = a.criadoEm?.seconds || 0;
+    const dataB = b.criadoEm?.seconds || 0;
+
+    return dataB - dataA;
+  });
+}
+
+function mostrarAnimais() {
+
+  const busca = norm($("filtro-busca").value);
+  const cidade = $("filtro-municipio").value;
+  const bairro = $("filtro-bairro").value;
+  const tipo = $("filtro-tipo").value;
+  const status = $("filtro-status").value;
+
+  const filtrados = ordenarAnimais(
+    animais.filter(animal =>
+
+      (
+        !busca ||
+        norm(
+          `${animal.nome} ${animal.bairro} ${animal.municipio} ${animal.descricao || ""}`
+        ).includes(busca)
+      ) &&
+
+      (
+        !cidade ||
+        norm(animal.municipio) === norm(cidade)
+      ) &&
+
+      (
+        !bairro ||
+        norm(animal.bairro) === norm(bairro)
+      ) &&
+
+      (
+        !tipo ||
+        animal.tipo === tipo
+      ) &&
+
+      (
+        !status ||
+        animal.status === status
+      )
+    )
+  );
+
+  $("lista-animais").replaceChildren(
+    ...filtrados.map(criarCard)
+  );
+
+  if (firebaseDisponivel) {
+
+    $("mensagem-animais").textContent =
+      filtrados.length
+        ? `${filtrados.length} anúncio(s) encontrado(s).`
+        : "Nenhum anúncio encontrado para esta pesquisa.";
+  }
+}
+
+function mostrarReencontrados() {
+
+  const reencontrados = ordenarAnimais(
+    animais.filter(animal =>
+      animal.status === "Reencontrado"
+    )
+  );
+
+  $("lista-reencontrados").replaceChildren(
+    ...reencontrados.map(criarCard)
+  );
+
+  $("mensagem-reencontrados").hidden =
+    reencontrados.length > 0;
+
+  if (!reencontrados.length) {
+
+    $("mensagem-reencontrados").textContent =
+      "💚 Os primeiros reencontros aparecerão aqui.";
+  }
+}
+
+/* FOTO */
+
+function limparPreview() {
+
+  if (urlPreview) {
+    URL.revokeObjectURL(urlPreview);
+    urlPreview = null;
+  }
+
+  $("foto-preview-img").removeAttribute("src");
+  $("foto-preview").classList.remove("visible");
+}
+
+$("pet-foto").addEventListener("change", () => {
+
+  limparPreview();
+
+  const arquivo = $("pet-foto").files[0];
+
+  if (!arquivo) return;
+
+  const permitidos = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+  if (!permitidos.includes(arquivo.type)) {
+
+    alert("Escolha uma foto JPG, PNG ou WebP.");
+    $("pet-foto").value = "";
+    return;
+  }
+
+  if (arquivo.size > 5 * 1024 * 1024) {
+
+    alert("A fotografia deve ter no máximo 5 MB.");
+    $("pet-foto").value = "";
+    return;
+  }
+
+  urlPreview = URL.createObjectURL(arquivo);
+
+  $("foto-preview-img").src = urlPreview;
+  $("foto-preview").classList.add("visible");
+});
+
+/* EDITAR ANÚNCIO */
+
+function editarAnimal(animal) {
+
+  if (
+    !usuario ||
+    animal.ownerId !== usuario.uid
+  ) {
+    alert("Você não pode editar este anúncio.");
+    return;
+  }
+
+  if (!cidades.includes(animal.municipio)) {
+    alert("Município indisponível para edição.");
+    return;
+  }
+
+  $("pet-id").value = animal.id;
+  $("pet-nome").value = animal.nome || "";
+  $("pet-tipo").value = animal.tipo || "";
+  $("pet-status").value = animal.status || "Perdido";
+  $("pet-cor").value = animal.cor || "";
+  $("pet-municipio").value = animal.municipio || "";
+  $("pet-bairro").value = animal.bairro || "";
+  $("pet-data").value = animal.data || "";
+  $("pet-descricao").value = animal.descricao || "";
+  $("pet-foto").value = "";
+
+  limparPreview();
+
+  if (
+    animal.fotoUrl &&
+    /^https:\/\//.test(animal.fotoUrl)
+  ) {
+
+    $("foto-preview-img").src = animal.fotoUrl;
+    $("foto-preview").classList.add("visible");
+  }
+
+  atualizarBairrosCadastro();
+  atualizarExplicacaoStatus();
+
+  $("btn-salvar").textContent = "Salvar alterações";
+  $("btn-cancelar").hidden = false;
+
+  $("mensagem-cadastro").textContent =
+    "Editando anúncio. A foto será mantida se você não selecionar outra.";
+
+  location.hash = "#cadastro";
+}
+
+function limparFormulario() {
+
+  $("form-pet").reset();
+  $("pet-id").value = "";
+  $("btn-salvar").textContent = "Publicar animal";
+  $("btn-cancelar").hidden = true;
+  $("mensagem-cadastro").textContent = "";
+
+  limparPreview();
+  atualizarBairrosCadastro();
+  atualizarExplicacaoStatus();
+}
+
+function mensagemErro(erro) {
+
+  const mensagens = {
+
+    "auth/invalid-credential":
+      "E-mail ou senha incorretos.",
+
+    "auth/email-already-in-use":
+      "Este e-mail já possui cadastro.",
+
+    "auth/weak-password":
+      "Escolha uma senha mais forte.",
+
+    "auth/popup-closed-by-user":
+      "Login cancelado.",
+
+    "permission-denied":
+      "Operação não permitida pelas regras do Firebase."
+  };
+
+  return mensagens[erro.code] ||
+    erro.message ||
+    "Não foi possível concluir a operação.";
+}
+
+/* EVENTOS DOS FILTROS */
+
+montarMunicipios();
+atualizarExplicacaoStatus();
+
+$("filtro-municipio").onchange = () => {
+  $("filtro-bairro").value = "";
+  atualizarBairrosFiltro();
+};
+
+for (const id of [
+  "filtro-bairro",
+  "filtro-tipo",
+  "filtro-status"
+]) {
+  $(id).onchange = mostrarAnimais;
+}
+
+$("filtro-busca").oninput = mostrarAnimais;
+
+$("btn-buscar").onclick = () => {
+  mostrarAnimais();
+  location.hash = "#animais";
+};
+
+$("pet-municipio").onchange = () => {
+  $("pet-bairro").value = "";
+  atualizarBairrosCadastro();
+};
+
+$("pet-status").onchange = atualizarExplicacaoStatus;
+
+$("btn-login").onclick = () => {
+  $("modal-login").showModal();
+};
+
+$("fechar-login").onclick = () => {
+  $("modal-login").close();
+};
+
+$("btn-cancelar").onclick = limparFormulario;
+
+$("btn-alertas").onclick = () => {
+
+  alert(
+    "Os alertas automáticos de animais perdidos ainda serão configurados."
+  );
+};
+
+/* INSTALAÇÃO PWA */
+
+let eventoInstalacao = null;
+
+window.addEventListener("beforeinstallprompt", evento => {
+  evento.preventDefault();
+  eventoInstalacao = evento;
+});
+
+window.addEventListener("appinstalled", () => {
+
+  eventoInstalacao = null;
+
+  $("mensagem-instalar").textContent =
+    "Cadê Meu Pet instalado com sucesso! 🐾";
+});
+
+$("btn-instalar").onclick = async () => {
+
+  if (eventoInstalacao) {
+
+    const evento = eventoInstalacao;
+    eventoInstalacao = null;
+
+    await evento.prompt();
+    await evento.userChoice;
+
+    return;
+  }
+
+  const iphone =
+    /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  $("mensagem-instalar").textContent = iphone
+    ? "No Safari, toque em Compartilhar e depois em Adicionar à Tela de Início."
+    : "No navegador, abra o menu e procure Instalar aplicativo ou Adicionar à tela inicial. Para outras pessoas instalarem, o site precisa estar publicado em HTTPS.";
+};
+
+/* INTERFACE COMPARTILHADA */
+
+window.CadeMeuPet = {
+
+  $,
+  mensagemErro,
+  limparFormulario,
+  marcarReencontrado: null,
+
+  get usuario() {
+    return usuario;
+  },
+
+  get animais() {
+    return animais;
+  },
+
+  setUsuario(conta) {
+
+    usuario = conta;
+
+    $("btn-login").hidden = !!conta;
+    $("btn-sair").hidden = !conta;
+
+    $("nome-usuario").textContent = conta
+      ? "Olá, " +
+        (conta.displayName || conta.email || "usuário")
+      : "";
+
+    mostrarAnimais();
+    mostrarReencontrados();
+  },
+
+  setAnimais(lista) {
+
+    animais = lista;
+    firebaseDisponivel = true;
+
+    atualizarBairrosFiltro();
+    atualizarBairrosCadastro();
+
+    mostrarAnimais();
+    mostrarReencontrados();
+  }
+};
+</script>
+
+<!-- FIREBASE E CLOUDINARY -->
+
+<script type="module">
+
+import {
+  auth,
+  db,
+  googleProvider
+} from "./firebase-config.js";
+
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+const CLOUD_NAME = "d9dos9iq";
+const UPLOAD_PRESET = "cade_meu_pet_fotos";
+const TAMANHO_MAXIMO = 5 * 1024 * 1024;
+
+const TIPOS_PERMITIDOS = [
+  "image/jpeg",
+  "image/png",
+  "image/webp"
+];
+
+const app = window.CadeMeuPet;
+const $ = app.$;
+
+/* ENVIAR FOTO */
+
+async function enviarFotoCloudinary(arquivo) {
+
+  if (!TIPOS_PERMITIDOS.includes(arquivo.type)) {
+    throw new Error(
+      "Formato inválido. Use JPG, PNG ou WebP."
+    );
+  }
+
+  if (arquivo.size > TAMANHO_MAXIMO) {
+    throw new Error(
+      "A fotografia deve ter no máximo 5 MB."
+    );
+  }
+
+  const formulario = new FormData();
+
+  formulario.append("file",arquivo);
+  formulario.append("upload_preset",UPLOAD_PRESET);
+
+  const url =
+    `https://api.cloudinary.com/v1_1/${encodeURIComponent(CLOUD_NAME)}/image/upload`;
+
+  const resposta = await fetch(url, {
+    method: "POST",
+    body: formulario
+  });
+
+  const resultado = await resposta.json();
+
+  if (!resposta.ok || !resultado.secure_url) {
+    throw new Error(
+      resultado.error?.message ||
+      "Não foi possível enviar a fotografia."
+    );
+  }
+
+  return {
+    url: resultado.secure_url,
+    publicId: resultado.public_id
+  };
+}
+
+/* LOGIN COM GOOGLE */
+
+$("login-google").onclick = async () => {
+
+  try {
+
+    await signInWithPopup(auth,googleProvider);
+
+    $("mensagem-login").textContent = "";
+    $("modal-login").close();
+
+  } catch (erro) {
+
+    $("mensagem-login").textContent =
+      app.mensagemErro(erro);
+  }
+};
+
+/* LOGIN COM E-MAIL */
+
+$("form-login").onsubmit = async evento => {
+
+  evento.preventDefault();
+
+  try {
+
+    await signInWithEmailAndPassword(
+      auth,
+      $("login-email").value,
+      $("login-senha").value
+    );
+
+    $("mensagem-login").textContent = "";
+    $("modal-login").close();
+
+  } catch (erro) {
+
+    $("mensagem-login").textContent =
+      app.mensagemErro(erro);
+  }
+};
+
+/* CRIAR CONTA */
+
+$("criar-conta").onclick = async () => {
+
+  try {
+
+    await createUserWithEmailAndPassword(
+      auth,
+      $("login-email").value,
+      $("login-senha").value
+    );
+
+    $("mensagem-login").textContent = "";
+    $("modal-login").close();
+
+  } catch (erro) {
+
+    $("mensagem-login").textContent =
+      app.mensagemErro(erro);
+  }
+};
+
+/* SAIR */
+
+$("btn-sair").onclick = async () => {
+
+  try {
+    await signOut(auth);
+  } catch (erro) {
+    alert(app.mensagemErro(erro));
+  }
+};
+
+onAuthStateChanged(auth,conta => {
+  app.setUsuario(conta);
+});
+
+/* MARCAR COMO REENCONTRADO */
+
+app.marcarReencontrado = async id => {
+
+  if (!app.usuario) {
+    alert("Entre na sua conta.");
+    return;
+  }
+
+  const animal = app.animais.find(
+    item => item.id === id
+  );
+
+  if (
+    !animal ||
+    animal.ownerId !== app.usuario.uid
+  ) {
+    alert(
+      "Somente o responsável pode alterar o anúncio."
+    );
+    return;
+  }
+
+  try {
+
+    await updateDoc(
+      doc(db,"pets",id),
+      {
+        status: "Reencontrado",
+        reencontradoEm: serverTimestamp()
+      }
+    );
+
+    alert(
+      "💚 Final feliz! O anúncio e a fotografia foram preservados."
+    );
+
+  } catch (erro) {
+
+    alert(app.mensagemErro(erro));
+  }
+};
+
+/* SALVAR OU EDITAR ANÚNCIO */
+
+$("form-pet").onsubmit = async evento => {
+
+  evento.preventDefault();
+
+  const mensagem = $("mensagem-cadastro");
+  const botao = $("btn-salvar");
+
+  if (!app.usuario) {
+
+    mensagem.textContent =
+      "Entre na sua conta para publicar.";
+
+    $("modal-login").showModal();
+    return;
+  }
+
+  const id = $("pet-id").value;
+  const arquivo = $("pet-foto").files[0];
+
+  const dados = {
+
+    nome: $("pet-nome").value.trim(),
+    tipo: $("pet-tipo").value,
+    status: $("pet-status").value,
+    cor: $("pet-cor").value.trim(),
+    municipio: $("pet-municipio").value,
+    bairro: $("pet-bairro").value.trim(),
+    data: $("pet-data").value,
+    descricao: $("pet-descricao").value.trim(),
+    ownerId: app.usuario.uid
+  };
+
+  const statusPermitidos = [
+    "Perdido",
+    "Encontrado",
+    "Reencontrado"
+  ];
+
+  const tiposPermitidos = [
+    "Cachorro",
+    "Gato",
+    "Outro"
+  ];
+
+  if (
+    !dados.nome ||
+    !dados.bairro ||
+    !tiposPermitidos.includes(dados.tipo) ||
+    !cidades.includes(dados.municipio) ||
+    !statusPermitidos.includes(dados.status)
+  ) {
+
+    mensagem.textContent =
+      "Preencha os dados obrigatórios corretamente.";
+
+    return;
+  }
+
+  if (
+    arquivo &&
+    !TIPOS_PERMITIDOS.includes(arquivo.type)
+  ) {
+
+    mensagem.textContent =
+      "Escolha uma foto JPG, PNG ou WebP.";
+
+    return;
+  }
+
+  if (
+    arquivo &&
+    arquivo.size > TAMANHO_MAXIMO
+  ) {
+
+    mensagem.textContent =
+      "A fotografia deve ter no máximo 5 MB.";
+
+    return;
+  }
+
+  let original = null;
+
+  if (id) {
+
+    original = app.animais.find(
+      animal => animal.id === id
+    );
+
+    if (
+      !original ||
+      original.ownerId !== app.usuario.uid
+    ) {
+
+      mensagem.textContent =
+        "Você não pode editar este anúncio.";
+
+      return;
+    }
+  }
+
+  botao.disabled = true;
+  let fotoEnviada = false;
+
+  try {
+
+    if (arquivo) {
+
+      mensagem.textContent =
+        "📸 Enviando fotografia...";
+
+      const foto = await enviarFotoCloudinary(arquivo);
+
+      dados.fotoUrl = foto.url;
+      dados.fotoPublicId = foto.publicId;
+
+      fotoEnviada = true;
+    }
+
+    if (
+      dados.status === "Reencontrado" &&
+      (!original || original.status !== "Reencontrado")
+    ) {
+
+      dados.reencontradoEm = serverTimestamp();
+    }
+
+    if (
+      original &&
+      original.status === "Reencontrado" &&
+      dados.status !== "Reencontrado"
+    ) {
+
+      dados.reencontradoEm = null;
+    }
+
+    mensagem.textContent =
+      "Salvando informações...";
+
+    if (id) {
+
+      await updateDoc(
+        doc(db,"pets",id),
+        dados
+      );
+
+    } else {
+
+      await addDoc(
+        collection(db,"pets"),
+        {
+          ...dados,
+          criadoEm: serverTimestamp()
+        }
+      );
+    }
+
+    app.limparFormulario();
+
+    mensagem.textContent =
+      dados.status === "Reencontrado"
+        ? "💚 Final feliz! O anúncio continuará no site."
+        : "Animal publicado com sucesso! 💗🐾";
+
+    location.hash =
+      dados.status === "Reencontrado"
+        ? "#finais-felizes"
+        : "#animais";
+
+  } catch (erro) {
+
+    console.error("Erro ao salvar anúncio:",erro);
+
+    mensagem.textContent =
+      (
+        erro.message ||
+        "Não foi possível salvar o anúncio."
+      ) +
+      (
+        fotoEnviada
+          ? " A foto foi enviada, mas o anúncio não foi salvo. Evite repetir o envio."
+          : ""
+      );
+
+  } finally {
+
+    botao.disabled = false;
+  }
+};
+
+/* CARREGAR ANÚNCIOS */
+
+onSnapshot(
+  collection(db,"pets"),
+
+  resultado => {
+
+    app.setAnimais(
+      resultado.docs.map(item => ({
+        id: item.id,
+        ...item.data()
+      }))
+    );
+  },
+
+  erro => {
+
+    $("mensagem-animais").textContent =
+      "Erro ao carregar anúncios: " +
+      app.mensagemErro(erro);
+
+    $("mensagem-reencontrados").hidden = false;
+
+    $("mensagem-reencontrados").textContent =
+      "Não foi possível carregar os reencontros.";
+  }
+);
+
+</script>
+
+<!-- REGISTRO DO SERVICE WORKER -->
+
+<script>
+"use strict";
+
+if ("serviceWorker" in navigator) {
+
+  const registrarSW = async () => {
+
+    try {
+
+      const registro =
+        await navigator.serviceWorker.register(
+          "./sw.js",
+          {
+            scope: "./",
+            updateViaCache: "none"
+          }
+        );
+
+      console.log(
+        "Cadê Meu Pet: Service Worker registrado.",
+        registro.scope
+      );
+
+      await registro.update();
+
+    } catch (erro) {
+
+      console.error(
+        "Cadê Meu Pet: erro no Service Worker.",
+        erro
+      );
+    }
+  };
+
+  if (document.readyState === "complete") {
+
+    registrarSW();
+
+  } else {
+
+    window.addEventListener(
+      "load",
+      registrarSW,
+      { once: true }
+    );
+  }
+}
+</script>
+
+</body>
+</html>
