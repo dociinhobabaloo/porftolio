@@ -1,14 +1,19 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brasileirão Série A - Dashboard & Simulador</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#006b3c">
+
+<title>Brasileirão Série A | Dashboard e Simulador</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
 :root {
   --green: #006b3c;
   --green2: #004f2d;
@@ -20,55 +25,82 @@
   --gold: #d7b24a;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 70px;
 }
 
 body {
   margin: 0;
-  min-width: 0;
-  overflow-x: hidden;
-  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at 10% 0%, rgba(0,107,60,.08), transparent 28%),
-    linear-gradient(180deg, #f7faf8 0%, #eef4f0 100%);
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(0,107,60,.08),
+      transparent 28%
+    ),
+    linear-gradient(180deg,#f7faf8,#eef4f0);
 }
 
-/* BOTÃO VOLTAR */
+button,
+input,
+select {
+  font: inherit;
+}
 
-.btn-voltar {
-  position: absolute;
-  top: 18px;
-  left: 20px;
-  z-index: 100;
+button {
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #5bc899;
+  outline-offset: 3px;
+}
+
+/* VOLTAR AO PORTFÓLIO */
+
+.voltar-portfolio-bar {
+  position: relative;
+  z-index: 5;
+  padding: 10px max(
+    16px,
+    calc((100% - 1180px)/2)
+  );
+  background: #e9f8f1;
+  border-bottom: 1px solid #c4e4d2;
+}
+
+.voltar-portfolio {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 15px;
-  background: #006b3c;
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,.35);
-  border-radius: 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
+  gap: 11px;
+  padding: 10px 17px;
+  border: 1px solid #b5decb;
+  border-radius: 12px;
+  background: white;
+  color: #006b3c;
+  font-weight: 800;
+  font-size: 13px;
   text-decoration: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,.15);
-  transition: background .2s, transform .2s;
+  box-shadow: 0 4px 12px rgba(0,80,45,.07);
+  transition: .2s;
 }
 
-.btn-voltar:hover {
-  background: #004f2d;
-  transform: translateY(-1px);
+.voltar-portfolio:hover {
+  background: #d9f6e8;
+  transform: translateY(-2px);
 }
 
-.btn-voltar:focus-visible {
-  outline: 3px solid #d7b24a;
-  outline-offset: 3px;
+.voltar-portfolio .seta {
+  font-size: 19px;
+  line-height: 1;
 }
 
 /* CABEÇALHO */
@@ -76,12 +108,21 @@ body {
 header {
   position: relative;
   overflow: hidden;
-  color: #fff;
+  color: white;
   text-align: center;
   padding: 28px 16px 30px;
   background:
-    radial-gradient(circle at 50% -20%, rgba(255,255,255,.18), transparent 34%),
-    linear-gradient(135deg, #007c45 0%, #006338 48%, #003f24 100%);
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(255,255,255,.18),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      #007c45,
+      #006338 48%,
+      #003f24
+    );
   box-shadow: 0 8px 28px rgba(0,70,40,.18);
 }
 
@@ -90,8 +131,8 @@ header::after {
   content: "";
   position: absolute;
   border-radius: 50%;
-  pointer-events: none;
   border: 1px solid rgba(255,255,255,.10);
+  pointer-events: none;
 }
 
 header::before {
@@ -120,8 +161,8 @@ header h1 {
   position: relative;
   margin: 10px 0 4px;
   font-size: 28px;
-  letter-spacing: .3px;
   font-weight: 800;
+  letter-spacing: .3px;
 }
 
 header p {
@@ -131,23 +172,70 @@ header p {
   font-size: 14px;
 }
 
+/* PLAYER DE MÚSICA */
+
+.music-player {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: max-content;
+  max-width: 100%;
+  margin: 12px auto 0;
+  padding: 9px 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 14px;
+  background: rgba(0,0,0,.16);
+}
+
+.music-player button {
+  min-width: 76px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 9px;
+  background: white;
+  color: #087a45;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.music-player button:hover {
+  background: #e5f7ed;
+}
+
+.music-player .volume-label {
+  font-size: 14px;
+}
+
+.music-player input[type="range"] {
+  width: 95px;
+  min-width: 80px;
+  accent-color: white;
+}
+
 /* ESTRUTURA */
 
 .container {
-  width: 100%;
   max-width: 1120px;
   margin: auto;
   padding: 16px 14px 28px;
 }
 
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 310px;
+  gap: 14px;
+  align-items: start;
+}
+
 .card {
   min-width: 0;
-  background: rgba(255,255,255,.96);
-  border: 1px solid rgba(218,229,222,.95);
-  border-radius: 14px;
-  box-shadow: 0 8px 28px rgba(20,55,35,.08);
   padding: 15px;
-  margin: 0;
+  border: 1px solid rgba(218,229,222,.95);
+  border-radius: 15px;
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 8px 28px rgba(20,55,35,.08);
 }
 
 .card h2 {
@@ -156,60 +244,66 @@ header p {
 }
 
 .card > p {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   color: var(--muted);
   font-size: 12px;
+  line-height: 1.5;
 }
+
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 12px;
+  min-width: 0;
+}
+
+/* FORMULÁRIOS E BOTÕES */
 
 .controls {
   display: flex;
-  gap: 7px;
   flex-wrap: wrap;
-  margin: 0 0 10px;
+  gap: 8px;
+  margin-bottom: 11px;
 }
 
-input, select, button {
+input,
+select,
+button {
+  padding: 10px 12px;
   border: 1px solid #d7e1db;
   border-radius: 11px;
-  padding: 9px 11px;
   font-size: 13px;
-  font-family: inherit;
-  outline: none;
 }
 
-input:focus-visible,
-select:focus-visible,
-button:focus-visible {
-  border-color: #48a477;
-  outline: 2px solid #48a477;
-  outline-offset: 2px;
-}
-
-input {
-  flex: 1;
-  min-width: 0;
+input,
+select {
   background: #fbfdfc;
+  color: #17231c;
+}
+
+input:focus,
+select:focus {
+  border-color: #48a477;
+}
+
+input[type="text"] {
+  flex: 1;
+  min-width: 160px;
 }
 
 button {
-  cursor: pointer;
-  color: #fff;
   border: 0;
+  background:
+    linear-gradient(135deg,var(--green3),var(--green));
+  color: white;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--green3), var(--green));
-  box-shadow: 0 4px 10px rgba(0,107,60,.15);
-  transition: transform .18s, box-shadow .18s;
+  transition: .18s;
 }
 
 button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 7px 14px rgba(0,107,60,.20);
-}
-
-button.secondary {
-  background: #000;
-  color: #fff;
-  box-shadow: none;
+  filter: brightness(1.05);
 }
 
 button:disabled {
@@ -217,44 +311,56 @@ button:disabled {
   cursor: wait;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: minmax(0,1fr) 310px;
-  gap: 14px;
-  align-items: start;
-  width: 100%;
+button.secondary {
+  background: #15241b;
 }
 
-.classification-card {
-  min-width: 0;
-  width: 100%;
-}
+/* STATUS AO VIVO */
 
-.side-column {
+.live-status {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 310px;
-  min-width: 0;
-  position: sticky;
-  top: 12px;
-  align-self: start;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f7faf8;
+  color: #607269;
+  font-size: 10px;
 }
 
-.side-column .card {
-  width: 100%;
+.live-dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: #20a05a;
+}
+
+.live-status.loading .live-dot {
+  background: #e59b18;
+}
+
+.live-status.error .live-dot {
+  background: #d94a4a;
+}
+
+.live-status button {
+  margin-left: auto;
+  padding: 3px 8px;
+  background: #12251a;
+  font-size: 17px;
 }
 
 /* TABELA */
 
 .table-wrap {
   width: 100%;
-  max-width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: contain;
   border: 1px solid var(--line);
-  border-radius: 11px;
+  border-radius: 12px;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -265,29 +371,25 @@ table {
 }
 
 th {
+  padding: 10px 6px;
   background: #edf5ef;
   color: #1b5a3a;
   text-align: center;
-  padding: 9px 6px;
   font-size: 10px;
-  text-transform: uppercase;
   letter-spacing: .4px;
-  white-space: nowrap;
 }
-
-th:first-child { border-radius: 10px 0 0 0; }
-th:last-child { border-radius: 0 10px 0 0; }
 
 td {
+  padding: 7px 5px;
   border-top: 1px solid #edf1ee;
-  padding: 6px 5px;
+  background: white;
   text-align: center;
   font-size: 12px;
-  background: #fff;
-  white-space: nowrap;
 }
 
-tr:hover td { background: #f8fbf9; }
+tr:hover td {
+  background: #f8fbf9;
+}
 
 td.team {
   text-align: left;
@@ -299,8 +401,8 @@ td.team {
   width: 29px;
   height: 29px;
   object-fit: contain;
-  vertical-align: middle;
   margin-right: 7px;
+  vertical-align: middle;
 }
 
 .pos {
@@ -308,81 +410,98 @@ td.team {
   color: #65736b;
 }
 
-.g4 td:first-child { box-shadow: inset 4px 0 0 #1388d5; }
-.g6 td:first-child { box-shadow: inset 4px 0 0 #8b58d8; }
-.z4 td:first-child { box-shadow: inset 4px 0 0 #db3c3c; }
+.g4 td:first-child {
+  box-shadow: inset 4px 0 0 #1388d5;
+}
+
+.g6 td:first-child {
+  box-shadow: inset 4px 0 0 #8b58d8;
+}
+
+.z4 td:first-child {
+  box-shadow: inset 4px 0 0 #db3c3c;
+}
 
 .badge {
   display: inline-block;
-  padding: 2px 5px;
+  margin-left: 4px;
+  padding: 3px 6px;
   border-radius: 20px;
   font-size: 8px;
   font-weight: 900;
-  margin-left: 4px;
 }
 
-.badge.g4 { background: #dceeff; color: #11629c; }
-.badge.g6 { background: #eee5ff; color: #6237a0; }
-.badge.z4 { background: #ffe1e1; color: #a72222; }
+.badge.g4 {
+  background: #dceeff;
+  color: #11629c;
+}
+
+.badge.g6 {
+  background: #eee5ff;
+  color: #6237a0;
+}
+
+.badge.z4 {
+  background: #ffe1e1;
+  color: #a72222;
+}
 
 /* AGENDA */
-
-.agenda-card h2,
-.simulator-card h2 {
-  font-size: 16px;
-  margin-bottom: 3px;
-}
-
-.agenda-card .controls { margin-bottom: 7px; }
-.agenda-card select { width: 100%; }
 
 .agenda-card {
   max-height: calc(100vh - 30px);
   overflow: hidden;
 }
 
-.agenda-card #matches {
+.agenda-card select {
+  width: 100%;
+}
+
+#matches {
   max-height: calc(100vh - 170px);
   overflow-y: auto;
-  overflow-x: hidden;
   scrollbar-width: thin;
 }
 
 .match-day {
-  margin-top: 6px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  margin-top: 7px;
   overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 11px;
 }
 
 .match-day h3 {
   margin: 0;
-  padding: 8px 10px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--green), var(--green2));
-  font-size: 11px;
+  padding: 10px 12px;
+  color: white;
+  background:
+    linear-gradient(135deg,var(--green),var(--green2));
+  font-size: 12px;
 }
 
 .match {
   display: grid;
-  grid-template-columns: minmax(0,1fr) 58px minmax(0,1fr);
+  grid-template-columns:
+    minmax(0,1fr) 58px minmax(0,1fr);
   align-items: center;
-  gap: 3px;
-  padding: 8px 6px;
+  gap: 4px;
+  padding: 9px 7px;
   border-top: 1px solid var(--line);
-  background: #fff;
+  background: white;
 }
 
-.match:first-of-type { border-top: 0; }
-.match:hover { background: #f8fbf9; }
-.match .home { text-align: right; }
-.match .away { text-align: left; }
+.match .home {
+  text-align: right;
+}
+
+.match .away {
+  text-align: left;
+}
 
 .match-team {
   min-width: 0;
-  font-weight: 800;
   font-size: 10px;
-  line-height: 1.2;
+  font-weight: 800;
   overflow-wrap: anywhere;
 }
 
@@ -390,17 +509,16 @@ td.team {
   width: 22px;
   height: 22px;
   object-fit: contain;
-  vertical-align: middle;
   margin: 0 3px;
+  vertical-align: middle;
 }
 
 .time {
-  font-size: 9px;
+  min-width: 58px;
   color: #68766e;
   text-align: center;
-  min-width: 0;
-  line-height: 1.3;
-  font-weight: 600;
+  font-size: 9px;
+  line-height: 1.4;
 }
 
 .time b {
@@ -412,340 +530,250 @@ td.team {
 
 .simulator-card {
   border-top: 3px solid var(--green3);
-  max-height: calc(100vh - 30px);
-  overflow: hidden;
-}
-
-.simulator-card > p {
-  font-size: 10px;
-  line-height: 1.35;
-  margin-bottom: 8px;
 }
 
 .sim-grid {
   display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 7px;
   max-height: 300px;
   overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
 }
 
 .sim-card {
-  min-width: 0;
+  padding: 9px;
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 8px;
+  border-radius: 11px;
   background: #fbfdfc;
 }
 
 .sim-card strong {
   display: block;
+  margin-bottom: 8px;
   font-size: 10px;
-  line-height: 1.2;
-  margin-bottom: 6px;
-  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
 
 .score-row {
   display: flex;
-  gap: 4px;
   align-items: center;
   justify-content: center;
+  gap: 5px;
 }
 
-.score-row input,
-.simulator-card .score-row input[type="number"] {
-  width: 34px;
+.score-row input {
+  width: 36px;
   min-width: 0;
-  max-width: 55px;
-  flex: 0 0 auto;
+  padding: 7px 3px;
   text-align: center;
-  padding: 6px 2px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .simulator-card .controls {
   display: grid;
-  grid-template-columns: minmax(0,1fr) 72px;
+  grid-template-columns: 1fr 73px;
   gap: 6px;
-  margin-top: 9px !important;
+  margin-top: 10px;
 }
 
 .simulator-card .controls button {
-  padding: 8px 5px;
+  padding: 9px 5px;
   font-size: 10px;
-  white-space: normal;
 }
 
 .sim-help {
   display: block;
-  margin-top: 7px;
+  margin-top: 10px;
   color: var(--muted);
-  font-size: 9px;
-  line-height: 1.3;
-}
-
-/* ATUALIZAÇÃO */
-
-.live-status {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 0 0 9px;
-  padding: 6px 8px;
-  border: 1px solid rgba(218,229,222,.95);
-  border-radius: 9px;
-  background: #f7faf8;
-  color: #718078;
   font-size: 10px;
+  line-height: 1.5;
 }
 
-.live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #20a05a;
-  flex: none;
-}
-
-.live-status.loading .live-dot { background: #e59b18; }
-.live-status.error .live-dot { background: #d94a4a; }
-
-.live-status button {
-  margin-left: auto;
-  width: 25px;
-  height: 23px;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-/* MÚSICA */
-
-.music-player {
-  width: max-content;
-  max-width: calc(100% - 20px);
-  margin: 10px auto 0;
-  padding: 7px 9px;
-  border: 1px solid rgba(255,255,255,.18);
-  border-radius: 14px;
-  background: rgba(0,0,0,.16);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-.music-player button {
-  border: 0;
-  border-radius: 10px;
-  min-width: 76px;
-  padding: 7px 10px;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: 800;
-  background: #fff;
-  color: #087a45;
-}
-
-.music-player .music-title { display: none; }
-
-.music-player .volume-label {
-  font-size: 12px;
-  opacity: .9;
-  flex: none;
-}
-
-.music-player input[type=range] {
-  accent-color: #fff;
-  cursor: pointer;
-  width: 90px;
-  min-width: 90px;
-  flex: none;
-}
+/* RODAPÉ */
 
 footer {
-  text-align: center;
-  padding: 22px;
+  padding: 25px 15px;
   color: #758179;
+  text-align: center;
   font-size: 12px;
 }
 
-/* TABLETS */
+.footer-voltar {
+  display: inline-block;
+  margin-top: 11px;
+  color: var(--green);
+  font-weight: 800;
+  text-decoration: none;
+}
 
-@media (max-width: 900px) {
+/* RESPONSIVIDADE */
+
+@media(max-width:900px) {
   .dashboard-grid {
-    grid-template-columns: minmax(0,1fr) 285px;
+    grid-template-columns: minmax(0,1fr) 280px;
     gap: 10px;
   }
 
   .side-column {
-    width: 285px;
     position: static;
+  }
+
+  .sim-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-/* CELULARES */
-
-@media (max-width: 700px) {
-  .btn-voltar {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 10px 0 0 10px;
-    padding: 9px 12px;
-    font-size: 12px;
-    background: #006b3c;
+@media(max-width:700px) {
+  .voltar-portfolio-bar {
+    text-align: center;
   }
 
-  header { padding: 17px 9px 18px; }
-  header img { width: 70px; }
-  header h1 { font-size: 19px; margin: 7px 0 3px; }
-  header p { font-size: 10px; }
+  header {
+    padding: 18px 10px 20px;
+  }
 
-  .container { padding: 10px 8px 22px; }
+  header img {
+    width: 72px;
+  }
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  header p {
+    font-size: 11px;
+  }
+
+  .container {
+    padding: 10px 8px 25px;
+  }
 
   .dashboard-grid {
-    grid-template-columns: minmax(0,1fr);
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 11px;
   }
-
-  .classification-card { order: 1; }
 
   .side-column {
-    order: 2;
-    width: 100%;
-    position: static;
     display: flex;
     flex-direction: column;
-    gap: 10px;
   }
-
-  .card { padding: 12px; border-radius: 12px; }
-  .card h2 { font-size: 17px; }
-  .card > p { font-size: 11px; }
-  .controls { gap: 8px; }
-
-  .classification-card .controls input,
-  .agenda-card select {
-    width: 100%;
-    min-width: 0;
-    font-size: 16px;
-    min-height: 44px;
-  }
-
-  .table-wrap { overflow-x: auto; }
-  table { min-width: 700px; }
-  th { font-size: 10px; padding: 8px 5px; }
-  td { font-size: 11px; padding: 7px 5px; }
-  .team img { width: 26px; height: 26px; }
 
   .agenda-card,
   .simulator-card {
     max-height: none;
-    overflow: visible;
   }
 
-  .agenda-card #matches,
-  .simulator-card .sim-grid {
+  #matches,
+  .sim-grid {
     max-height: none;
     overflow: visible;
   }
 
-  .match {
-    grid-template-columns: minmax(0,1fr) 65px minmax(0,1fr);
-    gap: 5px;
-    padding: 10px 7px;
-  }
-
-  .match-team { font-size: 11px; }
-  .match-team img { width: 24px; height: 24px; }
-  .time { font-size: 10px; }
-
   .sim-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 8px;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .sim-card { padding: 10px; }
-  .sim-card strong { font-size: 11px; }
+  .card {
+    padding: 12px;
+  }
 
-  .simulator-card .score-row input[type="number"] {
-    width: 48px;
-    min-width: 44px;
+  table {
+    min-width: 610px;
+  }
+
+  th {
+    font-size: 9px;
+    padding: 7px 3px;
+  }
+
+  td {
+    font-size: 10px;
+    padding: 6px 3px;
+  }
+
+  .team img {
+    width: 23px;
+    height: 23px;
+    margin-right: 4px;
+  }
+
+  .music-player {
+    margin-top: 11px;
+    padding: 8px;
+  }
+
+  .simulator-card .score-row input {
+    width: 45px;
     min-height: 44px;
-    padding: 8px 5px;
     font-size: 16px;
-  }
-
-  .simulator-card .controls {
-    grid-template-columns: minmax(0,1fr) 90px;
   }
 
   .simulator-card .controls button {
     min-height: 44px;
     font-size: 12px;
   }
-
-  .music-player {
-    max-width: 280px;
-    width: 100%;
-    margin: 9px auto 0;
-    padding: 6px 7px;
-    gap: 6px;
-  }
-
-  .music-player button { min-width: 70px; }
-
-  .music-player input[type=range] {
-    width: 75px;
-    min-width: 75px;
-  }
 }
 
-@media (max-width: 380px) {
-  header h1 { font-size: 17px; }
-  .container { padding: 8px; }
-  .card { padding: 10px; }
-  .sim-grid { grid-template-columns: 1fr; }
-  .sim-card strong { font-size: 12px; }
-}
+@media(max-width:380px) {
+  .voltar-portfolio {
+    font-size: 12px;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    transition: none !important;
-    animation: none !important;
+  header h1 {
+    font-size: 18px;
+  }
+
+  table {
+    min-width: 580px;
+  }
+
+  .sim-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
+
 </head>
 
 <body>
 
-<a href="index.html" class="btn-voltar">
-  <span>←</span> Voltar ao Portfólio
-</a>
+<!-- BOTÃO VOLTAR -->
+
+<div class="voltar-portfolio-bar">
+
+  <a
+    href="./index.html"
+    class="voltar-portfolio"
+    aria-label="Voltar ao portfólio DevStar"
+  >
+    <span class="seta">←</span>
+    Voltar ao Portfólio DevStar
+  </a>
+
+</div>
+
+<!-- CABEÇALHO DO BRASILEIRÃO -->
 
 <header>
+
   <img
     id="league-logo"
     src="https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/Brasileir%C3%A3o%20S%C3%A9rie%20A%20HD.png"
     alt="Logo do Brasileirão"
   >
+
   <h1>BRASILEIRÃO SÉRIE A</h1>
+
   <p>Classificação, Agenda &amp; Simulador</p>
 
   <div class="music-player" aria-label="Player de música">
-    <button id="music-toggle" type="button">▶️ Play</button>
+
+    <button id="music-toggle" type="button">
+      ▶️ Play
+    </button>
+
     <span class="volume-label">🔊</span>
+
     <input
       id="music-volume"
       type="range"
@@ -755,112 +783,224 @@ footer {
       value="0.7"
       aria-label="Volume"
     >
+
     <audio id="site-music" preload="metadata">
-      <source src="musica-brasileirao.mp3" type="audio/mpeg">
+      <source
+        src="musica-brasileirao.mp3"
+        type="audio/mpeg"
+      >
     </audio>
+
   </div>
+
 </header>
 
+<!-- DASHBOARD -->
+
 <main class="container">
+
   <div class="dashboard-grid">
 
+    <!-- CLASSIFICAÇÃO -->
+
     <section class="card classification-card">
-      <div id="live-status" class="live-status" aria-live="polite">
+
+      <div
+        id="live-status"
+        class="live-status"
+        aria-live="polite"
+      >
         <span class="live-dot"></span>
-        <span id="live-status-text">Atualizando...</span>
-        <button id="refresh-live" type="button" title="Atualizar agora">↻</button>
+
+        <span id="live-status-text">
+          Atualizando...
+        </span>
+
+        <button
+          id="refresh-live"
+          type="button"
+          title="Atualizar agora"
+          aria-label="Atualizar classificação"
+        >
+          ↻
+        </button>
       </div>
 
       <h2>Classificação</h2>
+
       <p>Brasileirão Série A · tabela de pontos</p>
 
       <div class="controls">
-        <input id="search" type="text" placeholder="Buscar time...">
+        <input
+          id="search"
+          type="text"
+          placeholder="Buscar time..."
+          aria-label="Buscar time"
+        >
       </div>
 
       <div class="table-wrap">
+
         <table>
+
           <thead>
             <tr>
-              <th>#</th><th>Clube</th><th>P</th><th>J</th>
-              <th>V</th><th>E</th><th>D</th>
-              <th>GP</th><th>GC</th><th>SG</th>
+              <th>#</th>
+              <th>Clube</th>
+              <th>P</th>
+              <th>J</th>
+              <th>V</th>
+              <th>E</th>
+              <th>D</th>
+              <th>GP</th>
+              <th>GC</th>
+              <th>SG</th>
             </tr>
           </thead>
+
           <tbody id="table-body"></tbody>
+
         </table>
+
       </div>
+
     </section>
+
+    <!-- AGENDA E SIMULADOR -->
 
     <aside class="side-column">
 
       <section class="card agenda-card">
+
         <h2>Próximos Jogos</h2>
+
         <div class="controls">
-          <select id="round-select">
+          <select
+            id="round-select"
+            aria-label="Selecionar rodada"
+          >
             <option value="29">29ª rodada</option>
             <option value="30">30ª rodada</option>
           </select>
         </div>
+
         <div id="matches"></div>
+
       </section>
 
-      <section class="card simulator-card" id="simulator">
+      <section
+        class="card simulator-card"
+        id="simulator"
+      >
+
         <h2>⚡ Simulador</h2>
-        <p>Digite os placares para atualizar a pontuação da tabela.</p>
+
+        <p>
+          Digite os placares para atualizar
+          a pontuação da tabela.
+        </p>
 
         <div id="sim-grid" class="sim-grid"></div>
 
-        <div class="controls" style="margin-top:14px">
-          <button id="confirm-btn">✓ Confirmar Placares</button>
-          <button id="reset-btn" class="secondary">Resetar</button>
+        <div class="controls">
+
+          <button id="confirm-btn" type="button">
+            ✓ Confirmar Placares
+          </button>
+
+          <button
+            id="reset-btn"
+            class="secondary"
+            type="button"
+          >
+            Resetar
+          </button>
+
         </div>
 
         <small class="sim-help">
-          Vitória = 3 pontos · Empate = 1 ponto · Derrota = 0.
+          Vitória = 3 pontos · Empate = 1 ponto ·
+          Derrota = 0.
         </small>
+
       </section>
 
     </aside>
+
   </div>
+
 </main>
 
-<footer>Brasileirão Série A · Dashboard</footer>
+<footer>
+
+  <div>Brasileirão Série A · Dashboard</div>
+
+  <a href="./index.html" class="footer-voltar">
+    ← Voltar ao Portfólio DevStar
+  </a>
+
+</footer>
+
+<!-- JAVASCRIPT COMPLETO -->
 
 <script>
-/* MÚSICA */
+"use strict";
 
-const music = document.getElementById("site-music");
-const musicToggle = document.getElementById("music-toggle");
-const musicVolume = document.getElementById("music-volume");
+/* PLAYER DE MÚSICA */
+
+const music =
+  document.getElementById("site-music");
+
+const musicToggle =
+  document.getElementById("music-toggle");
+
+const musicVolume =
+  document.getElementById("music-volume");
 
 music.volume = Number(musicVolume.value);
 
-musicToggle.addEventListener("click", async () => {
-  try {
-    if (music.paused) {
-      await music.play();
-      musicToggle.textContent = "⏸️ Pause";
-    } else {
-      music.pause();
+musicToggle.addEventListener(
+  "click",
+  async () => {
+    try {
+      if (music.paused) {
+        await music.play();
+        musicToggle.textContent = "⏸️ Pause";
+      } else {
+        music.pause();
+        musicToggle.textContent = "▶️ Play";
+      }
+    } catch (erro) {
       musicToggle.textContent = "▶️ Play";
+      console.error("Erro no player:", erro);
     }
-  } catch (err) {
+  }
+);
+
+musicVolume.addEventListener(
+  "input",
+  () => {
+    music.volume = Number(musicVolume.value);
+  }
+);
+
+music.addEventListener(
+  "ended",
+  () => {
     musicToggle.textContent = "▶️ Play";
   }
-});
+);
 
-musicVolume.addEventListener("input", () => {
-  music.volume = Number(musicVolume.value);
-});
+/* ESCUDOS */
 
-music.addEventListener("ended", () => {
-  musicToggle.textContent = "▶️ Play";
-});
+const BASE =
+  "https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/";
 
-/* CLUBES */
-
-const BASE = "https://raw.githubusercontent.com/Lobobinho/Escudos-dos-Clubes-do-Brasileirao-2026/master/";
+/*
+  Tabela inicial de referência.
+  A atualização online tenta substituir
+  estes dados quando disponível.
+*/
 
 const clubs = [
   {name:"Flamengo",pts:60,j:28,v:18,e:6,d:4,gp:55,gc:23,logo:"Flamengo.png"},
@@ -885,47 +1025,13 @@ const clubs = [
   {name:"Chapecoense",pts:18,j:27,v:3,e:9,d:15,gp:29,gc:53,logo:"Chapecoense.png"}
 ];
 
-let initialClubs = clubs.map(club => ({...club}));
-let liveClubsSnapshot = clubs.map(club => ({...club}));
+let initialClubs =
+  clubs.map(club => ({...club}));
+
+let liveClubsSnapshot =
+  clubs.map(club => ({...club}));
+
 let simulationActive = false;
-
-/* NORMALIZAÇÃO DOS NOMES */
-
-const liveAliases = {
-  "bragantino": "RB Bragantino",
-  "red bull bragantino": "RB Bragantino",
-  "vasco": "Vasco da Gama",
-  "vasco da gama": "Vasco da Gama",
-  "atletico-mg": "Atlético-MG",
-  "atletico mineiro": "Atlético-MG",
-  "athletico-pr": "Athletico-PR",
-  "atletico paranaense": "Athletico-PR"
-};
-
-function liveNormalize(name) {
-  const key = String(name || "")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
-
-  return liveAliases[key] || name;
-}
-
-function findClub(name) {
-  const normalized = liveNormalize(name);
-  return clubs.find(c => c.name === normalized) || {name, logo:""};
-}
-
-function logoURL(club) {
-  return club.logo ? BASE + encodeURIComponent(club.logo) : "";
-}
-
-function badge(club) {
-  return club.logo
-    ? `<img src="${logoURL(club)}" alt="${club.name}" loading="lazy" onerror="this.style.display='none'">`
-    : "";
-}
 
 /* JOGOS CADASTRADOS */
 
@@ -942,6 +1048,7 @@ const games = {
     ["Fluminense","Coritiba","08/10","21:30"],
     ["Palmeiras","Bahia","08/10","21:30"]
   ],
+
   30: [
     ["Vasco da Gama","Remo","10/10","17:00"],
     ["São Paulo","Vitória","10/10","21:00"],
@@ -956,114 +1063,71 @@ const games = {
   ]
 };
 
-/* CLASSIFICAÇÃO */
+/* NOMES ALTERNATIVOS */
 
-function renderTable() {
-  const q = document.getElementById("search").value.toLowerCase().trim();
+const liveAliases = {
+  "bragantino": "RB Bragantino",
+  "red bull bragantino": "RB Bragantino",
+  "vasco": "Vasco da Gama",
+  "vasco da gama": "Vasco da Gama",
+  "atletico-mg": "Atlético-MG",
+  "atletico mineiro": "Atlético-MG",
+  "athletico-pr": "Athletico-PR",
+  "atletico paranaense": "Athletico-PR"
+};
 
-  const sorted = [...clubs].sort((a,b) =>
-    b.pts-a.pts ||
-    (b.gp-b.gc)-(a.gp-a.gc) ||
-    b.v-a.v ||
-    a.name.localeCompare(b.name)
-  );
+function liveNormalize(name) {
+  const key = String(name || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .trim();
 
-  const body = document.getElementById("table-body");
-  body.innerHTML = "";
-
-  sorted.forEach((c,i) => {
-    if (!c.name.toLowerCase().includes(q)) return;
-
-    const pos = i + 1;
-    const zone = pos <= 4 ? "g4" : pos <= 6 ? "g6" : pos >= 17 ? "z4" : "";
-
-    const tr = document.createElement("tr");
-    if (zone) tr.className = zone;
-
-    tr.innerHTML = `
-      <td class="pos">${pos}</td>
-      <td class="team">
-        ${badge(c)}${c.name}
-        ${pos<=4 ? '<span class="badge g4">G4</span>' :
-          pos<=6 ? '<span class="badge g6">G6</span>' :
-          pos>=17 ? '<span class="badge z4">Z4</span>' : ''}
-      </td>
-      <td><b>${c.pts}</b></td>
-      <td>${c.j}</td>
-      <td>${c.v}</td>
-      <td>${c.e}</td>
-      <td>${c.d}</td>
-      <td>${c.gp}</td>
-      <td>${c.gc}</td>
-      <td>${c.gp-c.gc}</td>
-    `;
-
-    body.appendChild(tr);
-  });
+  return liveAliases[key] || name;
 }
 
-/* AGENDA */
+function findClub(name) {
+  const normalizado = liveNormalize(name);
 
-function renderMatches() {
-  const round = Number(document.getElementById("round-select").value);
-  const box = document.getElementById("matches");
-  const sourceGames = games[round] || [];
-
-  box.innerHTML = `<div class="match-day"><h3>${round}ª rodada</h3></div>`;
-  const day = box.querySelector(".match-day");
-
-  if (!sourceGames.length) {
-    day.innerHTML += `<div class="match" style="display:block;text-align:center">
-      Nenhum jogo cadastrado para esta rodada.
-    </div>`;
-    return;
-  }
-
-  sourceGames.forEach(g => {
-    const home = findClub(g[0]);
-    const away = findClub(g[1]);
-    const div = document.createElement("div");
-
-    div.className = "match";
-    div.innerHTML = `
-      <div class="home match-team">${home.name} ${badge(home)}</div>
-      <div class="time">${g[2]}<br><b>${g[3]}</b></div>
-      <div class="away match-team">${badge(away)} ${away.name}</div>
-    `;
-
-    day.appendChild(div);
-  });
+  return clubs.find(
+    club => club.name === normalizado
+  ) || {
+    name: normalizado,
+    logo: ""
+  };
 }
 
-/* SIMULADOR */
-
-function renderSimulator() {
-  const round = document.getElementById("round-select").value;
-  const grid = document.getElementById("sim-grid");
-  grid.innerHTML = "";
-
-  games[round].forEach((g,i) => {
-    const div = document.createElement("div");
-    div.className = "sim-card";
-
-    div.innerHTML = `
-      <strong>${g[0]} × ${g[1]}</strong>
-      <div class="score-row">
-        <input type="number" min="0" value="0" id="home-${i}" aria-label="Gols ${g[0]}">
-        <span>x</span>
-        <input type="number" min="0" value="0" id="away-${i}" aria-label="Gols ${g[1]}">
-      </div>
-    `;
-
-    grid.appendChild(div);
-  });
+function logoURL(club) {
+  return club.logo
+    ? BASE + encodeURIComponent(club.logo)
+    : "";
 }
+
+function badge(club) {
+  if (!club.logo) return "";
+
+  return `
+    <img
+      src="${logoURL(club)}"
+      alt="${club.name}"
+      loading="lazy"
+      onerror="this.style.display='none'"
+    >
+  `;
+}
+
+/* RESTAURAR TABELA */
 
 function restoreOriginalTable() {
-  const snapshot = liveClubsSnapshot.length ? liveClubsSnapshot : initialClubs;
+  const snapshot = liveClubsSnapshot.length
+    ? liveClubsSnapshot
+    : initialClubs;
 
   clubs.forEach((club,index) => {
     const original = snapshot[index];
+
+    if (!original) return;
+
     club.pts = original.pts;
     club.j = original.j;
     club.v = original.v;
@@ -1074,181 +1138,563 @@ function restoreOriginalTable() {
   });
 }
 
-/* ATUALIZAÇÃO ONLINE */
+/* RENDERIZAR CLASSIFICAÇÃO */
 
-const LIVE_DATA_URL = "https://valorfinal.com.br/brasileirao/dados.json";
-const LIVE_REFRESH_MS = 5 * 60 * 1000;
+function renderTable() {
+  const busca = document
+    .getElementById("search")
+    .value
+    .toLowerCase()
+    .trim();
 
-function setLiveStatus(text,state="") {
-  const box = document.getElementById("live-status");
-  const label = document.getElementById("live-status-text");
+  const ordenados = [...clubs].sort(
+    (a,b) =>
+      b.pts - a.pts ||
+      (b.gp - b.gc) - (a.gp - a.gc) ||
+      b.v - a.v ||
+      a.name.localeCompare(b.name)
+  );
 
-  if (!box || !label) return;
+  const corpo =
+    document.getElementById("table-body");
 
-  box.className = "live-status" + (state ? " " + state : "");
-  label.textContent = text;
+  corpo.replaceChildren();
+
+  ordenados.forEach((club,index) => {
+    const posicao = index + 1;
+
+    if (!club.name.toLowerCase().includes(busca)) {
+      return;
+    }
+
+    const zona =
+      posicao <= 4 ? "g4" :
+      posicao <= 6 ? "g6" :
+      posicao >= 17 ? "z4" : "";
+
+    const tr = document.createElement("tr");
+
+    tr.className = zona;
+
+    tr.innerHTML = `
+      <td class="pos">${posicao}</td>
+
+      <td class="team">
+        ${badge(club)}
+        ${club.name}
+
+        ${
+          posicao <= 4
+            ? '<span class="badge g4">G4</span>'
+            : posicao <= 6
+              ? '<span class="badge g6">G6</span>'
+              : posicao >= 17
+                ? '<span class="badge z4">Z4</span>'
+                : ''
+        }
+      </td>
+
+      <td><b>${club.pts}</b></td>
+      <td>${club.j}</td>
+      <td>${club.v}</td>
+      <td>${club.e}</td>
+      <td>${club.d}</td>
+      <td>${club.gp}</td>
+      <td>${club.gc}</td>
+      <td>${club.gp - club.gc}</td>
+    `;
+
+    corpo.appendChild(tr);
+  });
 }
 
-async function updateLiveTable(forceLive=false) {
-  if (simulationActive && !forceLive) return;
+/* RENDERIZAR AGENDA */
 
-  const btn = document.getElementById("refresh-live");
-  if (btn) btn.disabled = true;
+function renderMatches() {
+  const rodada = Number(
+    document.getElementById("round-select").value
+  );
 
-  setLiveStatus("Atualizando tabela...","loading");
+  const box =
+    document.getElementById("matches");
+
+  const jogos = games[rodada] || [];
+
+  box.innerHTML = `
+    <div class="match-day">
+      <h3>${rodada}ª rodada</h3>
+    </div>
+  `;
+
+  const dia = box.querySelector(".match-day");
+
+  if (!jogos.length) {
+    dia.innerHTML += `
+      <div class="match">
+        Nenhum jogo cadastrado para esta rodada.
+      </div>
+    `;
+
+    return;
+  }
+
+  jogos.forEach(jogo => {
+    const mandante = findClub(jogo[0]);
+    const visitante = findClub(jogo[1]);
+
+    const div = document.createElement("div");
+
+    div.className = "match";
+
+    div.innerHTML = `
+      <div class="home match-team">
+        ${mandante.name}
+        ${badge(mandante)}
+      </div>
+
+      <div class="time">
+        ${jogo[2]}
+        <br>
+        <b>${jogo[3]}</b>
+      </div>
+
+      <div class="away match-team">
+        ${badge(visitante)}
+        ${visitante.name}
+      </div>
+    `;
+
+    dia.appendChild(div);
+  });
+}
+
+/* RENDERIZAR SIMULADOR */
+
+function renderSimulator() {
+  const rodada =
+    document.getElementById("round-select").value;
+
+  const grid =
+    document.getElementById("sim-grid");
+
+  grid.replaceChildren();
+
+  const jogos = games[rodada] || [];
+
+  jogos.forEach((jogo,index) => {
+    const div = document.createElement("div");
+
+    div.className = "sim-card";
+
+    div.innerHTML = `
+      <strong>
+        ${jogo[0]} × ${jogo[1]}
+      </strong>
+
+      <div class="score-row">
+        <input
+          type="number"
+          min="0"
+          value="0"
+          id="home-${index}"
+          aria-label="Gols ${jogo[0]}"
+        >
+
+        <span>x</span>
+
+        <input
+          type="number"
+          min="0"
+          value="0"
+          id="away-${index}"
+          aria-label="Gols ${jogo[1]}"
+        >
+      </div>
+    `;
+
+    grid.appendChild(div);
+  });
+}
+
+/* STATUS DA ATUALIZAÇÃO */
+
+function setLiveStatus(texto,estado = "") {
+  const caixa =
+    document.getElementById("live-status");
+
+  const label =
+    document.getElementById("live-status-text");
+
+  if (!caixa || !label) return;
+
+  caixa.className =
+    "live-status" + (estado ? " " + estado : "");
+
+  label.textContent = texto;
+}
+
+/* ATUALIZAÇÃO ONLINE */
+
+const LIVE_DATA_URL =
+  "https://valorfinal.com.br/brasileirao/dados.json";
+
+const LIVE_REFRESH_MS =
+  5 * 60 * 1000;
+
+async function updateLiveTable(forceLive = false) {
+  if (simulationActive && !forceLive) {
+    return;
+  }
+
+  const botao =
+    document.getElementById("refresh-live");
+
+  if (botao) {
+    botao.disabled = true;
+  }
+
+  setLiveStatus(
+    "Atualizando tabela...",
+    "loading"
+  );
 
   try {
-    const response = await fetch(LIVE_DATA_URL + "?t=" + Date.now(), {
-      cache: "no-store",
-      headers: {"Accept":"application/json"}
-    });
-
-    if (!response.ok) throw new Error("HTTP " + response.status);
-
-    const data = await response.json();
-
-    if (!Array.isArray(data.clubes)) {
-      throw new Error("Formato de dados inválido");
-    }
-
-    const map = new Map(
-      data.clubes.map(c => [liveNormalize(c.nome),c])
+    const resposta = await fetch(
+      LIVE_DATA_URL + "?t=" + Date.now(),
+      {
+        cache: "no-store",
+        headers: {
+          "Accept": "application/json"
+        }
+      }
     );
 
-    let count = 0;
-
-    clubs.forEach(club => {
-      const live = map.get(club.name);
-      if (!live) return;
-
-      club.pts = Number(live.pontos ?? club.pts);
-      club.j = Number(live.jogos ?? club.j);
-      club.v = Number(live.vitorias ?? club.v);
-      club.e = Number(live.empates ?? club.e);
-      club.d = Number(live.derrotas ?? club.d);
-      club.gp = Number(live.gols_pro ?? live.golsPro ?? club.gp);
-      club.gc = Number(live.gols_contra ?? live.golsContra ?? club.gc);
-      count++;
-    });
-
-    if (count === 0) {
-      throw new Error("Nenhum clube encontrado na fonte online");
+    if (!resposta.ok) {
+      throw new Error("HTTP " + resposta.status);
     }
 
-    liveClubsSnapshot = clubs.map(c => ({...c}));
-    initialClubs = clubs.map(c => ({...c}));
+    const dados = await resposta.json();
+
+    if (!Array.isArray(dados.clubes)) {
+      throw new Error("Formato de dados inválido.");
+    }
+
+    const mapa = new Map(
+      dados.clubes.map(club => [
+        liveNormalize(club.nome),
+        club
+      ])
+    );
+
+    let atualizados = 0;
+
+    clubs.forEach(club => {
+      const live = mapa.get(club.name);
+
+      if (!live) return;
+
+      club.pts = Number(
+        live.pontos ?? club.pts
+      );
+
+      club.j = Number(
+        live.jogos ?? club.j
+      );
+
+      club.v = Number(
+        live.vitorias ?? club.v
+      );
+
+      club.e = Number(
+        live.empates ?? club.e
+      );
+
+      club.d = Number(
+        live.derrotas ?? club.d
+      );
+
+      club.gp = Number(
+        live.gols_pro ??
+        live.golsPro ??
+        club.gp
+      );
+
+      club.gc = Number(
+        live.gols_contra ??
+        live.golsContra ??
+        club.gc
+      );
+
+      atualizados++;
+    });
+
+    if (atualizados === 0) {
+      throw new Error(
+        "Nenhum clube foi reconhecido."
+      );
+    }
+
+    liveClubsSnapshot =
+      clubs.map(club => ({...club}));
+
+    initialClubs =
+      clubs.map(club => ({...club}));
 
     renderTable();
-    renderMatches();
 
-    const round = data.rodada_referencia ?? data.rodadaDeReferencia ?? "?";
-    let when = "agora";
+    const rodada =
+      dados.rodada_referencia ??
+      dados.rodadaDeReferencia ??
+      "?";
 
-    if (data.atualizado_em || data.atualizadoEm) {
-      const raw = data.atualizado_em || data.atualizadoEm;
-      const d = new Date(raw);
+    let quando = "agora";
 
-      if (!Number.isNaN(d.getTime())) {
-        when = d.toLocaleString("pt-BR", {
-          dateStyle:"short",
-          timeStyle:"short"
-        });
+    const dataBruta =
+      dados.atualizado_em ||
+      dados.atualizadoEm;
+
+    if (dataBruta) {
+      const data = new Date(dataBruta);
+
+      if (!Number.isNaN(data.getTime())) {
+        quando = data.toLocaleString(
+          "pt-BR",
+          {
+            dateStyle: "short",
+            timeStyle: "short"
+          }
+        );
       }
     }
 
     setLiveStatus(
-      "Atualizado • " + count + "/20 clubes • rodada " + round + " • " + when
+      `Atualizado • ${atualizados}/20 clubes • rodada ${rodada} • ${quando}`
     );
 
-  } catch(error) {
-    console.error("Falha ao atualizar Brasileirão:",error);
-    setLiveStatus("Sem conexão • tabela anterior mantida","error");
+  } catch (erro) {
+    console.error(
+      "Erro ao atualizar Brasileirão:",
+      erro
+    );
+
+    setLiveStatus(
+      "Sem conexão com a fonte • tabela de referência mantida",
+      "error"
+    );
+
   } finally {
-    if (btn) btn.disabled = false;
+    if (botao) {
+      botao.disabled = false;
+    }
   }
 }
 
-/* EVENTOS */
+/* CONFIRMAR PLACARES */
 
-document.addEventListener("DOMContentLoaded", () => {
-  const liveRefresh = document.getElementById("refresh-live");
+function confirmarPlacares() {
+  const rodada =
+    document.getElementById("round-select").value;
 
-  if (liveRefresh) {
-    liveRefresh.addEventListener("click", () => updateLiveTable(false));
+  const botao =
+    document.getElementById("confirm-btn");
+
+  if (botao.dataset.confirmedRound) {
+    alert(
+      "Já existe uma simulação ativa. Clique em Resetar antes de confirmar outros placares."
+    );
+    return;
   }
 
-  renderTable();
-  renderMatches();
-  renderSimulator();
+  const jogos = games[rodada] || [];
 
-  updateLiveTable(true);
-  setInterval(() => updateLiveTable(false),LIVE_REFRESH_MS);
+  for (let index = 0; index < jogos.length; index++) {
+    const mandante = findClub(jogos[index][0]);
+    const visitante = findClub(jogos[index][1]);
 
-  document.getElementById("search").addEventListener("input",renderTable);
+    if (
+      !clubs.includes(mandante) ||
+      !clubs.includes(visitante)
+    ) {
+      alert(
+        "Não foi possível identificar um dos clubes."
+      );
 
-  document.getElementById("round-select").addEventListener("change", () => {
-    renderMatches();
-    renderSimulator();
-  });
-
-  document.getElementById("reset-btn").addEventListener("click", async () => {
-    simulationActive = false;
-    restoreOriginalTable();
-
-    renderTable();
-    renderSimulator();
-    setLiveStatus("Voltando para a tabela real...","loading");
-
-    await updateLiveTable(true);
-
-    alert("Simulador resetado! A tabela voltou ao normal e os placares foram limpos.");
-  });
-
-  document.getElementById("confirm-btn").addEventListener("click", () => {
-    if (simulationActive) {
-      alert("Uma simulação já está ativa. Clique em Resetar antes de simular outra rodada.");
       return;
     }
+  }
 
-    const round = document.getElementById("round-select").value;
+  const resultados = jogos.map((jogo,index) => {
+    const inputCasa = document.getElementById(
+      "home-" + index
+    );
 
-    games[round].forEach((g,i) => {
-      const homeGoals = Math.max(0,parseInt(document.getElementById("home-"+i).value,10)||0);
-      const awayGoals = Math.max(0,parseInt(document.getElementById("away-"+i).value,10)||0);
+    const inputFora = document.getElementById(
+      "away-" + index
+    );
 
-      const home = findClub(g[0]);
-      const away = findClub(g[1]);
+    const casa = Number(inputCasa.value);
+    const fora = Number(inputFora.value);
 
-      home.j++;
-      away.j++;
-      home.gp += homeGoals;
-      home.gc += awayGoals;
-      away.gp += awayGoals;
-      away.gc += homeGoals;
+    if (
+      inputCasa.value.trim() === "" ||
+      inputFora.value.trim() === "" ||
+      !Number.isInteger(casa) ||
+      !Number.isInteger(fora) ||
+      casa < 0 ||
+      fora < 0
+    ) {
+      throw new Error(
+        "Digite placares válidos, com gols inteiros e não negativos."
+      );
+    }
 
-      if (homeGoals > awayGoals) {
-        home.pts += 3;
-        home.v++;
-        away.d++;
-      } else if (homeGoals < awayGoals) {
-        away.pts += 3;
-        away.v++;
-        home.d++;
-      } else {
-        home.pts++;
-        away.pts++;
-        home.e++;
-        away.e++;
-      }
-    });
-
-    simulationActive = true;
-    renderTable();
-    setLiveStatus("Simulação ativa • tabela atualizada","loading");
-
-    alert("Placares confirmados! A tabela foi atualizada. Clique em Resetar para voltar ao normal.");
+    return {
+      jogo,
+      casa,
+      fora
+    };
   });
-});
+
+  resultados.forEach(resultado => {
+    const mandante =
+      findClub(resultado.jogo[0]);
+
+    const visitante =
+      findClub(resultado.jogo[1]);
+
+    mandante.j++;
+    visitante.j++;
+
+    mandante.gp += resultado.casa;
+    mandante.gc += resultado.fora;
+
+    visitante.gp += resultado.fora;
+    visitante.gc += resultado.casa;
+
+    if (resultado.casa > resultado.fora) {
+      mandante.pts += 3;
+      mandante.v++;
+      visitante.d++;
+    } else if (resultado.casa < resultado.fora) {
+      visitante.pts += 3;
+      visitante.v++;
+      mandante.d++;
+    } else {
+      mandante.pts++;
+      visitante.pts++;
+      mandante.e++;
+      visitante.e++;
+    }
+  });
+
+  simulationActive = true;
+
+  botao.dataset.confirmedRound = rodada;
+
+  renderTable();
+
+  setLiveStatus(
+    "Simulação ativa • classificação simulada",
+    "loading"
+  );
+
+  alert(
+    "Placares confirmados! A classificação foi atualizada com a simulação. Clique em Resetar para voltar à tabela anterior."
+  );
+}
+
+/* RESETAR SIMULADOR */
+
+async function resetarSimulador() {
+  simulationActive = false;
+
+  restoreOriginalTable();
+
+  document.getElementById(
+    "confirm-btn"
+  ).dataset.confirmedRound = "";
+
+  renderTable();
+  renderSimulator();
+
+  setLiveStatus(
+    "Restaurando classificação...",
+    "loading"
+  );
+
+  await updateLiveTable(true);
+}
+
+/* INICIAR APLICAÇÃO */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    renderTable();
+    renderMatches();
+    renderSimulator();
+
+    document.getElementById(
+      "search"
+    ).addEventListener(
+      "input",
+      renderTable
+    );
+
+    document.getElementById(
+      "round-select"
+    ).addEventListener(
+      "change",
+      () => {
+        if (simulationActive) {
+          restoreOriginalTable();
+          simulationActive = false;
+          document.getElementById(
+            "confirm-btn"
+          ).dataset.confirmedRound = "";
+          renderTable();
+        }
+
+        renderMatches();
+        renderSimulator();
+      }
+    );
+
+    document.getElementById(
+      "confirm-btn"
+    ).addEventListener(
+      "click",
+      () => {
+        try {
+          confirmarPlacares();
+        } catch (erro) {
+          alert(erro.message);
+        }
+      }
+    );
+
+    document.getElementById(
+      "reset-btn"
+    ).addEventListener(
+      "click",
+      resetarSimulador
+    );
+
+    document.getElementById(
+      "refresh-live"
+    ).addEventListener(
+      "click",
+      () => updateLiveTable(false)
+    );
+
+    updateLiveTable(true);
+
+    setInterval(
+      () => updateLiveTable(false),
+      LIVE_REFRESH_MS
+    );
+  }
+);
 </script>
 
 </body>
