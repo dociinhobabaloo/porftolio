@@ -2,25 +2,26 @@
 "use strict";
 
 /*
-=============================================
+================================================
 CADÊ MEU PET
-NOTIFICAÇÕES GRATUITAS - GITHUB ACTIONS
-=============================================
+NOTIFICAÇÕES AUTOMÁTICAS — GITHUB ACTIONS
+================================================
 
-Projeto Firebase: cade-meu-pet-8966f
+Firebase: cade-meu-pet-8966f
 
-Funcionalidades:
-- Consulta novos animais no Firestore.
-- Envia notificações Web Push.
-- Identifica cachorros, gatos e outros.
-- Respeita o município escolhido.
-- Evita notificações repetidas.
-- Não notifica o próprio anunciante.
-- Não reenvia anúncios antigos na ativação.
+- Cachorros e gatos perdidos ou encontrados
+- Notificações para vários celulares
+- Filtro por município
+- Opção Todos os municípios
+- Não notifica o anunciante
+- Trata erros por dispositivo
+- Evita reenviar para inscrições já atendidas
+- Não interrompe todos os envios por erro 403
 
-Necessita de segredos configurados no GitHub.
-NUNCA coloque chaves privadas aqui.
-=============================================
+O Cloudflare inicia este script pelo GitHub Actions.
+
+NUNCA coloque chaves privadas neste arquivo.
+================================================
 */
 
 const {
@@ -36,14 +37,16 @@ const {
 
 const webpush = require("web-push");
 
+// CONFIGURAÇÕES
+
 const PROJETO = "cade-meu-pet-8966f";
 
-const LIMITE_ANIMAIS = 100;
+const SITE = "https://localizador-pet2.netlify.app";
 
+const LIMITE_ANIMAIS = 100;
 const LIMITE_INSCRITOS = 2000;
 
-const SITE =
-  "https://localizador-pet2.netlify.app";
+// SEGREDOS DO GITHUB
 
 function obrigatorio(nome) {
   const valor = process.env[nome];
@@ -57,9 +60,7 @@ function obrigatorio(nome) {
   return valor;
 }
 
-// ===========================================
-// CONFIGURAÇÃO SEGURA
-// ===========================================
+// FIREBASE ADMIN
 
 const credenciais = JSON.parse(
   obrigatorio("FIREBASE_SERVICE_ACCOUNT")
@@ -77,25 +78,36 @@ initializeApp({
 
 const db = getFirestore();
 
+// WEB PUSH
+
 webpush.setVapidDetails(
   obrigatorio("VAPID_CONTACT"),
   obrigatorio("VAPID_PUBLIC_KEY"),
   obrigatorio("VAPID_PRIVATE_KEY")
 );
 
-// ===========================================
-// NOMES DAS NOTIFICAÇÕES
-// ===========================================
+// IDENTIFICAR ANIMAL
 
 function tipoAnimal(tipo) {
-  if (tipo === "Cachorro") {
+  const valor = String(tipo || "")
+    .trim()
+    .toLowerCase();
+
+  if (
+    valor === "cachorro" ||
+    valor === "cão" ||
+    valor === "cao"
+  ) {
     return {
       nome: "cachorro",
       emoji: "🐶"
     };
   }
 
-  if (tipo === "Gato") {
+  if (
+    valor === "gato" ||
+    valor === "gata"
+  ) {
     return {
       nome: "gato",
       emoji: "🐱"
@@ -108,6 +120,8 @@ function tipoAnimal(tipo) {
   };
 }
 
+// MONTAR NOTIFICAÇÃO
+
 function montarMensagem(animal, id) {
   const tipo = tipoAnimal(animal.tipo);
 
@@ -115,11 +129,13 @@ function montarMensagem(animal, id) {
 
   switch (animal.status) {
     case "Perdido":
-      titulo = `${tipo.emoji} Novo ${tipo.nome} perdido!`;
+      titulo =
+        `${tipo.emoji} Novo ${tipo.nome} perdido!`;
       break;
 
     case "Encontrado":
-      titulo = `${tipo.emoji} Novo ${tipo.nome} encontrado!`;
+      titulo =
+        `${tipo.emoji} Novo ${tipo.nome} encontrado!`;
       break;
 
     case "Reencontrado":
@@ -142,14 +158,17 @@ function montarMensagem(animal, id) {
     animal.municipio || ""
   ).slice(0, 60);
 
-  const secao = animal.status === "Reencontrado"
-    ? "finais-felizes"
-    : "animais";
+  const secao =
+    animal.status === "Reencontrado"
+      ? "finais-felizes"
+      : "animais";
 
   return {
     title: titulo,
 
-    body: `${nome} — ${bairro}, ${municipio}. Toque para ver o anúncio.`,
+    body:
+      `${nome} — ${bairro}, ${municipio}. ` +
+      "Toque para ver o anúncio.",
 
     url: `${SITE}/#${secao}`,
 
@@ -163,15 +182,56 @@ function montarMensagem(animal, id) {
   };
 }
 
-// ===========================================
-// ENVIAR PARA OS DISPOSITIVOS
-// ===========================================
+// NORMALIZAR MUNICÍPIOS
+
+function normalizar(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+function recebeMunicipio(inscricao, animal) {
+  const escolhido = normalizar(
+    inscricao.municipio
+  );
+
+  const cidadeAnimal = normalizar(
+    animal.municipio
+  );
+
+  return (
+    escolhido === "todos" ||
+    escolhido === "todos os municipios" ||
+    escolhido === cidadeAnimal
+  );
+}
+
+// REGISTRO INDIVIDUAL DE ENTREGA
+// Guarda uma confirmação por anúncio/dispositivo.
+
+function referenciaEntrega(animalId, inscricaoId) {
+  return db
+    .collection("pushDispatches")
+    .doc(animalId)
+    .collection("recipients")
+    .doc(inscricaoId);
+}
+
+// ENVIAR PARA TODOS OS DISPOSITIVOS
 
 async function enviarNotificacao(animal, id) {
   const mensagem = montarMensagem(animal, id);
 
   if (!mensagem) {
-    return;
+    return {
+      tentados: 0,
+      enviados: 0,
+      expirados: 0,
+      recusados: 0,
+      temporarios: 0
+    };
   }
 
   const resultado = await db
@@ -180,29 +240,56 @@ async function enviarNotificacao(animal, id) {
     .limit(LIMITE_INSCRITOS)
     .get();
 
+  let tentados = 0;
   let enviados = 0;
   let expirados = 0;
-  let tentados = 0;
+  let recusados = 0;
+  let temporarios = 0;
+  let repetidos = 0;
 
   for (const documento of resultado.docs) {
     const inscricao = documento.data();
 
-    const municipioCorreto =
-      inscricao.municipio === "Todos" ||
-      inscricao.municipio === animal.municipio;
-
-    const outroUsuario =
-      inscricao.uid !== animal.ownerId;
-
-    if (!municipioCorreto || !outroUsuario) {
+    // Respeitar o município selecionado.
+    if (!recebeMunicipio(inscricao, animal)) {
       continue;
     }
 
+    // Não avisar o próprio anunciante.
+    if (
+      inscricao.uid &&
+      animal.ownerId &&
+      inscricao.uid === animal.ownerId
+    ) {
+      continue;
+    }
+
+    // Ignorar inscrições incompletas.
     if (
       !inscricao.endpoint ||
       !inscricao.keys?.p256dh ||
       !inscricao.keys?.auth
     ) {
+      console.warn(
+        `Inscrição ${documento.id} incompleta.`
+      );
+
+      continue;
+    }
+
+    const entrega = referenciaEntrega(
+      id,
+      documento.id
+    );
+
+    // Não repetir aviso já aceito pelo Push.
+    const anterior = await entrega.get();
+
+    if (
+      anterior.exists &&
+      anterior.data().status === "aceito"
+    ) {
+      repetidos++;
       continue;
     }
 
@@ -212,6 +299,7 @@ async function enviarNotificacao(animal, id) {
       await webpush.sendNotification(
         {
           endpoint: inscricao.endpoint,
+
           keys: {
             p256dh: inscricao.keys.p256dh,
             auth: inscricao.keys.auth
@@ -226,36 +314,103 @@ async function enviarNotificacao(animal, id) {
         }
       );
 
+      // O servidor Push aceitou o envio.
+      // Isso não garante exibição pelo celular.
+
       enviados++;
 
+      await entrega.set({
+        status: "aceito",
+        inscricaoId: documento.id,
+        uid: inscricao.uid || null,
+        aceitoEm: FieldValue.serverTimestamp()
+      });
+
+      console.log(
+        `Inscrição ${documento.id}: envio aceito.`
+      );
+
     } catch (erro) {
-      if (
-        erro.statusCode === 404 ||
-        erro.statusCode === 410
-      ) {
-        // Dispositivo não está mais inscrito.
-        await documento.ref.delete();
+      const codigo = Number(
+        erro.statusCode || 0
+      );
+
+      // Inscrição removida ou expirada.
+      if (codigo === 404 || codigo === 410) {
         expirados++;
-      } else {
-        // Não marcar o anúncio como concluído.
-        // O GitHub tentará novamente.
-        throw new Error(
-          `Erro Web Push: ${erro.statusCode || erro.message}`
+
+        console.warn(
+          `Inscrição ${documento.id}: ` +
+          `expirada (HTTP ${codigo}).`
         );
+
+        try {
+          await documento.ref.delete();
+        } catch (erroExclusao) {
+          console.warn(
+            `Não foi possível limpar ${documento.id}.`
+          );
+        }
+
+        continue;
       }
+
+      // Inscrição recusada, frequentemente por
+      // incompatibilidade de VAPID/permissão.
+      // Não bloquear os outros dispositivos.
+      if (codigo === 403 || codigo === 401) {
+        recusados++;
+
+        console.warn(
+          `Inscrição ${documento.id}: ` +
+          `Web Push recusado (HTTP ${codigo}). ` +
+          "Verifique a chave VAPID e a inscrição."
+        );
+
+        // Registramos a falha, mas não apagamos
+        // o dispositivo automaticamente.
+        await entrega.set({
+          status: "recusado",
+          codigo,
+          inscricaoId: documento.id,
+          registradoEm:
+            FieldValue.serverTimestamp()
+        });
+
+        continue;
+      }
+
+      // Erros temporários podem ser tentados
+      // novamente na próxima execução.
+      temporarios++;
+
+      console.error(
+        `Inscrição ${documento.id}: ` +
+        `erro temporário ${codigo || "desconhecido"}.`
+      );
     }
   }
 
   console.log(
-    `Animal ${id}: ${tentados} tentativas, ` +
+    `Animal ${id}: ` +
+    `${tentados} tentativas, ` +
     `${enviados} envios aceitos, ` +
-    `${expirados} inscrições expiradas.`
+    `${expirados} expiradas, ` +
+    `${recusados} recusadas, ` +
+    `${temporarios} erros temporários, ` +
+    `${repetidos} já atendidos.`
   );
+
+  return {
+    tentados,
+    enviados,
+    expirados,
+    recusados,
+    temporarios
+  };
 }
 
-// ===========================================
-// MARCAR ANÚNCIOS JÁ PROCESSADOS
-// ===========================================
+// PROCESSAR CADA ANÚNCIO
 
 async function processarAnimal(documento) {
   const animal = documento.data();
@@ -264,10 +419,14 @@ async function processarAnimal(documento) {
     .collection("pushDispatches")
     .doc(documento.id);
 
-  const enviado = await controle.get();
+  const anterior = await controle.get();
 
-  if (enviado.exists) {
-    return;
+  if (anterior.exists) {
+    const dados = anterior.data();
+
+    if (dados.processadoEm) {
+      return;
+    }
   }
 
   if (
@@ -278,23 +437,51 @@ async function processarAnimal(documento) {
     return;
   }
 
+  // Aceitar municípios cadastrados no ES.
+  // Não limitar apenas às quatro cidades
+  // usadas no primeiro protótipo.
   if (
-    !["Vila Velha", "Vitória", "Serra", "Cariacica"]
-      .includes(animal.municipio)
+    !animal.municipio ||
+    !String(animal.municipio).trim()
   ) {
+    console.warn(
+      `Anúncio ${documento.id} sem município.`
+    );
     return;
   }
 
-  await enviarNotificacao(
+  const resultado = await enviarNotificacao(
     animal,
     documento.id
   );
+
+  // Se houver erro temporário, não concluir
+  // o anúncio. Na próxima execução, o
+  // sistema tenta somente os destinatários
+  // que ainda não tiveram envio aceito.
+
+  if (resultado.temporarios > 0) {
+    console.warn(
+      `Anúncio ${documento.id} pendente: ` +
+      `${resultado.temporarios} falha(s) temporária(s).`
+    );
+
+    throw new Error(
+      "Há envios temporariamente pendentes."
+    );
+  }
 
   await controle.set({
     animalId: documento.id,
     municipio: animal.municipio,
     situacao: animal.status,
+    tentativas: resultado.tentados,
+    enviosAceitos: resultado.enviados,
+    inscricoesExpiradas: resultado.expirados,
+    inscricoesRecusadas: resultado.recusados,
     processadoEm: FieldValue.serverTimestamp()
+  }, {
+    merge: true
   });
 
   console.log(
@@ -302,9 +489,7 @@ async function processarAnimal(documento) {
   );
 }
 
-// ===========================================
 // EXECUÇÃO PRINCIPAL
-// ===========================================
 
 async function executar() {
   const controle = db
@@ -313,14 +498,13 @@ async function executar() {
 
   const estado = await controle.get();
 
-  // Primeira execução: inicia o monitoramento
-  // sem enviar alertas de animais antigos.
-
+  // Primeira execução inicializa o sistema
+  // sem avisar sobre anúncios antigos.
   if (!estado.exists) {
     await controle.create({
       iniciadoEm: FieldValue.serverTimestamp(),
       ultimaVerificacao: Timestamp.now(),
-      versao: 1
+      versao: 2
     });
 
     console.log(
@@ -334,15 +518,14 @@ async function executar() {
   const ultima =
     estado.data().ultimaVerificacao;
 
-  if (!ultima || typeof ultima.toMillis !== "function") {
+  if (
+    !ultima ||
+    typeof ultima.toMillis !== "function"
+  ) {
     throw new Error(
       "Data da última verificação inválida."
     );
   }
-
-  // Marca o início da verificação.
-  // Isso evita pular animais cadastrados
-  // durante a execução do script.
 
   const inicio = Timestamp.now();
 
@@ -355,11 +538,12 @@ async function executar() {
 
   if (novos.empty) {
     await controle.update({
-      ultimaVerificacao: inicio
+      ultimaVerificacao: inicio,
+      ultimaExecucaoEm:
+        FieldValue.serverTimestamp()
     });
 
     console.log("Nenhum novo animal.");
-
     return;
   }
 
@@ -370,11 +554,6 @@ async function executar() {
   for (const documento of novos.docs) {
     await processarAnimal(documento);
   }
-
-  // Se o lote atingiu o limite, avança
-  // somente até o último documento lido.
-  // Caso contrário, avança até o início
-  // da verificação.
 
   const ultimoDocumento =
     novos.docs[novos.docs.length - 1];
@@ -394,13 +573,16 @@ async function executar() {
 
   await controle.update({
     ultimaVerificacao: proximoMarco,
-    ultimaExecucaoEm: FieldValue.serverTimestamp()
+    ultimaExecucaoEm:
+      FieldValue.serverTimestamp()
   });
 
   console.log(
     "Verificação concluída com sucesso!"
   );
 }
+
+// INICIAR
 
 executar().catch(erro => {
   console.error(
