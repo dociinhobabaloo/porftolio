@@ -1,0 +1,107 @@
+/* Cadê Meu Pet - Mapa GPS e alertas - CSS completo com proteção Leaflet */
+/* As regras seguintes mantêm o mapa dentro do seu contêiner mesmo se o CSS externo do Leaflet falhar. */
+#mapa-animais {
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden !important;
+  contain: layout paint;
+  display: block;
+  width: 100%;
+  height: 460px;
+  max-width: 100%;
+  border-radius: 22px;
+  border: 1px solid #c6dce0;
+  box-shadow: 0 10px 28px #123f4a15;
+  background: #d9f2ef;
+  z-index: 0;
+}
+/* Regras estruturais básicas do Leaflet: fallback para CDN indisponível */
+#mapa-animais.leaflet-container { overflow: hidden !important; position:relative; cursor:grab; -webkit-tap-highlight-color:transparent; }
+#mapa-animais.leaflet-container.leaflet-dragging {cursor:grabbing;}
+#mapa-animais .leaflet-pane,
+#mapa-animais .leaflet-tile,
+#mapa-animais .leaflet-marker-icon,
+#mapa-animais .leaflet-marker-shadow,
+#mapa-animais .leaflet-tile-container,
+#mapa-animais .leaflet-pane > svg,
+#mapa-animais .leaflet-pane > canvas,
+#mapa-animais .leaflet-layer,
+#mapa-animais .leaflet-zoom-box,
+#mapa-animais .leaflet-image-layer {
+  position:absolute;
+  left:0;
+  top:0;
+}
+#mapa-animais .leaflet-pane {z-index:400;}
+#mapa-animais .leaflet-tile-pane {z-index:200;}
+#mapa-animais .leaflet-overlay-pane {z-index:400;}
+#mapa-animais .leaflet-shadow-pane {z-index:500;}
+#mapa-animais .leaflet-marker-pane {z-index:600;}
+#mapa-animais .leaflet-tooltip-pane {z-index:650;}
+#mapa-animais .leaflet-popup-pane {z-index:700;}
+#mapa-animais .leaflet-map-pane {position:absolute;left:0;top:0;}
+#mapa-animais .leaflet-tile-container {pointer-events:none;}
+#mapa-animais .leaflet-tile {
+  width:256px;
+  height:256px;
+  max-width:none !important;
+  max-height:none !important;
+  border:0;
+  user-select:none;
+}
+#mapa-animais img {max-width:none !important;}
+#mapa-animais .leaflet-pane > svg {max-width:none !important;max-height:none !important;}
+#mapa-animais .leaflet-control-container .leaflet-top,
+#mapa-animais .leaflet-control-container .leaflet-bottom {
+  position:absolute;
+  z-index:1000;
+  pointer-events:none;
+}
+#mapa-animais .leaflet-top {top:0;}
+#mapa-animais .leaflet-right {right:0;}
+#mapa-animais .leaflet-bottom {bottom:0;}
+#mapa-animais .leaflet-left {left:0;}
+#mapa-animais .leaflet-control {position:relative;z-index:800;pointer-events:auto;clear:both;}
+#mapa-animais .leaflet-top .leaflet-control {margin-top:10px;}
+#mapa-animais .leaflet-bottom .leaflet-control {margin-bottom:10px;}
+#mapa-animais .leaflet-left .leaflet-control {margin-left:10px;float:left;}
+#mapa-animais .leaflet-right .leaflet-control {margin-right:10px;float:right;}
+#mapa-animais .leaflet-control-zoom {border:2px solid #0003;border-radius:6px;overflow:hidden;box-shadow:0 2px 9px #0002;}
+#mapa-animais .leaflet-control-zoom a {display:block;width:32px;height:32px;line-height:30px;text-align:center;background:white;color:#263a42;font-size:23px;font-weight:bold;text-decoration:none;}
+#mapa-animais .leaflet-control-zoom a + a {border-top:1px solid #ddd;}
+#mapa-animais .leaflet-control-attribution {background:#fffd;color:#425b64;font-size:10px;line-height:1.3;padding:2px 5px;}
+#mapa-animais .leaflet-control-attribution a {color:#006b75;text-decoration:none;}
+#mapa-animais .leaflet-popup {position:absolute;text-align:center;margin-bottom:20px;}
+#mapa-animais .leaflet-popup-content-wrapper {background:white;color:#18343f;box-shadow:0 3px 14px #0003;border-radius:13px;padding:1px;}
+#mapa-animais .leaflet-popup-content {margin:12px 17px;line-height:1.5;min-width:155px;text-align:left;}
+#mapa-animais .leaflet-popup-tip-container {width:40px;height:20px;position:absolute;left:50%;margin-left:-20px;overflow:hidden;pointer-events:none;}
+#mapa-animais .leaflet-popup-tip {width:17px;height:17px;padding:1px;margin:-10px auto 0;transform:rotate(45deg);background:white;box-shadow:0 3px 14px #0003;}
+#mapa-animais .leaflet-popup-close-button {position:absolute;right:7px;top:5px;width:24px;height:24px;text-align:center;font-size:19px;color:#536b73;z-index:1;}
+#mapa-animais .leaflet-zoom-animated {transform-origin:0 0;}
+#mapa-animais .leaflet-interactive {cursor:pointer;}
+/* Layout da seção de mapa */
+.mapa-section {padding-top:45px;}
+.mapa-topo {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+.mapa-topo h2 {margin:0 0 6px !important;}
+.mapa-topo p,.mapa-nota {color:#526a78;font-size:14px;line-height:1.5;margin:7px 0;}
+.mapa-controls {display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:15px 0;}
+.mapa-controls label {font-weight:800;}
+.mapa-controls select,.alertas-form select {padding:10px 13px;border:1px solid #cbdde2;border-radius:12px;background:white;min-width:195px;max-width:100%;}
+#mapa-status {font-size:13px;color:#006b75;flex:1 1 180px;}
+.mapa-popup b {font-size:15px;}
+.mapa-popup p {margin:5px 0;}
+.alertas-section {background:#eaf8f7;}
+.alertas-box {background:white;border-radius:24px;padding:28px;box-shadow:0 12px 30px #063e4914;}
+.alertas-box h2 {margin:0 0 12px;}
+.alertas-box p {line-height:1.5;}
+.alertas-form {display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.alertas-form label {font-weight:800;}
+#ponto-limpar {align-self:flex-start;font-size:13px;padding:9px 13px;}
+@media(max-width:620px) {
+  #mapa-animais {height:365px;border-radius:16px;}
+  .mapa-controls {align-items:stretch;flex-direction:column;gap:9px;}
+  .mapa-controls select {width:100%;}
+  .mapa-topo .btn {width:100%;}
+  .alertas-box {padding:19px;}
+  .alertas-form select,.alertas-form .btn {width:100%;}
+}
