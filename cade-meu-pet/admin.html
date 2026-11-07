@@ -1,0 +1,910 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#006b75">
+  <title>Painel de Notificações | Cadê Meu Pet</title>
+  <link rel="icon" href="./icons/icon-192.png">
+
+  <style>
+    :root {
+      --verde: #006b75;
+      --rosa: #e74769;
+      --texto: #173c47;
+      --fundo: #f3f8f9;
+      --borda: #d9e6e9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--fundo);
+      color: var(--texto);
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: min(1100px, 94%);
+      margin: auto;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--borda);
+    }
+
+    .cabecalho {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 34px);
+      margin: 4px 0;
+    }
+
+    h2 {
+      font-size: 21px;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .subtitulo {
+      color: #56737c;
+      margin: 5px 0;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: white;
+      background: var(--verde);
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-rosa {
+      background: var(--rosa);
+    }
+
+    .btn-claro {
+      color: var(--verde);
+      background: #e4f2f3;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .botoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    main {
+      padding: 26px 0 55px;
+    }
+
+    .mensagem {
+      color: var(--verde);
+      font-weight: bold;
+      padding: 15px 0;
+    }
+
+    .aviso {
+      padding: 16px;
+      border-radius: 14px;
+      background: #fff5e7;
+      color: #815422;
+      border: 1px solid #f3d8a8;
+      margin: 15px 0 25px;
+      line-height: 1.5;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 13px;
+      margin: 20px 0 32px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      padding: 21px 17px;
+      box-shadow: 0 6px 20px #093f4a0a;
+    }
+
+    .card small {
+      display: block;
+      font-weight: bold;
+      color: #64808a;
+      line-height: 1.4;
+    }
+
+    .card strong {
+      display: block;
+      font-size: 35px;
+      margin: 12px 0 6px;
+      color: var(--verde);
+    }
+
+    .card p {
+      font-size: 12px;
+      color: #67828a;
+      margin: 0;
+    }
+
+    .painel {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .painel-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .lista {
+      display: grid;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .linha {
+      border: 1px solid var(--borda);
+      padding: 15px;
+      border-radius: 13px;
+      background: #fbfefe;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .linha strong,
+    .linha small {
+      display: block;
+    }
+
+    .linha small {
+      color: #67808a;
+      margin-top: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    .etiqueta {
+      display: inline-block;
+      border-radius: 30px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: bold;
+      background: #e6f4f1;
+      color: #08704e;
+    }
+
+    .erro {
+      background: #ffe8ec;
+      color: #a52543;
+    }
+
+    .neutra {
+      background: #edf2f4;
+      color: #526772;
+    }
+
+    .detalhes {
+      margin-top: 20px;
+      border-top: 1px solid var(--borda);
+      padding-top: 18px;
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    .vazio {
+      color: #6a8188;
+      padding: 20px;
+      background: #f5fafb;
+      border-radius: 12px;
+    }
+
+    @media(max-width: 850px) {
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media(max-width: 440px) {
+      .cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .card {
+        padding: 14px 10px;
+      }
+
+      .card strong {
+        font-size: 27px;
+      }
+
+      .painel {
+        padding: 14px;
+      }
+
+      .linha {
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container cabecalho">
+
+    <div>
+      <small>🐾 CADÊ MEU PET</small>
+      <h1>👑 Painel de notificações</h1>
+      <p class="subtitulo">Monitoramento da administradora</p>
+    </div>
+
+    <div class="botoes">
+      <a href="./index.html" class="btn btn-claro"
+         style="text-decoration:none">
+        Voltar ao aplicativo
+      </a>
+      <button id="entrar" class="btn">
+        Entrar com Google
+      </button>
+      <button id="sair" class="btn btn-claro oculto">
+        Sair
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<main class="container">
+
+  <p id="mensagem" class="mensagem" role="status">
+    Verificando acesso...
+  </p>
+
+  <div id="restrito" class="aviso oculto">
+    🔒 Esta página é exclusiva da administradora
+    do Cadê Meu Pet. Entre com a conta Google autorizada.
+  </div>
+
+  <div id="conteudo" class="oculto">
+
+    <div class="aviso">
+      <strong>Como interpretar os números:</strong>
+      inscrições não são necessariamente telefones diferentes.
+      Um mesmo aparelho pode ter mais de uma inscrição.
+      "Envio aceito" significa que o serviço push aceitou
+      a mensagem, não que ela apareceu na tela.
+    </div>
+
+    <div class="botoes">
+      <button id="atualizar" class="btn btn-rosa">
+        🔄 Atualizar relatório
+      </button>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <small>📱 Inscrições registradas</small>
+        <strong id="total">—</strong>
+        <p>Registros no Firebase</p>
+      </div>
+
+      <div class="card">
+        <small>🔔 Inscrições ativas</small>
+        <strong id="ativas">—</strong>
+        <p>Com enabled = true</p>
+      </div>
+
+      <div class="card">
+        <small>👥 Contas diferentes</small>
+        <strong id="contas">—</strong>
+        <p>UIDs com inscrições</p>
+      </div>
+
+      <div class="card">
+        <small>⚠️ Inscrições inativas</small>
+        <strong id="inativas">—</strong>
+        <p>Não habilitadas</p>
+      </div>
+
+    </div>
+
+    <section class="painel">
+
+      <div class="painel-topo">
+        <div>
+          <h2>📱 Inscrições de notificações</h2>
+          <p class="subtitulo">
+            Resumo sem mostrar endereços ou chaves push.
+          </p>
+        </div>
+      </div>
+
+      <div id="inscricoes" class="lista">
+        <p class="vazio">Carregando...</p>
+      </div>
+
+    </section>
+
+    <section class="painel">
+
+      <div class="painel-topo">
+
+        <div>
+          <h2>📢 Histórico de envios</h2>
+          <p class="subtitulo">
+            Até 30 anúncios recentes com registro de envio.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="cards">
+
+        <div class="card">
+          <small>✅ Envios aceitos</small>
+          <strong id="aceitos">—</strong>
+          <p>Nos anúncios carregados</p>
+        </div>
+
+        <div class="card">
+          <small>❌ Envios recusados</small>
+          <strong id="recusados">—</strong>
+          <p>Nos anúncios carregados</p>
+        </div>
+
+        <div class="card">
+          <small>⌛ Expiradas</small>
+          <strong id="expiradas">—</strong>
+          <p>Nos anúncios carregados</p>
+        </div>
+
+        <div class="card">
+          <small>📤 Tentativas</small>
+          <strong id="tentativas">—</strong>
+          <p>Nos anúncios carregados</p>
+        </div>
+
+      </div>
+
+      <div id="anuncios" class="lista">
+        <p class="vazio">Carregando...</p>
+      </div>
+
+      <div id="detalhes" class="detalhes oculto">
+
+        <h2>🔎 Resultado por inscrição</h2>
+
+        <p id="detalhes-titulo" class="subtitulo"></p>
+
+        <div id="destinatarios" class="lista"></div>
+
+      </div>
+
+    </section>
+
+    <p class="subtitulo">
+      O painel é somente para consulta. Não apaga inscrições,
+      anúncios ou registros de envio.
+    </p>
+
+  </div>
+
+</main>
+
+<script type="module">
+
+import {
+  auth,
+  db,
+  googleProvider
+} from "./firebase-config.js";
+
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit
+} from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+// MESMO UID DA ADMINISTRADORA DO INDEX
+const ADMIN_UID = "dkquzbj6D2ZXIH7t9j61Z36er3t2";
+
+const $ = id => document.getElementById(id);
+
+let inscricoes = new Map();
+let consultaAtual = 0;
+
+function abreviar(valor) {
+  const texto = String(valor || "");
+
+  if (!texto) return "Não informado";
+
+  if (texto.length <= 13) return texto;
+
+  return texto.slice(0, 8) + "..." +
+    texto.slice(-5);
+}
+
+function dataFormatada(timestamp) {
+  try {
+    if (!timestamp?.toDate) {
+      return "Data não informada";
+    }
+
+    return timestamp.toDate().toLocaleString(
+      "pt-BR",
+      {
+        dateStyle: "short",
+        timeStyle: "short"
+      }
+    );
+  } catch {
+    return "Data não informada";
+  }
+}
+
+function criar(tag, texto, classe) {
+  const elemento = document.createElement(tag);
+
+  if (texto !== undefined) {
+    elemento.textContent = texto;
+  }
+
+  if (classe) {
+    elemento.className = classe;
+  }
+
+  return elemento;
+}
+
+function statusVisual(status) {
+  if (status === "aceito") {
+    return "etiqueta";
+  }
+
+  if (
+    status === "recusado" ||
+    status === "expirado"
+  ) {
+    return "etiqueta erro";
+  }
+
+  return "etiqueta neutra";
+}
+
+function linhaCadastro(titulo, informacao, status) {
+  const linha = criar("div", undefined, "linha");
+  const bloco = criar("div");
+
+  bloco.append(
+    criar("strong", titulo),
+    criar("small", informacao)
+  );
+
+  linha.append(bloco);
+
+  if (status) {
+    linha.append(
+      criar(
+        "span",
+        status,
+        status === "Ativa"
+          ? "etiqueta"
+          : "etiqueta erro"
+      )
+    );
+  }
+
+  return linha;
+}
+
+function mostrarErro(erro) {
+  console.error(erro);
+
+  $("mensagem").textContent =
+    "Erro ao carregar dados: " +
+    (erro.code === "permission-denied"
+      ? "Acesso negado pelas regras do Firebase."
+      : erro.message || "Erro desconhecido.");
+}
+
+async function carregarInscricoes() {
+  const resposta = await getDocs(
+    collection(db, "pushSubscriptions")
+  );
+
+  inscricoes.clear();
+
+  const documentos = resposta.docs;
+
+  const contas = new Set();
+
+  let ativas = 0;
+
+  for (const documento of documentos) {
+    const dados = documento.data();
+
+    inscricoes.set(documento.id, dados);
+
+    if (dados.enabled === true) {
+      ativas++;
+    }
+
+    if (dados.uid) {
+      contas.add(dados.uid);
+    }
+  }
+
+  $("total").textContent = documentos.length;
+  $("ativas").textContent = ativas;
+  $("contas").textContent = contas.size;
+  $("inativas").textContent =
+    documentos.length - ativas;
+
+  const lista = $("inscricoes");
+  lista.replaceChildren();
+
+  if (!documentos.length) {
+    lista.append(
+      criar(
+        "p",
+        "Nenhuma inscrição registrada.",
+        "vazio"
+      )
+    );
+    return;
+  }
+
+  documentos.sort((a, b) => {
+    const dataA =
+      a.data().updatedAt?.toMillis?.() || 0;
+
+    const dataB =
+      b.data().updatedAt?.toMillis?.() || 0;
+
+    return dataB - dataA;
+  });
+
+  for (const documento of documentos) {
+    const dados = documento.data();
+
+    const titulo =
+      "Inscrição " + abreviar(documento.id);
+
+    const informacao =
+      "Conta: " + abreviar(dados.uid) +
+      " • Município: " + (dados.municipio || "—") +
+      " • Atualizada: " +
+      dataFormatada(dados.updatedAt);
+
+    lista.append(
+      linhaCadastro(
+        titulo,
+        informacao,
+        dados.enabled === true
+          ? "Ativa"
+          : "Inativa"
+      )
+    );
+  }
+}
+
+async function carregarAnuncios() {
+  const consulta = query(
+    collection(db, "pushDispatches"),
+    orderBy("processadoEm", "desc"),
+    limit(30)
+  );
+
+  const resposta = await getDocs(consulta);
+
+  const lista = $("anuncios");
+  lista.replaceChildren();
+
+  $("detalhes").classList.add("oculto");
+
+  let aceitos = 0;
+  let recusados = 0;
+  let expiradas = 0;
+  let tentativas = 0;
+
+  for (const documento of resposta.docs) {
+    const dados = documento.data();
+
+    aceitos += Number(dados.enviosAceitos || 0);
+
+    recusados += Number(
+      dados.inscricoesRecusadas || 0
+    );
+
+    expiradas += Number(
+      dados.inscricoesExpiradas || 0
+    );
+
+    tentativas += Number(
+      dados.tentativas || 0
+    );
+
+    const linha = criar("div", undefined, "linha");
+    const descricao = criar("div");
+
+    descricao.append(
+      criar(
+        "strong",
+        (dados.situacao || "Anúncio") +
+        " — " +
+        (dados.municipio || "Município não informado")
+      ),
+      criar(
+        "small",
+        "Anúncio: " + abreviar(documento.id) +
+        " • " + dataFormatada(dados.processadoEm)
+      ),
+      criar(
+        "small",
+        `✅ ${dados.enviosAceitos || 0} aceitos` +
+        ` • ❌ ${dados.inscricoesRecusadas || 0} recusados` +
+        ` • 📤 ${dados.tentativas || 0} tentativas`
+      )
+    );
+
+    const botao = criar(
+      "button",
+      "Ver inscrições",
+      "btn btn-claro"
+    );
+
+    botao.onclick = () =>
+      carregarDestinatarios(documento.id);
+
+    linha.append(descricao, botao);
+    lista.append(linha);
+  }
+
+  $("aceitos").textContent = aceitos;
+  $("recusados").textContent = recusados;
+  $("expiradas").textContent = expiradas;
+  $("tentativas").textContent = tentativas;
+
+  if (resposta.empty) {
+    lista.append(
+      criar(
+        "p",
+        "Ainda não há anúncios processados com data registrada.",
+        "vazio"
+      )
+    );
+  }
+}
+
+async function carregarDestinatarios(animalId) {
+  const idConsulta = ++consultaAtual;
+
+  $("detalhes").classList.remove("oculto");
+
+  $("detalhes-titulo").textContent =
+    "Anúncio: " + abreviar(animalId);
+
+  const lista = $("destinatarios");
+
+  lista.replaceChildren(
+    criar(
+      "p",
+      "Consultando inscrições...",
+      "vazio"
+    )
+  );
+
+  try {
+    const resultado = await getDocs(
+      collection(
+        db,
+        "pushDispatches",
+        animalId,
+        "recipients"
+      )
+    );
+
+    if (idConsulta !== consultaAtual) return;
+
+    lista.replaceChildren();
+
+    if (resultado.empty) {
+      lista.append(
+        criar(
+          "p",
+          "Nenhum registro individual encontrado.",
+          "vazio"
+        )
+      );
+      return;
+    }
+
+    for (const documento of resultado.docs) {
+      const dados = documento.data();
+
+      const inscricaoId =
+        dados.inscricaoId || documento.id;
+
+      const inscricao =
+        inscricoes.get(inscricaoId);
+
+      const status =
+        dados.status || "desconhecido";
+
+      const bloco = criar(
+        "div",
+        undefined,
+        "linha"
+      );
+
+      const conteudo = criar("div");
+
+      conteudo.append(
+        criar(
+          "strong",
+          "Inscrição " + abreviar(inscricaoId)
+        ),
+        criar(
+          "small",
+          "Conta: " +
+          abreviar(dados.uid || inscricao?.uid)
+        ),
+        criar(
+          "small",
+          "Região atual: " +
+          (inscricao?.municipio || "Não disponível") +
+          " • Data: " +
+          dataFormatada(
+            dados.aceitoEm || dados.registradoEm
+          )
+        )
+      );
+
+      bloco.append(
+        conteudo,
+        criar(
+          "span",
+          status.toUpperCase() +
+          (dados.codigo
+            ? ` (${dados.codigo})`
+            : ""),
+          statusVisual(status)
+        )
+      );
+
+      lista.append(bloco);
+    }
+
+  } catch (erro) {
+    lista.replaceChildren(
+      criar(
+        "p",
+        "Erro: " + (erro.message || "Falha na consulta"),
+        "vazio"
+      )
+    );
+  }
+}
+
+async function atualizarDados() {
+  const botao = $("atualizar");
+
+  botao.disabled = true;
+  $("mensagem").textContent =
+    "Carregando informações do Firebase...";
+
+  try {
+    await carregarInscricoes();
+    await carregarAnuncios();
+
+    $("mensagem").textContent =
+      "✅ Relatório atualizado: " +
+      new Date().toLocaleTimeString("pt-BR");
+
+  } catch (erro) {
+    mostrarErro(erro);
+  } finally {
+    botao.disabled = false;
+  }
+}
+
+$("entrar").onclick = async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (erro) {
+    $("mensagem").textContent =
+      "Não foi possível entrar: " + erro.message;
+  }
+};
+
+$("sair").onclick = async () => {
+  await signOut(auth);
+};
+
+$("atualizar").onclick = atualizarDados;
+
+onAuthStateChanged(auth, async conta => {
+  const autorizada =
+    conta && conta.uid === ADMIN_UID;
+
+  $("entrar").classList.toggle(
+    "oculto",
+    !!conta
+  );
+
+  $("sair").classList.toggle(
+    "oculto",
+    !conta
+  );
+
+  $("restrito").classList.toggle(
+    "oculto",
+    !!autorizada
+  );
+
+  $("conteudo").classList.toggle(
+    "oculto",
+    !autorizada
+  );
+
+  if (!autorizada) {
+    $("mensagem").textContent = conta
+      ? "Acesso restrito à administradora."
+      : "Entre com sua conta Google de administradora.";
+
+    return;
+  }
+
+  await atualizarDados();
+});
+
+</script>
+
+</body>
+</html>
